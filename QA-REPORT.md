@@ -8,7 +8,7 @@
 | রেজোলিউশন / fps | 1080×1920 · 30 fps | 720×1280 · 30 fps |
 | ভিডিও / অডিও | H.264 + AAC | H.264 + AAC |
 | দৈর্ঘ্য | 492.367 s (8:12.367) | 492.367 s (8:12.367) |
-| ফাইলের মাপ | 75,175,183 bytes (~72 MiB) | 38,455,747 bytes (~37 MiB) |
+| ফাইলের মাপ | 69,699,303 bytes (~66.5 MiB) | 36,976,077 bytes (~35.3 MiB) |
 | ডিকোড পরীক্ষা | সম্পূর্ণ ফাইল সফলভাবে ডিকোড | সম্পূর্ণ ফাইল সফলভাবে ডিকোড |
 
 আসল বাংলা MP3 (`assets/voiceover/voiceover.mp3`, 492.355875 s) অপরিবর্তিত গতিতে ভিডিওর শুরু থেকে যোগ করা হয়েছে। কোনো narration কাটা হয়নি। 720p সংস্করণটি চূড়ান্ত 1080p master থেকে একই aspect ratio-তে downscale করা হয়েছে; অডিও ট্র্যাক একই রাখা হয়েছে।
@@ -26,6 +26,7 @@
 - Storefront, landing-page এবং business-category showcase-এ মোট নয়টি locally bundled editorial photograph ব্যবহার করা হয়েছে—ঘড়ি, ব্যাগ, জুতা, fragrance, fashion, restaurant এবং beauty।
 - ফ্যাশন, রেস্টুরেন্ট ও beauty-র জন্য campaign-style landing page এবং পরিষ্কার category cards যোগ করা হয়েছে। Admin dashboard browser panels আরও বড় ও সামঞ্জস্যপূর্ণ করা হয়েছে, যাতে টেবিল, স্ট্যাটাস ও কন্ট্রোল ভালোভাবে দেখা যায়।
 - Bengali demo labels বজায় আছে; sample customer/order/price details illustrative demo data। কোনো runtime external image request নেই।
+- দীর্ঘ রিল জুড়ে একটানা একই নীল-কালো mood এড়াতে chapter অনুযায়ী subdued warm retail, cool admin, emerald order, violet retargeting, amber logistics এবং warm closing palette ব্যবহার করা হয়েছে; UI reveal, camera push ও page transition সংযত রাখা হয়েছে।
 - নতুন browser storefront, checkout, category ও admin দৃশ্যের representative frames ভিডিও থেকে আলাদাভাবে দেখে layout/legibility যাচাই করা হয়েছে।
 
 ## পরীক্ষা

@@ -17,6 +17,23 @@ import { premiumScenes } from '../scenes/premium.mjs';
 export const FPS = 30;
 export const REGISTRY = { ...openScenes, ...featureScenes, ...orderScenes, ...operationsScenes, ...closingScenes, ...premiumScenes };
 
+// Chapter-specific art direction: warm retail, cool admin, emerald orders,
+// violet retargeting, amber logistics, then a warm gold close.
+const BACKDROP_CHAPTERS = [
+  { from: 1, to: 16, palette: { base: '#0B0D14', primary: '#765634', secondary: '#3E3568', tertiary: '#3B7072', grid: 'rgba(230,211,178,0.025)' } },
+  { from: 17, to: 26, palette: { base: '#0B1018', primary: '#235A69', secondary: '#354A82', tertiary: '#167A69', grid: 'rgba(176,211,221,0.026)' } },
+  { from: 27, to: 38, palette: { base: '#081419', primary: '#1E7A74', secondary: '#265989', tertiary: '#8C6735', grid: 'rgba(172,224,211,0.025)' } },
+  { from: 39, to: 46, palette: { base: '#100E1A', primary: '#5C3A94', secondary: '#245C88', tertiary: '#873C75', grid: 'rgba(204,183,235,0.025)' } },
+  { from: 47, to: 56, palette: { base: '#12100C', primary: '#775322', secondary: '#345B4C', tertiary: '#9A4F34', grid: 'rgba(235,207,158,0.025)' } },
+  { from: 57, to: 62, palette: { base: '#0A111A', primary: '#225E83', secondary: '#28617D', tertiary: '#1C846C', grid: 'rgba(178,209,230,0.025)' } },
+  { from: 63, to: 67, palette: { base: '#100E18', primary: '#5B4C8A', secondary: '#6B542C', tertiary: '#286579', grid: 'rgba(205,192,232,0.025)' } },
+  { from: 68, to: 77, palette: { base: '#100F0D', primary: '#785A2C', secondary: '#425271', tertiary: '#83503A', grid: 'rgba(235,216,180,0.026)' } },
+];
+
+function backdropPalette(sceneNumber) {
+  return BACKDROP_CHAPTERS.find((chapter) => sceneNumber >= chapter.from && sceneNumber <= chapter.to)?.palette;
+}
+
 /* ------------------------------------------------------------------ schedule */
 /** Approximate spoken-time weight from the exact narration stored per scene. */
 export function narrationWeight(value = '') {
@@ -171,7 +188,7 @@ export class Compositor {
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     // base cinematic background (drifting, deterministic)
-    cinematicBG(ctx, frame / this.fps, { w: this.width, h: this.height });
+    cinematicBG(ctx, frame / this.fps, { w: this.width, h: this.height, palette: backdropPalette(scene.n) });
 
     const style = scene.transition || 'fade';
     const inDur = style === 'snap' ? 0.10 : style === 'hold' ? 0 : style === 'wipe' ? 0.32 : 0.30;
