@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CodePixel Web — ভিডিও তৈরি করুন</title>
+<meta name="theme-color" content="#070B18" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+  @font-face {
+    font-family: 'BN';
+    src: url('/static/fonts/NotoSansBengali-Regular.ttf') format('truetype');
+    font-weight: 400; font-display: swap;
+  }
+  @font-face {
+    font-family: 'BN';
+    src: url('/static/fonts/NotoSansBengali-SemiBold.ttf') format('truetype');
+    font-weight: 600; font-display: swap;
+  }
+  @font-face {
+    font-family: 'BN';
+    src: url('/static/fonts/NotoSansBengali-Bold.ttf') format('truetype');
+    font-weight: 700; font-display: swap;
+  }
+  :root {
+    --navy: #070B18;
+    --navy2: #0B1224;
+    --panel: #101A35;
+    --blue: #287BFF;
+    --cyan: #36D7FF;
+    --violet: #7957FF;
+    --white: #F7F9FF;
+    --muted: #93A5C4;
+    --line: rgba(140, 175, 255, 0.18);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'BN', 'Inter', system-ui, sans-serif;
+    background:
+      radial-gradient(1200px 800px at 15% -10%, rgba(40, 123, 255, 0.28), transparent 60%),
+      radial-gradient(900px 700px at 110% 20%, rgba(121, 87, 255, 0.22), transparent 60%),
+      radial-gradient(800px 600px at 50% 120%, rgba(54, 215, 255, 0.12), transparent 60%),
+      var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 18px 48px;
+  }
+  .app { width: 100%; max-width: 560px; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+  .mark {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: linear-gradient(135deg, #287BFF, #36D7FF);
+    display: grid; place-items: center;
+    box-shadow: 0 10px 30px rgba(40, 123, 255, 0.4);
+    flex: none;
+  }
+  .mark svg { width: 22px; height: 22px; }
+  .brand { line-height: 1.15; }
+  .brand b { display: block; font-size: 15px; letter-spacing: 2.4px; font-weight: 700; }
+  .brand span { font-size: 11px; letter-spacing: 4px; color: var(--cyan); }
+  h1 { font-size: 26px; line-height: 1.5; margin: 0 0 6px; font-weight: 700; }
+  .lead { color: var(--muted); font-size: 14.5px; line-height: 1.85; margin: 0 0 22px; }
+  .steps { display: flex; gap: 8px; margin-bottom: 18px; }
+  .pill {
+    flex: 1; text-align: center; font-size: 12.5px; padding: 9px 6px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted); background: rgba(16, 26, 53, 0.5);
+    transition: all .25s ease;
+  }
+  .pill.active { color: var(--white); border-color: rgba(54, 215, 255, 0.6); background: rgba(40, 123, 255, 0.18); }
+  .pill.done { color: #9CF0D2; border-color: rgba(53, 211, 160, 0.5); }
+  .card {
+    background: linear-gradient(180deg, rgba(18, 29, 56, 0.92), rgba(11, 18, 36, 0.94));
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+  }
+  .drop {
+    border: 1.5px dashed rgba(140, 175, 255, 0.35);
+    border-radius: 18px;
+    padding: 26px 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s ease;
+    background: rgba(8, 14, 28, 0.5);
+    display: block;
+  }
+  .drop:hover, .drop.over { border-color: var(--cyan); background: rgba(40, 123, 255, 0.1); }
+  .drop .ic { width: 46px; height: 46px; margin: 0 auto 12px; border-radius: 14px; background: rgba(40, 123, 255, 0.16); display: grid; place-items: center; color: var(--cyan); }
+  .drop b { display: block; font-size: 16px; margin-bottom: 6px; }
+  .drop small { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+  input[type=file] { display: none; }
+  .fileRow {
+    display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 14px;
+    border-radius: 14px; background: rgba(8, 14, 28, 0.6); border: 1px solid var(--line);
+  }
+  .fileRow .meta { flex: 1; min-width: 0; }
+  .fileRow .name { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fileRow .dur { font-size: 12.5px; color: var(--cyan); font-variant-numeric: tabular-nums; margin-top: 3px; }
+  .audioWrap audio { width: 100%; height: 34px; margin-top: 12px; filter: saturate(0.8); }
+  .btn {
+    width: 100%; border: 0; border-radius: 16px; padding: 17px 18px; margin-top: 16px;
+    font-family: inherit; font-size: 16.5px; font-weight: 700; cursor: pointer;
+    background: linear-gradient(135deg, #2E7BFF, #23B6FF); color: #04101F;
+    box-shadow: 0 14px 34px rgba(40, 123, 255, 0.35);
+    transition: transform .15s ease, box-shadow .2s ease, opacity .2s;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(40, 123, 255, 0.45); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+  .btn.ghost { background: transparent; color: var(--white); border: 1px solid var(--line); box-shadow: none; }
+  .progress { margin-top: 18px; }
+  .bar { height: 9px; border-radius: 999px; background: rgba(140, 175, 255, 0.14); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, #287BFF, #36D7FF); transition: width .4s ease; }
+  .pmeta { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); margin-top: 9px; }
+  .pmeta .stage { color: var(--white); }
+  .err { margin-top: 14px; border: 1px solid rgba(255, 107, 129, 0.45); background: rgba(255, 107, 129, 0.1); color: #FFD3D9; border-radius: 14px; padding: 13px 14px; font-size: 13.5px; line-height: 1.8; }
+  .warn { margin-top: 12px; border: 1px solid rgba(255, 196, 102, 0.4); background: rgba(255, 196, 102, 0.08); color: #FFE1B0; border-radius: 14px; padding: 12px 14px; font-size: 13px; line-height: 1.8; }
+  .result { margin-top: 6px; }
+  video { width: 100%; border-radius: 16px; background: #000; max-height: 62vh; display: block; }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 4px; }
+  .fact { background: rgba(8, 14, 28, 0.6); border: 1px solid var(--line); border-radius: 12px; padding: 9px 10px; }
+  .fact span { display: block; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+  .fact b { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  footer { margin-top: 22px; text-align: center; font-size: 11.5px; color: rgba(147, 165, 196, 0.7); line-height: 1.9; }
+  .hidden { display: none !important; }
+  .spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; display: inline-block; vertical-align: -3px; margin-left: 8px; animation: sp 0.9s linear infinite; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .note { font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 14px; }
+</style>
+</head>
+<body>
+<main class="app">
+  <header>
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#04101F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 6 4.5 12 9 18M15 6l4.5 6L15 18" />
+      </svg>
+    </div>
+    <div class="brand"><b>CODEPIXEL</b><span>WEB</span></div>
+  </header>
+
+  <h1>আপনার ভয়েসওভার দিয়ে ভিডিও তৈরি করুন</h1>
+  <p class="lead">শুধু অডিও আপলোড করুন — ৭৭ দৃশ্যের প্রিমিয়াম প্রোমো ভিডিও (1080 × 1920, 30fps, MP4) তৈরি হবে। অডিওর দৈর্ঘ্যই ভিডিওর দৈর্ঘ্য হবে।</p>
+
+  <div class="steps" aria-hidden="true">
+    <div class="pill active" id="pill1">১ · অডিও আপলোড</div>
+    <div class="pill" id="pill2">২ · ভিডিও তৈরি</div>
+    <div class="pill" id="pill3">৩ · ডাউনলোড</div>
+  </div>
+
+  <section class="card" id="cardUpload">
+    <label class="drop" id="drop" for="file">
+      <div class="ic">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4M6.5 9 12 3.5 17.5 9M4 19.5h16" />
+        </svg>
+      </div>
+      <b>অডিও ফাইল বেছে নিন</b>
+      <small>MP3 · WAV · M4A · AAC<br />ট্যাপ করুন বা এখানে ফাইল ড্র্যাগ করুন</small>
+    </label>
+    <input type="file" id="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac" />
+
+    <div class="fileRow hidden" id="fileRow">
+      <div class="meta">
+        <div class="name" id="fileName">—</div>
+        <div class="dur" id="fileDur">—</div>
+      </div>
+      <button class="btn ghost" id="replaceBtn" style="width:auto;padding:9px 14px;margin:0;font-size:13px;">বদলান</button>
+    </div>
+    <div class="audioWrap hidden" id="audioWrap"><audio id="audioPreview" controls preload="metadata"></audio></div>
+    <div class="warn hidden" id="warn"></div>
+    <div class="err hidden" id="err"></div>
+
+    <button class="btn" id="renderBtn" disabled>ভিডিও তৈরি করুন</button>
+    <div class="note">রেন্ডারে কয়েক মিনিট লাগতে পারে — পেজ খোলা রাখুন। অডিও পরিবর্তন করা হয় না।</div>
+  </section>
+
+  <section class="card hidden" id="cardProgress">
+    <b style="font-size:16px;">ভিডিও তৈরি হচ্ছে…</b>
+    <div class="progress">
+      <div class="bar"><i id="bar"></i></div>
+      <div class="pmeta"><span class="stage" id="stage">প্রস্তুত হচ্ছে</span><span id="pct">0%</span></div>
+      <div class="pmeta"><span id="frames">—</span><span id="eta"></span></div>
+    </div>
+    <div class="err hidden" id="err2"></div>
+    <button class="btn ghost hidden" id="retryBtn">আবার চেষ্টা করুন</button>
+  </section>
+
+  <section class="card hidden" id="cardResult">
+    <b style="font-size:16px;display:block;margin-bottom:12px;">আপনার ভিডিও প্রস্তুত</b>
+    <video id="player" controls playsinline preload="metadata"></video>
+    <div class="facts">
+      <div class="fact"><span>রেজোলিউশন</span><b id="fRes">1080×1920</b></div>
+      <div class="fact"><span>দৈর্ঘ্য</span><b id="fDur">—</b></div>
+      <div class="fact"><span>ফ্রেম রেট</span><b id="fFps">30 fps</b></div>
+    </div>
+    <a class="btn" id="dl" href="#" download="CodePixel-Web-Promo-Reels.mp4" style="display:block;text-align:center;text-decoration:none;">ভিডিও ডাউনলোড করুন</a>
+    <button class="btn ghost" id="againBtn">নতুন করে তৈরি করুন</button>
+  </section>
+
+  <footer>
+    CodePixel Web · codepixelweb.vercel.app · WhatsApp 01876892958<br />
+    ডেমো ইন্টারফেস ও নমুনা ডেটা ব্যবহৃত; কোনো ভুয়া রিভিউ বা প্রতিশ্রুতি নেই।
+  </footer>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const state = { upload: null, jobId: null, source = null };
+  const pills = [$('pill1'), $('pill2'), $('pill3')];
+  const setStep = (n) => pills.forEach((p, i) => {
+    p.classList.toggle('active', i === n - 1);
+    p.classList.toggle('done', i < n - 1);
+  });
+  const show = (id, on = true) => $(id).classList.toggle('hidden', !on);
+
+  const fmt = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = (sec - m * 60);
+    return String(m).padStart(2, '0') + ':' + s.toFixed(3).padStart(6, '0');
+  };
+  const fmtClock = (sec) => {
+    const m = Math.floor(sec / 60); const s = Math.round(sec % 60);
+    return m + ':' + String(s).padStart(2, '0');
+  };
+
+  $('drop').addEventListener('dragover', (e) => { e.preventDefault(); $('drop').classList.add('over'); });
+  $('drop').addEventListener('dragleave', () => $('drop').classList.remove('over'));
+  $('drop').addEventListener('drop', (e) => {
+    e.preventDefault(); $('drop').classList.remove('over');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) upload(e.dataTransfer.files[0]);
+  });
+  $('file').addEventListener('change', (e) => { if (e.target.files[0]) upload(e.target.files[0]); });
+  $('replaceBtn').addEventListener('click', () => $('file').click());
+
+  async function upload(file) {
+    $('err').classList.add('hidden');
+    $('warn').classList.add('hidden');
+    $('renderBtn').disabled = true;
+    $('renderBtn').textContent = 'আপলোড হচ্ছে…';
+    try {
+      const res = await fetch('/api/upload?name=' + encodeURIComponent(file.name), {
+        method: 'POST', body: file, headers: { 'content-type': 'application/octet-stream' },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'আপলোড ব্যর্থ হয়েছে।');
+      state.upload = data;
+      $('fileRow').classList.remove('hidden');
+      $('fileName').textContent = data.fileName;
+      $('fileDur').textContent = 'দৈর্ঘ্য: ' + data.durationLabel + '  ·  ' + data.codec;
+      $('audioPreview').src = data.url;
+      show('audioWrap', true);
+      if (data.warnings && data.warnings.length) {
+        $('warn').textContent = data.warnings.join(' ');
+        show('warn', true);
+      }
+      $('renderBtn').disabled = false;
+      $('renderBtn').textContent = 'ভিডিও তৈরি করুন';
+      setStep(1);
+    } catch (err) {
+      $('err').textContent = err.message || String(err);
+      show('err', true);
+      $('renderBtn').disabled = true;
+      $('renderBtn').textContent = 'ভিডিও তৈরি করুন';
+    }
+  }
+
+  $('renderBtn').addEventListener('click', startRender);
+  $('retryBtn').addEventListener('click', () => { show('cardProgress', false); startRender(); });
+  $('againBtn').addEventListener('click', () => {
+    show('cardResult', false);
+    show('cardUpload', true);
+    $('renderBtn').disabled = !state.upload;
+    setStep(state.upload ? 1 : 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  async function startRender() {
+    if (!state.upload || state.jobId) return;
+    show('cardProgress', true);
+    show('cardResult', false);
+    show('err2', false);
+    show('retryBtn', false);
+    setStep(2);
+    $('bar').style.width = '0%';
+    $('pct').textContent = '0%';
+    $('stage').textContent = 'রেন্ডার শুরু হচ্ছে…';
+    $('renderBtn').disabled = true;
+    $('renderBtn').innerHTML = 'রেন্ডার চলছে… <span class="spin"></span>';
+    try {
+      const res = await fetch('/api/render', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ uploadId: state.upload.uploadId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'রেন্ডার শুরু করা যায়নি।');
+      state.jobId = data.jobId;
+      listen(data.jobId);
+    } catch (err) {
+      fail(err.message || String(err));
+    }
+  }
+
+  function listen(jobId) {
+    const es = new EventSource('/api/events/' + jobId);
+    es.onmessage = (e) => {
+      let evt;
+      try { evt = JSON.parse(e.data); } catch { return; }
+      if (evt.type === 'progress') {
+        const pct = Math.max(1, Math.round(evt.progress * 100));
+        $('bar').style.width = pct + '%';
+        $('pct').textContent = pct + '%';
+        $('stage').textContent = evt.label || '';
+        if (evt.frame && evt.total) {
+          $('frames').textContent = `ফ্রেম ${evt.frame.toLocaleString('en-US')} / ${evt.total.toLocaleString('en-US')}`;
+          $('eta').textContent = evt.eta ? 'বাকি ≈ ' + fmtClock(evt.eta) : '';
+        }
+      }
+      if (evt.type === 'snapshot') {
+        const pct = Math.max(0, Math.round((evt.progress || 0) * 100));
+        $('bar').style.width = pct + '%';
+        $('pct').textContent = pct + '%';
+        if (evt.label) $('stage').textContent = evt.label;
+        if (evt.status === 'done' && evt.result) { es.close(); finish(evt.result); }
+        if (evt.status === 'error') { es.close(); fail(evt.error); }
+      }
+      if (evt.type === 'done' && evt.out) { es.close(); finish(evt); }
+      if (evt.type === 'error' && evt.message) { es.close(); fail(evt.message); }
+    };
+    es.onerror = () => { /* transient; EventSource retries automatically */ };
+  }
+
+  function finish(result) {
+    state.jobId = null;
+    $('bar').style.width = '100%';
+    $('pct').textContent = '100%';
+    $('stage').textContent = 'প্রস্তুত';
+    setTimeout(() => {
+      show('cardProgress', false);
+      show('cardResult', true);
+      setStep(3);
+      const src = '/media/output/' + encodeURIComponent(result.out.split('/').pop()) + '?v=' + Date.now();
+      $('player').src = src;
+      $('dl').href = src + '&dl=' + encodeURIComponent('CodePixel-Web-Promo-Reels.mp4');
+      $('fRes').textContent = result.width + '×' + result.height;
+      $('fDur').textContent = fmt(result.duration);
+      $('fFps').textContent = result.fps + ' fps';
+      $('renderBtn').innerHTML = 'ভিডিও তৈরি করুন';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 600);
+  }
+
+  function fail(msg) {
+    state.jobId = null;
+    $('err2').textContent = 'রেন্ডার ব্যর্থ হয়েছে: ' + msg;
+    show('err2', true);
+    show('retryBtn', true);
+    $('renderBtn').innerHTML = 'ভিডিও তৈরি করুন';
+    $('renderBtn').disabled = false;
+  }
+
+  // if a render already exists on boot, offer it
+  fetch('/api/health').then((r) => r.json()).then((h) => {
+    if (h.ok) document.title = 'CodePixel Web — ভিডিও তৈরি করুন';
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>

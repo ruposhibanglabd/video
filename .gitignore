@@ -1,0 +1,9 @@
+node_modules/
+.tmp/
+uploads/
+output/*.mp4
+output/*.part.mp4
+output/stills/
+output/qa/
+*.log
+.DS_Store
