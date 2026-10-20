@@ -1,15 +1,17 @@
-# ভয়েসওভার এখানে রাখুন
-
-ফাইলটির নাম দিন `voiceover.m4a` (বা `.mp3` / `.wav`) এবং এই ফোল্ডারে রাখুন:
+# ভয়েসওভার
 
 ```
-assets/voiceover/voiceover.m4a
+assets/voiceover/voiceover.mp3     # বর্তমান ফাইল (492.355875s, 44.1 kHz mono, MP3)
 ```
 
-তারপর রেন্ডার:
+মূল ফাইলটি ছিল:
+`ElevenLabs_2026-10-20T06_23_48_Debashish - Warm, Proud_gen_sp100_s50_sb75_v4 (1).mp3`
+(একই বাইট, শুধু কাজের সুবিধার জন্য নাম বদলানো হয়েছে)
+
+রেন্ডার:
 
 ```bash
-node src/render/render.mjs --audio assets/voiceover/voiceover.m4a \
+node src/render/render.mjs --audio assets/voiceover/voiceover.mp3 \
   --out output/CodePixel-Web-Promo-Reels.mp4
 ```
 
