@@ -12,9 +12,10 @@ import { featureScenes } from '../scenes/features.mjs';
 import { orderScenes } from '../scenes/orders.mjs';
 import { operationsScenes } from '../scenes/operations.mjs';
 import { closingScenes } from '../scenes/closing.mjs';
+import { premiumScenes } from '../scenes/premium.mjs';
 
 export const FPS = 30;
-export const REGISTRY = { ...openScenes, ...featureScenes, ...orderScenes, ...operationsScenes, ...closingScenes };
+export const REGISTRY = { ...openScenes, ...featureScenes, ...orderScenes, ...operationsScenes, ...closingScenes, ...premiumScenes };
 
 /* ------------------------------------------------------------------ schedule */
 /** Approximate spoken-time weight from the exact narration stored per scene. */

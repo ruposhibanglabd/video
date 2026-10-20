@@ -32,6 +32,9 @@ const STORE_IMAGE_FILES = [
   ['bag', 'bag-editorial.jpg'],
   ['shoe', 'sneaker-editorial.jpg'],
   ['fragrance', 'fragrance-editorial.jpg'],
+  ['fashion', 'fashion-editorial.jpg'],
+  ['restaurant', 'restaurant-editorial.jpg'],
+  ['beauty', 'beauty-editorial.jpg'],
 ];
 
 /** Preloaded storefront photography shared by Node and browser rendering. */

@@ -4,8 +4,8 @@
 
 দুটো সংস্করণেই পুরো 8:12 মিনিটের ভিডিও, ভয়েস-সিঙ্কড scene timing এবং একই আসল বাংলা ভয়েসওভার আছে।
 
-- [`CodePixel-Web-Promo-Reels-1080p.mp4`](CodePixel-Web-Promo-Reels-1080p.mp4) — 1080×1920 · 30 fps · H.264 + AAC · প্রায় 82 MiB
-- [`CodePixel-Web-Promo-Reels-720p.mp4`](CodePixel-Web-Promo-Reels-720p.mp4) — 720×1280 · 30 fps · H.264 + AAC · প্রায় 21 MiB; মোবাইলে দ্রুত ডাউনলোডের জন্য
+- [`CodePixel-Web-Promo-Reels-1080p.mp4`](CodePixel-Web-Promo-Reels-1080p.mp4) — 1080×1920 · 30 fps · H.264 + AAC · প্রায় 72 MiB
+- [`CodePixel-Web-Promo-Reels-720p.mp4`](CodePixel-Web-Promo-Reels-720p.mp4) — 720×1280 · 30 fps · H.264 + AAC · প্রায় 37 MiB; মোবাইলে দ্রুত ডাউনলোডের জন্য
 
 GitHub-এ ফাইল পেজ খুলে **Download raw file** চাপুন।
 
