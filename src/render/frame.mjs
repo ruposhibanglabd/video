@@ -17,40 +17,74 @@ export const FPS = 30;
 export const REGISTRY = { ...openScenes, ...featureScenes, ...orderScenes, ...operationsScenes, ...closingScenes };
 
 /* ------------------------------------------------------------------ schedule */
-/**
- * Build the render schedule from the *measured* audio duration.
- * Boundaries come from the reference plan scaled proportionally; when silence
- * data is available each boundary snaps to the nearest natural pause.
- */
-export function buildSchedule(duration, { snapPoints = [], snapWindow = 0.9, minScene = 1.0 } = {}) {
-  const scale = duration / 492.356;
-  let boundaries = SCENES.map((s, i) => ({
-    ...s,
-    start: i === 0 ? 0 : s.outStart * scale,
-    end: s.outEnd * scale,
-  }));
-  // smooth proportional boundaries to remove rounding gaps
-  for (let i = 0; i < boundaries.length; i++) {
-    boundaries[i].start = i === 0 ? 0 : boundaries[i - 1].end;
-    if (i === boundaries.length - 1) boundaries[i].end = duration;
-  }
-  // snap internal boundaries to measured pauses
-  if (snapPoints.length) {
-    for (let i = 1; i < boundaries.length; i++) {
-      const b = boundaries[i].start;
-      let best = null;
-      for (const p of snapPoints) {
-        if (Math.abs(p - b) <= snapWindow && (best === null || Math.abs(p - b) < Math.abs(best - b))) best = p;
-      }
-      if (best !== null) {
-        const minLen = minScene;
-        const lower = boundaries[i - 1].start + minLen;
-        const upper = boundaries[i].end - minLen;
-        boundaries[i].start = Math.min(upper, Math.max(lower, best));
-        boundaries[i - 1].end = boundaries[i].start;
+/** Approximate spoken-time weight from the exact narration stored per scene. */
+export function narrationWeight(value = '') {
+  const narration = String(value);
+  const bengaliLetters = (narration.match(/[\u0985-\u09B9\u09DC-\u09DF\u09F0-\u09FF]/g) || []).length;
+  const vowelMarks = (narration.match(/[\u09BE-\u09CC\u09D7]/g) || []).length;
+  const latinWords = narration.match(/[A-Za-z0-9]+/g) || [];
+  const latinWeight = latinWords.reduce((sum, word) => sum + Math.max(1, Math.round(word.length * 0.55)), 0);
+  return Math.max(1, bengaliLetters + vowelMarks + latinWeight);
+}
+
+function alignBoundaries(expected, snapPoints, { snapWindow, minScene }) {
+  let states = [{ time: 0, cost: 0, path: [] }];
+  for (const target of expected) {
+    const options = [{ time: target, cost: 1.8 }];
+    for (const point of snapPoints) {
+      if (Math.abs(point - target) <= snapWindow) {
+        options.push({ time: point, cost: ((point - target) / 1.8) ** 2 });
       }
     }
+    // Duplicate timestamps can arise from the no-snap option and a pause.
+    const unique = new Map();
+    for (const option of options) {
+      const key = option.time.toFixed(4);
+      const prev = unique.get(key);
+      if (!prev || option.cost < prev.cost) unique.set(key, option);
+    }
+    const next = [];
+    for (const option of unique.values()) {
+      let best = null;
+      for (const state of states) {
+        if (option.time - state.time < minScene) continue;
+        const cost = state.cost + option.cost;
+        if (!best || cost < best.cost) best = { time: option.time, cost, path: [...state.path, option.time] };
+      }
+      if (best) next.push(best);
+    }
+    states = next;
+    if (!states.length) break;
   }
+  if (states.length) return states.reduce((a, b) => a.cost <= b.cost ? a : b).path;
+  return expected;
+}
+
+/**
+ * Align scene cuts to the supplied voice: each cut is first estimated from the
+ * narration's spoken-text weight, then globally matched to a nearby detected
+ * pause. This avoids the large drift caused by stretching hand-timed scene
+ * estimates uniformly over an eight-minute file.
+ */
+export function buildSchedule(duration, { snapPoints = [], snapWindow = 2.3, minScene = 0.75 } = {}) {
+  const weights = SCENES.map((scene) => narrationWeight(scene.narration));
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+  const pauseAllowance = Math.min(0.16 * (SCENES.length - 1), duration * 0.025);
+  const spokenDuration = Math.max(0, duration - pauseAllowance);
+  let elapsedWeight = 0;
+  const expected = [];
+  for (let i = 0; i < SCENES.length - 1; i++) {
+    elapsedWeight += weights[i];
+    expected.push(spokenDuration * elapsedWeight / totalWeight + pauseAllowance * (i + 1) / (SCENES.length - 1));
+  }
+  const aligned = alignBoundaries(expected, snapPoints, { snapWindow, minScene });
+  const boundaries = SCENES.map((scene, i) => ({
+    ...scene,
+    start: i === 0 ? 0 : aligned[i - 1],
+    end: i === SCENES.length - 1 ? duration : aligned[i],
+    timingWeight: weights[i],
+  }));
+
   // frames: absolute rounding per boundary (no cumulative drift)
   const totalFrames = Math.max(1, Math.ceil(duration * FPS));
   boundaries.forEach((b) => {
@@ -66,7 +100,7 @@ export function buildSchedule(duration, { snapPoints = [], snapWindow = 0.9, min
     if (boundaries[i].f1 <= boundaries[i].f0) boundaries[i].f1 = boundaries[i].f0 + 1;
   }
   boundaries[boundaries.length - 1].f1 = totalFrames;
-  return { scenes: boundaries, totalFrames, duration, fps: FPS };
+  return { scenes: boundaries, totalFrames, duration, fps: FPS, alignment: 'narration-weighted + detected pauses' };
 }
 
 export function frameToScene(schedule, frame) {

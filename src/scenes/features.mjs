@@ -270,7 +270,7 @@ export const featureScenes = {
     glassPanel(ctx, 56, 800, 420, 470, { r: 24, fill: 'rgba(15,24,45,0.96)', glow: C.blue });
     text(ctx, 'বিজ্ঞাপন ক্রিয়েটিভ', 86, 848, { size: 21, weight: 600, color: alpha(C.cyan, 0.9), letterSpacing: 1.2 });
     fillRR(ctx, 82, 872, 368, 250, 16, '#241E17');
-    drawWatch(ctx, 266, 986, 74, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
+    SF.photoCover(ctx, 'hero', 82, 872, 368, 250, { radius: 16, focalX: 0.64, focalY: 0.52 });
     fillRR(ctx, 82, 1140, 240, 14, 7, 'rgba(255,255,255,0.3)');
     fillRR(ctx, 82, 1166, 170, 12, 6, 'rgba(255,255,255,0.18)');
     fillRR(ctx, 82, 1198, 132, 42, 21, 'rgba(217,190,143,0.92)');

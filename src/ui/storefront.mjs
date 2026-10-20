@@ -1,10 +1,11 @@
 /**
  * Storefront UI library — fictional demo shop "AURUM" (watches & accessories).
- * Every screen is drawn as real vector UI at phone scale so text stays crisp
- * and readable in a 1080x1920 vertical video. No external images, no fake
- * reviews or statistics; a "ডেমো ডেটা" badge marks illustrative content.
+ * Every screen is composed as crisp vector UI with bundled, locally loaded
+ * product photography. No runtime network requests, fake reviews, or statistics;
+ * a "ডেমো ডেটা" badge marks illustrative content.
  */
-import { C, alpha, lin, text, fillRR, strokeRR, rr, circle, shadow, noShadow, icon, fontStr, clamp, lerp, easeOut, beat, line, withClip, drawWatch, drawBag, drawShoe, drawBottle, drawHeadphone, statusChip } from '../render/kit.mjs';
+import { C, alpha, lin, text, fillRR, strokeRR, rr, circle, shadow, noShadow, icon, fontStr, clamp, lerp, easeOut, beat, line, withClip, createCanvas, drawWatch, drawBag, drawShoe, drawBottle, drawHeadphone, statusChip } from '../render/kit.mjs';
+import { getStoreImage } from '../render/platform.mjs';
 
 export const T = {
   cream: '#F7F3EB',
@@ -20,13 +21,54 @@ export const T = {
 };
 
 export const PRODUCTS = [
-  { name: 'Heritage Chrono', bn: 'হেরিটেজ ক্রোনো', price: 4890, old: 5990, type: 'watch', tone: { face: '#F4EEE2', bezel: '#C9A46A', strap: '#2A2118' }, tag: 'নতুন' },
-  { name: 'Noir Automatic', bn: 'নয়্যার অটোমেটিক', price: 6450, old: null, type: 'watch', tone: { face: '#20242C', bezel: '#3A4250', strap: '#161A22', hands: '#EDEDED', accent: '#C9A46A' }, tag: 'প্রিমিয়াম' },
-  { name: 'Aurum Leather', bn: 'অরাম লেদার', price: 3290, old: 3890, type: 'watch', tone: { face: '#FBF6EA', bezel: '#D8B77E', strap: '#5A3A26' }, tag: null },
-  { name: 'Rose Petite', bn: 'রোজ পেটিট', price: 4150, old: null, type: 'watch', tone: { face: '#FBF1F2', bezel: '#D9A6A1', strap: '#B78480', accent: '#C98F89' }, tag: 'নতুন' },
-  { name: 'Sport Steel', bn: 'স্পোর্ট স্টিল', price: 5290, old: 6290, type: 'watch', tone: { face: '#1C2530', bezel: '#B9C2CE', strap: '#7C8794', hands: '#F2F5F9', accent: '#36D7FF' }, tag: null },
-  { name: 'Classic Mesh', bn: 'ক্লাসিক মেশ', price: 3990, old: null, type: 'watch', tone: { face: '#F8F2E6', bezel: '#CBB07B', strap: '#C7B08A' }, tag: null },
+  { name: 'Heritage Chrono', bn: 'হেরিটেজ ক্রোনো', price: 4890, old: 5990, type: 'watch', photo: 'leather', tone: { face: '#F4EEE2', bezel: '#C9A46A', strap: '#2A2118' }, tag: 'নতুন' },
+  { name: 'Noir Automatic', bn: 'নয়্যার অটোমেটিক', price: 6450, old: null, type: 'watch', photo: 'noir', tone: { face: '#20242C', bezel: '#3A4250', strap: '#161A22', hands: '#EDEDED', accent: '#C9A46A' }, tag: 'প্রিমিয়াম' },
+  { name: 'Aurum Leather', bn: 'অরাম লেদার', price: 3290, old: 3890, type: 'watch', photo: 'leather', tone: { face: '#FBF6EA', bezel: '#D8B77E', strap: '#5A3A26' }, tag: null },
+  { name: 'Rose Petite', bn: 'রোজ পেটিট', price: 4150, old: null, type: 'watch', photo: 'leather', tone: { face: '#FBF1F2', bezel: '#D9A6A1', strap: '#B78480', accent: '#C98F89' }, tag: 'নতুন' },
+  { name: 'Sport Steel', bn: 'স্পোর্ট স্টিল', price: 5290, old: 6290, type: 'watch', photo: 'noir', tone: { face: '#1C2530', bezel: '#B9C2CE', strap: '#7C8794', hands: '#F2F5F9', accent: '#36D7FF' }, tag: null },
+  { name: 'Classic Mesh', bn: 'ক্লাসিক মেশ', price: 3990, old: null, type: 'watch', photo: 'leather', tone: { face: '#F8F2E6', bezel: '#CBB07B', strap: '#C7B08A' }, tag: null },
 ];
+
+/** Draw a real product photograph using a cached, focal-point-aware cover crop. */
+const PHOTO_CROPS = new Map();
+export function photoCover(ctx, name, x, y, w, h, { radius = 0, focalX = 0.5, focalY = 0.5 } = {}) {
+  const image = getStoreImage(name);
+  if (!image) return false;
+  const iw = image.width || image.naturalWidth;
+  const ih = image.height || image.naturalHeight;
+  if (!iw || !ih) return false;
+  const cw = Math.max(1, Math.round(w)), ch = Math.max(1, Math.round(h));
+  const fx = clamp(focalX), fy = clamp(focalY);
+  const key = `${name}:${cw}x${ch}:${fx.toFixed(3)}:${fy.toFixed(3)}`;
+  let crop = PHOTO_CROPS.get(key);
+  if (!crop) {
+    const targetRatio = cw / ch;
+    const sourceRatio = iw / ih;
+    let sx = 0, sy = 0, sw = iw, sh = ih;
+    if (sourceRatio > targetRatio) {
+      sw = ih * targetRatio;
+      sx = fx * (iw - sw);
+    } else {
+      sh = iw / targetRatio;
+      sy = fy * (ih - sh);
+    }
+    crop = createCanvas(cw, ch);
+    crop.getContext('2d').drawImage(image, sx, sy, sw, sh, 0, 0, cw, ch);
+    PHOTO_CROPS.set(key, crop);
+  }
+  ctx.save();
+  if (radius) { rr(ctx, x, y, w, h, radius); ctx.clip(); }
+  ctx.drawImage(crop, x, y, w, h);
+  ctx.restore();
+  return true;
+}
+
+function productPhoto(ctx, product, x, y, w, h, opts = {}) {
+  if (!photoCover(ctx, product?.photo || 'leather', x, y, w, h, opts)) {
+    fillRR(ctx, x, y, w, h, opts.radius || 0, '#F0E4D2');
+    drawWatch(ctx, x + w / 2, y + h / 2, Math.min(w, h) * 0.31, product?.tone);
+  }
+}
 
 /* ------------------------------------------------------------------ atoms */
 export function demoBadge(ctx, x, y, size = 18, dark = false) {
@@ -108,7 +150,7 @@ export function productCard(ctx, x, y, w, h, p, { dim = 1, scale = 1, press = 0,
     : [[0, mixHex(p.tone.face, '#FFFFFF', 0.35)], [1, mixHex(p.tone.face, '#8A7A58', 0.32)]]);
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, w, imgH);
-  drawWatch(ctx, w / 2, imgH * 0.54, Math.min(w, imgH) * 0.31, p.tone);
+  productPhoto(ctx, p, 0, 0, w, imgH, { radius: 18, focalX: 0.5, focalY: 0.5 });
   if (p.tag) {
     fillRR(ctx, 12, 12, 76, 28, 14, p.tag === 'নতুন' ? T.ink : T.gold);
     text(ctx, p.tag, 50, 31, { size: 15, weight: 600, color: '#fff', align: 'center' });
@@ -167,12 +209,21 @@ export function sfHome(ctx, w, h, o = {}) {
   ctx.clip();
   ctx.fillStyle = '#241E17';
   ctx.fillRect(0, hy, w, 340);
-  const g = ctx.createRadialGradient(w * 0.78, hy + 170, 30, w * 0.72, hy + 200, 300);
-  g.addColorStop(0, 'rgba(201,164,106,0.38)');
-  g.addColorStop(1, 'rgba(36,30,23,0)');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, hy, w, 340);
-  drawWatch(ctx, w * 0.78, hy + 200, 74, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
+  if (photoCover(ctx, 'hero', 0, hy, w, 340, { focalX: 0.62, focalY: 0.55 })) {
+    const shade = ctx.createLinearGradient(0, hy, w, hy);
+    shade.addColorStop(0, 'rgba(10,12,15,0.70)');
+    shade.addColorStop(0.48, 'rgba(10,12,15,0.38)');
+    shade.addColorStop(1, 'rgba(10,12,15,0.04)');
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, hy, w, 340);
+  } else {
+    const g = ctx.createRadialGradient(w * 0.78, hy + 170, 30, w * 0.72, hy + 200, 300);
+    g.addColorStop(0, 'rgba(201,164,106,0.38)');
+    g.addColorStop(1, 'rgba(36,30,23,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, hy, w, 340);
+    drawWatch(ctx, w * 0.78, hy + 200, 74, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
+  }
   text(ctx, 'নতুন কালেকশন', 26, hy + 62, { size: 17, weight: 600, color: '#D9BE8F', letterSpacing: 1.2 });
   text(ctx, 'সময়ের', 26, hy + 118, { size: 44, weight: 700, color: '#FFFFFF' });
   text(ctx, 'নিজস্ব ছন্দ', 26, hy + 168, { size: 44, weight: 700, color: '#FFFFFF' });
@@ -247,7 +298,10 @@ export function sfProduct(ctx, w, h, o = {}) {
   rr(ctx, 18, gy, gw, gh, 22); ctx.clip();
   const span = (o.swap || 0) * gw;
   for (let k = 0; k < 3; k++) {
-    drawWatch(ctx, 18 + gw / 2 + (k - (o.swapPage ?? 0)) * gw + span, gy + gh * 0.52, 96 * zoom, PRODUCTS[k].tone);
+    const px = 18 + (k - (o.swapPage ?? 0)) * gw + span;
+    if (!photoCover(ctx, PRODUCTS[k].photo, px, gy, gw, gh, { radius: 22, focalY: 0.52 })) {
+      drawWatch(ctx, px + gw / 2, gy + gh * 0.52, 96 * zoom, PRODUCTS[k].tone);
+    }
   }
   ctx.restore();
   fillRR(ctx, 34, gy + 20, 86, 30, 15, 'rgba(255,255,255,0.86)');
@@ -256,8 +310,8 @@ export function sfProduct(ctx, w, h, o = {}) {
   for (let i = 0; i < 3; i++) {
     const ty = gy + gh + 16;
     fillRR(ctx, 18 + i * 74, ty, 62, 62, 14, i === (o.thumb ?? 0) ? '#EFE5D2' : '#F6F1E7');
+    photoCover(ctx, PRODUCTS[i].photo, 18 + i * 74, ty, 62, 62, { radius: 14 });
     strokeRR(ctx, 18 + i * 74, ty, 62, 62, 14, i === (o.thumb ?? 0) ? T.gold : T.line, i === (o.thumb ?? 0) ? 2 : 1);
-    drawWatch(ctx, 18 + i * 74 + 31, ty + 31, 18, PRODUCTS[i].tone);
   }
   text(ctx, '৩টি ছবি', w - 24, gy + gh + 44, { size: 16, weight: 500, color: T.muted, align: 'right' });
 
@@ -333,7 +387,7 @@ export function sfCart(ctx, w, h, o = {}) {
     fillRR(ctx, 20, y, w - 40, 116, 18, T.paper);
     noShadow(ctx);
     fillRR(ctx, 32, y + 12, 92, 92, 14, '#F2EADB');
-    drawWatch(ctx, 78, y + 58, 30, p.tone);
+    if (!photoCover(ctx, p.photo, 32, y + 12, 92, 92, { radius: 14 })) drawWatch(ctx, 78, y + 58, 30, p.tone);
     text(ctx, p.bn, 140, y + 40, { size: 22, weight: 600, color: T.ink, maxWidth: w - 260 });
     text(ctx, '৪০mm • ব্রাউন', 140, y + 66, { size: 16, weight: 500, color: T.muted });
     text(ctx, `৳${p.price.toLocaleString('en-US')}`, 140, y + 100, { size: 22, weight: 700, color: T.ink });
@@ -487,30 +541,37 @@ export function sfCategories(ctx, w, h, o = {}) {
   text(ctx, 'ক্যাটাগরি', 22, 160, { size: 34, weight: 700, color: T.ink });
   text(ctx, 'আপনার পছন্দের সংগ্রহ বেছে নিন', 22, 192, { size: 18, weight: 500, color: T.muted });
   const tiles = [
-    ['ঘড়ি', '৩৬টি পণ্য', 'watch'],
-    ['ব্যাগ', '১৮টি পণ্য', 'bag'],
-    ['জুতা', '২৪টি পণ্য', 'shoe'],
-    ['অ্যাকসেসরিজ', '৩১টি পণ্য', 'bottle'],
+    ['ঘড়ি', '৩৬টি পণ্য', 'watch', 'hero'],
+    ['ব্যাগ', '১৮টি পণ্য', 'bag', 'bag'],
+    ['জুতা', '২৪টি পণ্য', 'shoe', 'shoe'],
+    ['অ্যাকসেসরিজ', '৩১টি পণ্য', 'bottle', 'fragrance'],
   ];
-  tiles.forEach(([name, count, kind], i) => {
+  tiles.forEach(([name, count, kind, photo], i) => {
     const a = clamp((o.p ?? 0) * 1.6 - i * 0.15);
     const col = i % 2, row = Math.floor(i / 2);
     const x = 22 + col * (w / 2 - 11), y = 220 + row * 210;
+    const tileW = w / 2 - 33;
     ctx.save();
     ctx.globalAlpha *= clamp(a);
     ctx.translate(0, (1 - a) * 24);
-    shadow(ctx, 'rgba(40,32,20,0.1)', 22, 8);
-    fillRR(ctx, x, y, w / 2 - 33, 194, 18, i % 3 === 0 ? '#24201A' : T.paper);
+    shadow(ctx, 'rgba(40,32,20,0.16)', 22, 8);
+    fillRR(ctx, x, y, tileW, 194, 18, '#33291F');
     noShadow(ctx);
-    const ink = i % 3 === 0 ? '#fff' : T.ink;
-    const sub = i % 3 === 0 ? 'rgba(255,255,255,0.6)' : T.muted;
-    if (kind === 'watch') drawWatch(ctx, x + 70, y + 88, 34, { face: '#F4EEE2', bezel: '#C9A46A', strap: '#3B2A1D' });
-    if (kind === 'bag') drawBag(ctx, x + 70, y + 88, 36, { });
-    if (kind === 'shoe') drawShoe(ctx, x + 70, y + 92, 40);
-    if (kind === 'bottle') drawBottle(ctx, x + 70, y + 82, 34);
-    text(ctx, name, 22, y + 150, { size: 23, weight: 700, color: ink });
-    text(ctx, count, 22, y + 176, { size: 16, weight: 500, color: sub });
-    icon(ctx, 'arrowUpRight', w / 2 - 62, y + 140, 20, i % 3 === 0 ? '#D9BE8F' : T.gold, 2);
+    const hasPhoto = photoCover(ctx, photo, x, y, tileW, 194, { radius: 18, focalX: photo === 'hero' ? 0.68 : 0.5, focalY: 0.52 });
+    if (hasPhoto) {
+      ctx.save(); rr(ctx, x, y, tileW, 194, 18); ctx.clip();
+      const shade = ctx.createLinearGradient(x, y + 78, x, y + 194);
+      shade.addColorStop(0, 'rgba(20,17,13,0.02)'); shade.addColorStop(1, 'rgba(20,17,13,0.78)');
+      ctx.fillStyle = shade; ctx.fillRect(x, y + 78, tileW, 116); ctx.restore();
+    } else {
+      if (kind === 'watch') drawWatch(ctx, x + tileW / 2, y + 82, 34, { face: '#F4EEE2', bezel: '#C9A46A', strap: '#3B2A1D' });
+      if (kind === 'bag') drawBag(ctx, x + tileW / 2, y + 82, 36, {});
+      if (kind === 'shoe') drawShoe(ctx, x + tileW / 2, y + 86, 40);
+      if (kind === 'bottle') drawBottle(ctx, x + tileW / 2, y + 78, 34);
+    }
+    text(ctx, name, x + 16, y + 151, { size: 23, weight: 700, color: '#FFFFFF', maxWidth: tileW - 32 });
+    text(ctx, count, x + 16, y + 178, { size: 16, weight: 500, color: 'rgba(255,255,255,0.82)' });
+    icon(ctx, 'arrowUpRight', x + tileW - 42, y + 148, 20, '#F3D5A4', 2);
     ctx.restore();
   });
   demoBadge(ctx, w - 122, 60, 17);
@@ -539,7 +600,7 @@ export function sfSearch(ctx, w, h, o = {}) {
       ctx.save(); ctx.globalAlpha *= a;
       fillRR(ctx, 20, y, w - 40, 96, 14, T.paper);
       fillRR(ctx, 32, y + 10, 76, 76, 10, '#F2EADB');
-      drawWatch(ctx, 70, y + 48, 25, pr.tone);
+      if (!photoCover(ctx, pr.photo, 32, y + 10, 76, 76, { radius: 10 })) drawWatch(ctx, 70, y + 48, 25, pr.tone);
       text(ctx, pr.bn, 124, y + 40, { size: 20, weight: 600, color: T.ink });
       text(ctx, `৳${pr.price.toLocaleString('en-US')}`, 124, y + 70, { size: 19, weight: 700, color: T.ink });
       text(ctx, 'স্টকে আছে', w - 36, y + 70, { size: 15, weight: 600, color: T.green, align: 'right' });
@@ -567,10 +628,18 @@ export function sfLanding(ctx, w, h, variant = 0, o = {}) {
   if (variant === 0) {
     // big banner + offer
     fillRR(ctx, 16, hy, w - 32, 340, 18, '#241E17');
-    const g = ctx.createRadialGradient(w * 0.7, hy + 120, 30, w * 0.6, hy + 170, 320);
-    g.addColorStop(0, 'rgba(201,164,106,0.4)'); g.addColorStop(1, 'rgba(36,30,23,0)');
-    ctx.fillStyle = g; ctx.fillRect(16, hy, w - 32, 340);
-    drawWatch(ctx, w * 0.7, hy + 176, 96, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
+    if (photoCover(ctx, 'hero', 16, hy, w - 32, 340, { radius: 18, focalX: 0.62, focalY: 0.55 })) {
+      const shade = ctx.createLinearGradient(16, hy, w - 16, hy);
+      shade.addColorStop(0, 'rgba(10,12,15,0.74)');
+      shade.addColorStop(0.5, 'rgba(10,12,15,0.40)');
+      shade.addColorStop(1, 'rgba(10,12,15,0.04)');
+      ctx.fillStyle = shade; ctx.fillRect(16, hy, w - 32, 340);
+    } else {
+      const g = ctx.createRadialGradient(w * 0.7, hy + 120, 30, w * 0.6, hy + 170, 320);
+      g.addColorStop(0, 'rgba(201,164,106,0.4)'); g.addColorStop(1, 'rgba(36,30,23,0)');
+      ctx.fillStyle = g; ctx.fillRect(16, hy, w - 32, 340);
+      drawWatch(ctx, w * 0.7, hy + 176, 96, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
+    }
     text(ctx, 'বিশেষ অফার', 40, hy + 78, { size: 18, weight: 600, color: '#D9BE8F' });
     text(ctx, 'ঈদ কালেকশন', 40, hy + 130, { size: 42, weight: 700, color: '#fff' });
     text(ctx, 'সীমিত সময়ের জন্য', 40, hy + 168, { size: 20, weight: 500, color: 'rgba(255,255,255,0.7)' });
@@ -582,8 +651,13 @@ export function sfLanding(ctx, w, h, variant = 0, o = {}) {
     });
   }
   if (variant === 1) {
+    photoCover(ctx, 'noir', 22, hy + 54, w - 44, 238, { radius: 20, focalY: 0.5 });
+    const shade = ctx.createLinearGradient(0, hy + 220, 0, hy + 292);
+    shade.addColorStop(0, 'rgba(27,23,18,0)'); shade.addColorStop(1, 'rgba(27,23,18,0.82)');
+    fillRR(ctx, 22, hy + 54, w - 44, 238, 20, 'rgba(0,0,0,0)');
+    ctx.save(); rr(ctx, 22, hy + 54, w - 44, 238, 20); ctx.clip();
+    ctx.fillStyle = shade; ctx.fillRect(22, hy + 54, w - 44, 238); ctx.restore();
     text(ctx, 'নতুন প্রোডাক্ট', w / 2, hy + 40, { size: 17, weight: 600, color: '#D9BE8F', align: 'center', letterSpacing: 2 });
-    drawWatch(ctx, w / 2, hy + 170, 108, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
     text(ctx, 'Noir Automatic', w / 2, hy + 310, { size: 34, weight: 700, color: '#fff', align: 'center' });
     text(ctx, '৳6,450', w / 2, hy + 352, { size: 30, weight: 700, color: '#D9BE8F', align: 'center' });
   }
@@ -591,7 +665,11 @@ export function sfLanding(ctx, w, h, variant = 0, o = {}) {
     text(ctx, 'ক্যাম্পেইন ল্যান্ডিং পেজ', 22, hy + 34, { size: 28, weight: 700, color: ink });
     text(ctx, 'বিজ্ঞাপনের জন্য আলাদা পেজ', 22, hy + 62, { size: 18, weight: 500, color: sub });
     fillRR(ctx, 20, hy + 84, w - 40, 210, 16, '#EFE7D8');
-    drawWatch(ctx, w * 0.74, hy + 190, 74, PRODUCTS[2].tone);
+    photoCover(ctx, 'leather', 20, hy + 84, w - 40, 210, { radius: 16, focalX: 0.7, focalY: 0.5 });
+    const veil = ctx.createLinearGradient(20, hy + 84, w - 20, hy + 84);
+    veil.addColorStop(0, 'rgba(255,252,246,0.96)'); veil.addColorStop(0.56, 'rgba(255,252,246,0.74)'); veil.addColorStop(1, 'rgba(255,252,246,0.02)');
+    ctx.save(); rr(ctx, 20, hy + 84, w - 40, 210, 16); ctx.clip();
+    ctx.fillStyle = veil; ctx.fillRect(20, hy + 84, w - 40, 210); ctx.restore();
     text(ctx, 'ফ্রি হোম ডেলিভারি', 36, hy + 150, { size: 26, weight: 700, color: T.ink });
     text(ctx, 'নির্বাচিত পণ্যে', 36, hy + 180, { size: 18, weight: 500, color: T.muted });
     fillRR(ctx, 36, hy + 200, 150, 44, 22, T.ink);
@@ -602,8 +680,9 @@ export function sfLanding(ctx, w, h, variant = 0, o = {}) {
   text(ctx, 'আরও দেখুন', 22, listY, { size: 22, weight: 700, color: ink });
   PRODUCTS.slice(0, 3).forEach((pr, i) => {
     const x = 20 + i * ((w - 40) / 3);
-    fillRR(ctx, x, listY + 18, (w - 40) / 3 - 10, 150, 12, variant === 1 ? '#252019' : T.paper);
-    drawWatch(ctx, x + ((w - 40) / 3 - 10) / 2, listY + 74, 26, pr.tone);
+    const cardW = (w - 40) / 3 - 10;
+    fillRR(ctx, x, listY + 18, cardW, 150, 12, variant === 1 ? '#252019' : T.paper);
+    photoCover(ctx, pr.photo, x, listY + 18, cardW, 104, { radius: 12 });
     text(ctx, `৳${pr.price.toLocaleString('en-US')}`, x + 12, listY + 138, { size: 17, weight: 700, color: ink });
   });
   // CTA bar

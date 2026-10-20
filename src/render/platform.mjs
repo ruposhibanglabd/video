@@ -24,6 +24,20 @@ const FONT_FILES = [
 ];
 
 let createCanvasImpl = null;
+const STORE_IMAGES = new Map();
+const STORE_IMAGE_FILES = [
+  ['hero', 'hero-watch.jpg'],
+  ['noir', 'watch-noir.jpg'],
+  ['leather', 'watch-leather.jpg'],
+  ['bag', 'bag-editorial.jpg'],
+  ['shoe', 'sneaker-editorial.jpg'],
+  ['fragrance', 'fragrance-editorial.jpg'],
+];
+
+/** Preloaded storefront photography shared by Node and browser rendering. */
+export function getStoreImage(name) {
+  return STORE_IMAGES.get(name) || null;
+}
 
 async function nodeSetup() {
   const napi = await import('@napi-rs/canvas');
@@ -37,6 +51,13 @@ async function nodeSetup() {
       napi.GlobalFonts.registerFromPath(path.join(dir, file), family);
     } catch (err) {
       console.warn(`[font] ${file}: ${err.message}`);
+    }
+  }
+  for (const [name, file] of STORE_IMAGE_FILES) {
+    try {
+      STORE_IMAGES.set(name, await napi.loadImage(path.join(root, 'assets', 'storefront', file)));
+    } catch (err) {
+      console.warn(`[image] ${file}: ${err.message}`);
     }
   }
   createCanvasImpl = (w, h) => napi.createCanvas(w, h);
@@ -66,6 +87,12 @@ async function browserSetup() {
     await document.fonts.load('400 40px Inter', 'CodePixel Web');
     await document.fonts.load('800 84px BN', 'কাস্টম ডিজাইন');
   } catch { /* measurement fallback is still valid */ }
+  await Promise.all(STORE_IMAGE_FILES.map(([name, file]) => new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => { STORE_IMAGES.set(name, image); resolve(); };
+    image.onerror = () => { console.warn(`[image] Could not load ${file}`); resolve(); };
+    image.src = new URL(`../../assets/storefront/${file}`, import.meta.url).href;
+  })));
 }
 
 /** Resolves once fonts + canvas backend are ready. Await before drawing. */
