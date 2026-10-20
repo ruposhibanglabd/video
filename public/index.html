@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CodePixel Web — প্রোমো ভিডিও</title>
+<meta name="theme-color" content="#070B18" />
+<link rel="stylesheet" href="./app.css" />
+<script type="importmap">{ "imports": { "mp4-muxer": "./vendor/mp4-muxer.mjs" } }</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070B18'/%3E%3Ccircle cx='32' cy='32' r='12' fill='%2336D7FF'/%3E%3C/svg%3E" />
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><span></span></span>
+    <span class="brand-text">CodePixel <b>Web</b></span>
+  </div>
+  <span class="brand-tag">Facebook Reels · 1080×1920</span>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <p class="eyebrow">প্রোমো ভিডিও জেনারেটর</p>
+    <h1>অডিও দিন। <span>ভিডিও নিন।</span></h1>
+    <p class="lede">আপনার বাংলা ভয়েসওভার আপলোড করুন — পুরো ভিডিওটি আপনার ব্রাউজারেই তৈরি হবে। কোনো আপলোড লাগবে না, আপনার অডিও কখনো কোথাও যাবে না।</p>
+  </section>
+
+  <section class="card" id="step1">
+    <div class="card-head">
+      <span class="step">১</span>
+      <div>
+        <h2>ভয়েসওভার আপলোড করুন</h2>
+        <p>MP3 · WAV · M4A · AAC · OGG — ভিডিওর দৈর্ঘ্য ঠিক হবে আপনার অডিওর দৈর্ঘ্য অনুযায়ী।</p>
+      </div>
+    </div>
+
+    <label class="drop" id="drop" for="file" tabindex="0">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+      <span class="drop-title">অডিও ফাইল টেনে ছেড়ে দিন</span>
+      <span class="drop-sub">অথবা ক্লিক করে বেছে নিন</span>
+      <input id="file" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac" hidden />
+    </label>
+
+    <div class="fileinfo" id="fileinfo" hidden>
+      <div class="fileicon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="7" cy="18" r="2.6"/><circle cx="17" cy="16" r="2.6"/></svg>
+      </div>
+      <div class="filemeta">
+        <div class="filename" id="filename">voiceover.mp3</div>
+        <div class="filedur"><span id="duration">00:00.000</span> · <span id="filesize">0 MB</span></div>
+      </div>
+      <button class="ghost" id="replace" type="button">বদলান</button>
+    </div>
+
+    <audio id="audioPreview" controls preload="metadata" hidden></audio>
+    <p class="note" id="durNote" hidden></p>
+  </section>
+
+  <section class="card" id="step2">
+    <div class="card-head">
+      <span class="step">২</span>
+      <div>
+        <h2>ভিডিও তৈরি করুন</h2>
+        <p>৭৭টি দৃশ্য — স্টোরফ্রন্ট, অ্যাডমিন, অর্ডার, কুরিয়ার, পেমেন্ট, অফার ও শেষ কার্ড। রেন্ডার আপনার ডিভাইসেই হয়।</p>
+      </div>
+    </div>
+
+    <button class="primary" id="render" type="button" disabled>ভিডিও তৈরি করুন</button>
+    <p class="hint" id="gate">অডিও আপলোড করলে বাটন চালু হবে।</p>
+
+    <div class="progress" id="progress" hidden>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="progress-meta">
+        <span id="stage">প্রস্তুতি…</span>
+        <span id="pct">0%</span>
+      </div>
+      <div class="progress-sub" id="sub"></div>
+      <button class="ghost small" id="cancel" type="button">বাতিল করুন</button>
+      <p class="ticker">রেন্ডার চলাকালীন ট্যাবটি খোলা রাখুন। ফোনের চেয়ে কম্পিউটারে (Chrome / Edge) চালালে অনেক দ্রুত হবে।</p>
+    </div>
+  </section>
+
+  <section class="card" id="step3">
+    <div class="card-head">
+      <span class="step">৩</span>
+      <div>
+        <h2>ভিডিও ডাউনলোড করুন</h2>
+        <p id="outMeta">রেন্ডার শেষ হলে এখানে প্রিভিউ ও ডাউনলোড বাটন আসবে।</p>
+      </div>
+    </div>
+
+    <div class="preview" id="previewWrap" hidden>
+      <video id="preview" controls playsinline preload="metadata"></video>
+    </div>
+
+    <div class="actions">
+      <a class="primary download" id="download" href="#" download="CodePixel-Web-Promo-Reels.mp4" hidden>ভিডিও ডাউনলোড করুন</a>
+      <button class="ghost" id="again" type="button" hidden>নতুন ভিডিও</button>
+    </div>
+  </section>
+
+  <p class="error" id="error" hidden></p>
+
+  <footer class="foot">
+    <span>codepixelweb.vercel.app</span>
+    <span>WhatsApp 01876892958</span>
+    <span>মাত্র ৩,০০০ টাকায় ওয়েবসাইট · কোনো এডভান্স নেই</span>
+  </footer>
+</main>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
