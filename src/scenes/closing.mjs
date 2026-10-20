@@ -211,7 +211,7 @@ export const closingScenes = {
     });
     const p = beat(t, 0.6, 0.6, easeOutBack);
     ctx.save(); ctx.globalAlpha *= p;
-    chip(ctx, 'সুন্দর অনলাইন শপ', W / 2, 1380, { align: 'center', color: GOLD, size: 26 });
+    chip(ctx, 'সুন্দর অনলাইন শপ', W / 2, 618, { align: 'center', color: GOLD, size: 26 });
     ctx.restore();
     brandWatermark(ctx, t, 0.3);
   },
@@ -223,7 +223,7 @@ export const closingScenes = {
     });
     const p = beat(t, 0.3, 0.5, easeOutBack);
     ctx.save(); ctx.globalAlpha *= p;
-    chip(ctx, 'প্রোডাক্ট ল্যান্ডিং পেজ', W / 2, 1380, { align: 'center', color: C.cyan, size: 26 });
+    chip(ctx, 'প্রোডাক্ট ল্যান্ডিং পেজ', W / 2, 618, { align: 'center', color: C.cyan, size: 26 });
     ctx.restore();
     brandWatermark(ctx, t, 0.3);
   },
@@ -358,10 +358,10 @@ export const closingScenes = {
   whyDelay(ctx, t, d) {
     const p = easeInOut(clamp((t - 0.4) / 1.6));
     // local shop → polished mobile website
-    glassPanel(ctx, 90, 800, 400, 440, { r: 26, fill: 'rgba(16,24,42,0.9)' });
-    text(ctx, 'লোকাল ব্যবসা', 122, 850, { size: 24, weight: 600, color: 'rgba(214,229,255,0.85)' });
+    glassPanel(ctx, 86, 700, 404, 540, { r: 26, fill: 'rgba(16,24,42,0.9)' });
+    text(ctx, 'লোকাল ব্যবসা', 122, 754, { size: 24, weight: 600, color: 'rgba(214,229,255,0.85)' });
     // simple local-shop illustration
-    const sx = 160, sy2 = 900, sw2 = 260, sh2 = 170;
+    const sx = 158, sy2 = 820, sw2 = 260, sh2 = 170;
     fillRR(ctx, sx, sy2 + 54, sw2, sh2 - 54, 8, 'rgba(217,190,143,0.18)');
     strokeRR(ctx, sx, sy2 + 54, sw2, sh2 - 54, 8, 'rgba(217,190,143,0.55)', 2);
     for (let k = 0; k < 5; k++) {
@@ -375,16 +375,12 @@ export const closingScenes = {
     icon(ctx, 'bag', sx + sw2 / 2 - 22, sy2 + 100, 44, '#D9BE8F', 1.8);
     fillRR(ctx, sx + 30, sy2 + 160, 200, 10, 5, 'rgba(255,255,255,0.2)');
     fillRR(ctx, sx + 30, sy2 + 184, 140, 9, 5, 'rgba(255,255,255,0.12)');
-    text(ctx, 'শুধু দোকান', sx + sw2 / 2, sy2 + 300, { size: 22, weight: 500, color: 'rgba(190,208,235,0.75)', align: 'center' });
-    icon(ctx, 'arrow', 510, 1010, 44, C.cyan, 2);
+    text(ctx, 'শুধু দোকান', sx + sw2 / 2, sy2 + 360, { size: 22, weight: 500, color: 'rgba(190,208,235,0.75)', align: 'center' });
+    icon(ctx, 'arrow', 512, 952, 44, C.cyan, 2);
     phoneStage(ctx, t, {
-      x: 560, y: 780, scale: 0.86, enter: clamp((t - 0.6) / 1.2),
+      x: 552, y: 632, scale: 0.98, enter: clamp((t - 0.6) / 1.2),
       draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.05 + p * 0.2, cart: 1, activeCat: 1 }),
     });
-    const q = beat(t, 1.6, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= q;
-    chip(ctx, 'অনলাইনে আরও সুন্দরভাবে উপস্থাপন', W / 2, 1530, { align: 'center', color: C.cyan, size: 23 });
-    ctx.restore();
     brandWatermark(ctx, t, 0.25);
   },
 
@@ -436,13 +432,13 @@ export const closingScenes = {
     const p = beat(t, 0.1, 0.7, easeOutBack);
     ctx.save();
     ctx.globalAlpha *= p;
-    text(ctx, 'আমাদের ওয়েবসাইট', W / 2, 800, { size: 32, weight: 600, color: 'rgba(214,229,255,0.85)', align: 'center' });
+    text(ctx, 'আমাদের ওয়েবসাইট', W / 2, 672, { size: 32, weight: 600, color: 'rgba(214,229,255,0.85)', align: 'center' });
     ctx.restore();
     // url pill
     const q = beat(t, 0.3, 0.6, easeOutBack);
     ctx.save();
     ctx.globalAlpha *= q;
-    const bw = 840, bx = (W - bw) / 2, by = 830;
+    const bw = 840, bx = (W - bw) / 2, by = 702;
     shadow(ctx, 'rgba(40,123,255,0.35)', 50, 16);
     fillRR(ctx, bx, by, bw, 96, 48, 'rgba(13,22,42,0.96)');
     noShadow(ctx);
@@ -452,13 +448,9 @@ export const closingScenes = {
     ctx.restore();
     // demo preview device
     phoneStage(ctx, t, {
-      x: 336, y: 960, scale: 0.8, enter: clamp((t - 0.5) / 1.2),
+      x: 336, y: 848, scale: 0.82, enter: clamp((t - 0.5) / 1.2),
       draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.04 + 0.18 * clamp((t - 1) / 2), cart: 1, activeCat: 1 }),
     });
-    const r = beat(t, 3.2, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= r;
-    chip(ctx, 'ডেমো দেখুন • প্রয়োজন জানান', W / 2, 1520, { align: 'center', color: C.cyan, size: 23 });
-    ctx.restore();
     brandWatermark(ctx, t, 0.2);
   },
 

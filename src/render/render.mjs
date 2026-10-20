@@ -15,6 +15,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { Compositor, buildSchedule, FPS } from './frame.mjs';
+import { PLATFORM_READY } from './platform.mjs';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -86,6 +87,7 @@ function parseArgs(argv) {
 }
 
 async function renderStill(audio, at, pngPath) {
+  await PLATFORM_READY;
   const probed = audio ? probeAudio(audio) : { duration: 492.356 };
   const silences = audio ? await detectSilences(audio) : [];
   const schedule = buildSchedule(probed.duration, { snapPoints: silences });
@@ -98,6 +100,7 @@ async function renderStill(audio, at, pngPath) {
 }
 
 async function renderVideo({ audio, out, width = 1080, height = 1920 }) {
+  await PLATFORM_READY;
   const started = Date.now();
   emit({ type: 'progress', phase: 'prepare', progress: 0.01, label: 'প্রজেক্ট প্রস্তুত হচ্ছে' });
 

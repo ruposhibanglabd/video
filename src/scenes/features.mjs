@@ -92,32 +92,23 @@ export const featureScenes = {
   adminBridge(ctx, t, d) {
     const p = easeInOut(clamp((t - 0.3) / 1.4));
     phoneStage(ctx, t, {
-      x: 56, y: 980, scale: 0.76, enter: 1, float: false,
+      x: 56, y: 884, scale: 0.76, enter: 1, float: false,
       draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.22, cart: 1, activeCat: 1 }),
     });
     adminStage(ctx, t, {
-      box: { x: 424, y: 930, w: 598, h: 440 }, vw: 430, vh: 500, enter: clamp((t - 0.8) / 1.0),
+      box: { x: 424, y: 832, w: 600, h: 472 }, vw: 780, vh: 560, enter: clamp((t - 0.8) / 1.0),
       active: 0, title: 'ড্যাশবোর্ড', draw: (c, w, h) => AD.adDashboard(c, w, h, { p: clamp((t - 1.4) / 1.8) }),
-      showChrome: false, scale: 1.0,
+      showChrome: true, scale: 1.0,
     });
     const cp = beat(t, 1.4, 0.8);
     if (cp > 0) {
       ctx.save();
       ctx.globalAlpha *= cp;
-      line(ctx, 366, 1180, 424, 1180, alpha(C.cyan, 0.5), 3, [10, 8]);
-      circle(ctx, 396, 1128, 22, alpha(C.blue, 0.3));
-      icon(ctx, 'arrow', 385, 1117, 22, C.cyan, 2.2);
+      line(ctx, 380, 1156, 424, 1156, alpha(C.cyan, 0.5), 3, [10, 8]);
+      circle(ctx, 398, 1156, 20, alpha(C.blue, 0.32));
+      icon(ctx, 'arrow', 388, 1146, 20, C.cyan, 2.2);
       ctx.restore();
     }
-    const bp = beat(t, 1.8, 0.6, easeOutBack);
-    ctx.save();
-    ctx.globalAlpha *= bp;
-    const label = 'ওয়েবসাইট + অ্যাডমিন প্যানেল';
-    ctx.font = `${700} 26px 'BN', Inter`;
-    const lw = ctx.measureText(label).width + 48;
-    glassPanel(ctx, (W - lw) / 2, 1470, lw, 62, { r: 31, fill: 'rgba(10,17,33,0.9)' });
-    text(ctx, label, W / 2, 1509, { size: 26, weight: 700, color: C.white, align: 'center' });
-    ctx.restore();
     brandWatermark(ctx, t, 0.3);
   },
 
@@ -357,7 +348,7 @@ export const featureScenes = {
     });
     const p = beat(t, 2.0, 0.6, easeOutBack);
     ctx.save(); ctx.globalAlpha *= p;
-    chip(ctx, 'প্রতিটি ক্যাম্পেইনের জন্য আলাদা পেজ', W / 2, 1360, { align: 'center', color: C.cyan, size: 24 });
+    chip(ctx, 'প্রতিটি ক্যাম্পেইনের জন্য আলাদা পেজ', W / 2, 1430, { align: 'center', color: C.cyan, size: 24 });
     ctx.restore();
     brandWatermark(ctx, t, 0.3);
   },

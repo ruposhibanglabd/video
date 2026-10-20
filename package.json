@@ -5,13 +5,16 @@
   "type": "module",
   "description": "CodePixel Web cinematic Reels promo generator — upload Bengali voiceover, render a 1080x1920 MP4.",
   "scripts": {
-    "start": "node server/index.mjs",
+    "start": "node tools/build-web.mjs && node tools/serve.mjs",
+    "build": "node tools/build-web.mjs",
+    "serve": "node tools/serve.mjs",
     "render": "node src/render/render.mjs",
     "qa": "node tools/qa-frames.mjs"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffprobe-installer/ffprobe": "^2.1.2",
-    "@napi-rs/canvas": "^0.1.80"
+    "@napi-rs/canvas": "^0.1.80",
+    "mp4-muxer": "^5.2.1"
   }
 }

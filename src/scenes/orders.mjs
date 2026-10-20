@@ -196,7 +196,7 @@ export const orderScenes = {
     });
     if (stop > 0) {
       ctx.save(); ctx.globalAlpha *= stop;
-      chip(ctx, 'চেকআউট অসম্পূর্ণ', 90, 1520, { color: C.red, size: 24 });
+      chip(ctx, 'চেকআউট অসম্পূর্ণ', 90, 1430, { color: C.red, size: 24 });
       ctx.restore();
     }
     brandWatermark(ctx, t, 0.3);
@@ -214,14 +214,14 @@ export const orderScenes = {
     notes.forEach(([label, ic, at], i) => {
       const p = beat(t, at, 0.45, easeOutBack);
       if (p <= 0) return;
-      const y = 1400 + i * 70;
+      const y = 1344 + i * 66;
       ctx.save(); ctx.globalAlpha *= clamp(p);
       glassPanel(ctx, 476, y, 420, 58, { r: 29, fill: 'rgba(9,15,30,0.9)' });
       icon(ctx, ic, 496, y + 16, 26, C.cyan, 2);
       text(ctx, label, 534, y + 37, { size: 22, weight: 600, color: C.white, maxWidth: 340 });
       ctx.restore();
     });
-    text(ctx, 'প্রাইভেসি ও সম্মতি অনুসরণ করে', 96, 1400, { size: 19, weight: 500, color: 'rgba(170,190,220,0.6)' });
+    text(ctx, 'প্রাইভেসি ও সম্মতি অনুসরণ করে', 96, 1306, { size: 19, weight: 500, color: 'rgba(170,190,220,0.6)' });
     brandWatermark(ctx, t, 0.3);
   },
 

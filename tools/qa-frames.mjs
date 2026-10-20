@@ -10,7 +10,7 @@
 import { createCanvas } from '@napi-rs/canvas';
 import fs from 'node:fs';
 import path from 'node:path';
-import { Compositor, buildSchedule, FPS, REGISTRY } from '../src/render/frame.mjs';
+import { Compositor, buildSchedule, FPS, REGISTRY, PLATFORM_READY } from '../src/render/frame.mjs';
 import { SCENES } from '../src/scenes/timeline.mjs';
 import { GlobalFonts } from '@napi-rs/canvas';
 
@@ -24,6 +24,7 @@ const outDir = args.includes('--out') ? args[args.indexOf('--out') + 1] : 'outpu
 const cols = 4;
 const tw = 432, th = 768, pad = 26, labelH = 34;
 
+await PLATFORM_READY;
 const duration = 492.356;
 const schedule = buildSchedule(duration);
 const comp = new Compositor();

@@ -1,5 +1,6 @@
 /** Scene registry + frame compositor + schedule math. */
-import { createCanvas } from '@napi-rs/canvas';
+import { createCanvas, PLATFORM_READY } from './platform.mjs';
+export { PLATFORM_READY };
 import {
   W, H, C, clamp, lerp, easeIn, easeOut, easeInOut, easeOutQuint, alpha, cinematicBG,
   grain, vignette, glowOrb, text, lin, fillRR, circle,

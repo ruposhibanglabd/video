@@ -198,10 +198,20 @@ export function chapterCard(ctx, t, { index, title, sub, accent = C.cyan, p = 1 
   ctx.save();
   glowOrb(ctx, W * 0.5, H * 0.46, 620, accent, 0.22);
   const n = String(index).padStart(2, '0');
-  text(ctx, n, W / 2, 700 + (1 - e) * 20, { size: 220, weight: 800, color: alpha(accent, 0.16), align: 'center' });
-  const w = text(ctx, title, W / 2, 860, { size: 92, weight: 700, color: C.white, align: 'center', maxWidth: 900, opacity: e });
-  fillRR(ctx, W / 2 - (w * e) / 2, 900, w * e, 4, 2, accent);
-  if (sub) text(ctx, sub, W / 2, 966, { size: 38, weight: 500, color: 'rgba(200,215,240,0.82)', align: 'center', opacity: e, maxWidth: 880 });
+  text(ctx, n, W / 2, 690 + (1 - e) * 20, { size: 220, weight: 800, color: alpha(accent, 0.16), align: 'center' });
+  const lines = String(title).split('\n');
+  const size = lines.length > 1 ? 82 : 92;
+  const lineGap = size * 1.18;
+  const firstY = 860 - (lines.length - 1) * lineGap;
+  let w = 0;
+  lines.forEach((ln, i) => {
+    w = Math.max(w, text(ctx, ln, W / 2, firstY + i * lineGap, {
+      size, weight: 700, color: C.white, align: 'center', maxWidth: 900, opacity: e,
+    }));
+  });
+  const lastY = firstY + (lines.length - 1) * lineGap;
+  fillRR(ctx, W / 2 - (w * e) / 2, lastY + 46, w * e, 4, 2, alpha(accent, 0.85));
+  if (sub) text(ctx, sub, W / 2, lastY + 112, { size: 36, weight: 500, color: 'rgba(200,215,240,0.82)', align: 'center', opacity: e, maxWidth: 880 });
   ctx.restore();
 }
 

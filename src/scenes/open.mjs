@@ -196,7 +196,7 @@ export const openScenes = {
       ctx.save();
       ctx.globalAlpha *= clamp(enter) * (i === 1 ? 1 : 0.62);
       phoneStage(ctx, t, {
-        x: W / 2 - 292 + off, y: 760, scale: 0.86, enter: 1, float: false,
+        x: W / 2 - 250 + off, y: 700, scale: 0.68, enter: 1, float: false,
         draw, dim: i === 1 ? 1 : 0.75,
       });
       ctx.restore();
@@ -206,7 +206,7 @@ export const openScenes = {
     ctx.save();
     ctx.globalAlpha *= bp;
     ctx.translate(0, (1 - bp) * 40);
-    const bx = W / 2 - 430, by = 1170;
+    const bx = W / 2 - 430, by = 1300;
     shadow(ctx, 'rgba(0,0,0,0.55)', 60, 24);
     fillRR(ctx, bx, by, 860, 210, 36, 'rgba(9,15,30,0.92)');
     noShadow(ctx);

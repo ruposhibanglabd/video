@@ -3,26 +3,9 @@
  * Deterministic canvas primitives: typography, gradients, film grain,
  * device frames and vector iconography. No network, no randomness.
  */
-import { createCanvas, GlobalFonts } from '@napi-rs/canvas';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { createCanvas, PLATFORM_READY } from './platform.mjs';
 
-export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const FONTS = path.join(ROOT, 'assets', 'fonts');
-
-for (const [file, family] of [
-  ['NotoSansBengali-Regular.ttf', 'BN'],
-  ['NotoSansBengali-SemiBold.ttf', 'BN'],
-  ['NotoSansBengali-Bold.ttf', 'BN'],
-  ['NotoSansBengali-ExtraBold.ttf', 'BN'],
-  ['Inter-Regular.ttf', 'Inter'],
-  ['Inter-SemiBold.ttf', 'Inter'],
-  ['Inter-Bold.ttf', 'Inter'],
-  ['Inter-ExtraBold.ttf', 'Inter'],
-]) {
-  GlobalFonts.registerFromPath(path.join(FONTS, file), family);
-}
+export { createCanvas, PLATFORM_READY };
 
 /* ------------------------------------------------------------------ palette */
 export const C = {

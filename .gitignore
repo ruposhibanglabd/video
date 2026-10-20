@@ -7,3 +7,5 @@ output/stills/
 output/qa/
 *.log
 .DS_Store
+dist/
+output/qa*/
