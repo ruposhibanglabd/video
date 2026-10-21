@@ -1,73 +1,42 @@
-# QA রিপোর্ট — CodePixel Web Reels Promo
+# QA রিপোর্ট — CodePixel Web Promo Reels
 
-তারিখ: ২০২৬-১০-২০ · রেন্ডার: Skia canvas ফ্রেম + ffmpeg (x264/AAC) · ব্রাউজার পাইপলাইন: WebCodecs + mp4-muxer
+## চূড়ান্ত ভিডিও
 
-## চূড়ান্ত রেন্ডার (আসল বাংলা ভয়েসওভার সহ)
+| যাচাই | 1080p | 720p |
+|---|---:|---:|
+| ফাইল | `output/CodePixel-Web-Promo-Reels-1080p.mp4` | `output/CodePixel-Web-Promo-Reels-720p.mp4` |
+| রেজোলিউশন / fps | 1080×1920 · 30 fps | 720×1280 · 30 fps |
+| ভিডিও / অডিও | H.264 + AAC | H.264 + AAC |
+| দৈর্ঘ্য | 492.367 s (8:12.367) | 492.367 s (8:12.367) |
+| ফাইলের মাপ | 69,699,303 bytes (~66.5 MiB) | 36,976,077 bytes (~35.3 MiB) |
+| ডিকোড পরীক্ষা | সম্পূর্ণ ফাইল সফলভাবে ডিকোড | সম্পূর্ণ ফাইল সফলভাবে ডিকোড |
 
-| যাচাই | ফল |
-|---|---|
-| ফাইল | `output/CodePixel-Web-Promo-Reels.mp4` · 86,224,141 bytes (82.2 MB) |
-| রেজোলিউশন / fps | 1080 × 1920 · 30/1 fps · 14,771 ফ্রেম |
-| ভিডিও কোডেক | H.264 High (avc1), yuv420p, ~1.4 Mbps |
-| অডিও কোডেক | AAC-LC, 48 kHz, mono, 492.356 s — আসল MP3 থেকে মাক্স (স্পিড/পিচ অপরিবর্তিত) |
-| দৈর্ঘ্য | ভিডিও 492.3667 s · অডিও 492.356 s (অডিও সম্পূর্ণ, শেষে কাটা পড়েনি) |
-| অডিও আছে কি না | `volumedetect`: mean −16.9 dB, max −0.3 dB (নীরব নয়, সত্যিকারের ন্যারেশন) |
-| শুরু | অডিও 0.000 s থেকে; শেষ কার্ড 492 s পর্যন্ত দৃশ্যমান (fade-to-black নেই) |
-| প্লেব্যাক | MP4 থেকে ফ্রেম ডিকোড করে দেখা হয়েছে (নিচের সময়গুলো) |
-| সিন | ৭৭টি, ক্রম অটুট, কোনো সিন বাদ পড়েনি |
+আসল বাংলা MP3 (`assets/voiceover/voiceover.mp3`, 492.355875 s) অপরিবর্তিত গতিতে ভিডিওর শুরু থেকে যোগ করা হয়েছে। কোনো narration কাটা হয়নি। 720p সংস্করণটি চূড়ান্ত 1080p master থেকে একই aspect ratio-তে downscale করা হয়েছে; অডিও ট্র্যাক একই রাখা হয়েছে।
 
-### যেসব ফ্রেম চোখে দেখা হয়েছে (চূড়ান্ত MP4 থেকে)
+## ভয়েস-সিঙ্ক
 
-`3 s` (hook), `30 s` (offer), `38 s` (price carousel), `58 s` (custom design),
-`130 s` (ওয়েবসাইট + অ্যাডমিন), `250 s` (নোটিফিকেশন), `300 s` (রিটার্গেটিং),
-`469 s` (অনলাইন উপস্থাপন), `479 s` (ওয়েবসাইট CTA), `491 s` (end card) —
-নির্বাচিত ৭৭-সিন contact sheet-ও দেখা হয়েছে।
+- প্রতিটি scene-এর বাংলা narration-এর দৈর্ঘ্য ধরে scene timing নির্ধারণ করা হয়েছে।
+- অডিওতে 123টি স্বাভাবিক বিরতি শনাক্ত করে 76টি scene boundary-র মধ্যে 64টি বিরতির মাঝখানে align করা হয়েছে; বাকি boundary narration-length estimate ধরে বসানো।
+- 77টি scene, 14,771 frames, 30 fps; কোনো narration কাটা হয়নি।
+- এটি **scene-level voice alignment**; আলাদা শব্দের word/phoneme-level timestamp দাবি করা হচ্ছে না। ভয়েসওভার word-by-word শুনে মেলানো হয়েছে—এমন দাবিও করা হচ্ছে না।
 
-### এই রাউন্ডে ঠিক করা ভিজ্যুয়াল সমস্যা
+## ভিজ্যুয়াল আপডেট
 
-- `chapterCard`-এ newline কাজ করছিল না → “কুরিয়ার অটোমেশন / ও হিস্টরি”র দ্বিতীয় লাইন
-  হারিয়ে যাচ্ছিল; এখন multi-line + সঠিক আন্ডারলাইন।
-- price carousel-এ প্রাইস-ব্যানার ফোনের ওপর উঠে যাচ্ছিল → ফোন ছোট/উপরে, ব্যানার নিচে।
-- admin bridge-এ ড্যাশবোর্ডের aspect ratio ভুল ছিল (হেডার/সাইডবার কাটা পড়ছিল, লেখা
-  “আউ…” হয়ে যাচ্ছিল) → box/viewport মিলিয়ে দেওয়া হয়েছে, ক্রোম সহ।
-- duplicate bottom caption চিপ (হেডলাইন যা বলছে তাই আবার নিচে) সরানো হয়েছে —
-  `whyDelay`, `websiteCta`; `landingUnlimited`-এর চিপ কার্ডের ওপর থেকে সরানো।
-- `solShop`/`solLanding`-এর লেবেল ফোনের প্রোডাক্ট কার্ডের ওপর ছিল → হেডলাইনের নিচে সরানো।
-- `abandonAdmin`-এর নোট-কার্ড Safe Area (y ≤ 1500) ছাড়িয়ে যাচ্ছিল → ভেতরে আনা।
-- `websiteCta`/`whyDelay`-এর কম্পোজিশন ভার্টিক্যালি ব্যালান্স করা হয়েছে (ফাঁকা জায়গা কমানো)।
+- Storefront-এ বড়, পূর্ণাঙ্গ desktop browser showcase যোগ করা হয়েছে: home/category page, product detail, এবং দুই-কলামের checkout flow; মোবাইল storefront preview-ও রয়েছে।
+- Storefront, landing-page এবং business-category showcase-এ মোট নয়টি locally bundled editorial photograph ব্যবহার করা হয়েছে—ঘড়ি, ব্যাগ, জুতা, fragrance, fashion, restaurant এবং beauty।
+- ফ্যাশন, রেস্টুরেন্ট ও beauty-র জন্য campaign-style landing page এবং পরিষ্কার category cards যোগ করা হয়েছে। Admin dashboard browser panels আরও বড় ও সামঞ্জস্যপূর্ণ করা হয়েছে, যাতে টেবিল, স্ট্যাটাস ও কন্ট্রোল ভালোভাবে দেখা যায়।
+- Bengali demo labels বজায় আছে; sample customer/order/price details illustrative demo data। কোনো runtime external image request নেই।
+- দীর্ঘ রিল জুড়ে একটানা একই নীল-কালো mood এড়াতে chapter অনুযায়ী subdued warm retail, cool admin, emerald order, violet retargeting, amber logistics এবং warm closing palette ব্যবহার করা হয়েছে; UI reveal, camera push ও page transition সংযত রাখা হয়েছে।
+- নতুন browser storefront, checkout, category ও admin দৃশ্যের representative frames ভিডিও থেকে আলাদাভাবে দেখে layout/legibility যাচাই করা হয়েছে।
 
-## ব্রাউজার পাইপলাইন (Vercel)
+## পরীক্ষা
 
-| যাচাই | ফল |
-|---|---|
-| স্ট্যাটিক বিল্ড | `node tools/build-web.mjs` → `dist/` 2.3 MB (index, app.js, app.css, src/**, fonts/**, vendor/mp4-muxer.mjs) |
-| লোকাল সার্ভ | `/`, `/app.js`, `/app.css`, `/src/**`, `/vendor/mp4-muxer.mjs`, `/fonts/*.ttf` — সবই `200`, সঠিক MIME (`text/javascript`, `font/ttf`) |
-| প্ল্যাটফর্ম শিম | একই সিন কোড Node (Skia) ও ব্রাউজার (`<canvas>` + FontFace) — দুটোতেই রেন্ডার হয় |
-| mp4-muxer ইন্টিগ্রেশন | `tools/smoke-browser.mjs`: WebCodecs stub + আসল mp4-muxer → 45 ফ্রেম, `ftyp` হেডার সহ MP4 তৈরি, `SMOKE OK` |
-| progress/সিন শিডিউল | ফ্রেম-বাই-ফ্রেম progress, fps, ETA; ফাইনালাইজ স্টেজ |
-| **সীমাবদ্ধতা** | এই স্যান্ডবক্সে Chrome নেই → আসল WebCodecs H.264/AAC এনকোড এখানে চালানো যায়নি। তাই Vercel-এ প্রথম রেন্ডার করার সময় ব্রাউজার কনসোল/UI-তে কোনো এরর এলে সেটি দেখে ঠিক করতে হবে। |
+- `npm run build` — PASS।
+- `node tools/smoke-browser.mjs` — PASS (`SMOKE OK`)।
+- `node --check` (source `.mjs` files) এবং `git diff --check` — PASS।
+- 1080p ও 720p—দুটোর ffprobe metadata, H.264/AAC streams, resolution, frame rate, duration এবং সম্পূর্ণ audio/video decode — PASS।
 
-## কনটেন্ট / ব্র্যান্ড
+## ডাউনলোড
 
-| বিষয় | ফল |
-|---|---|
-| ব্র্যান্ড ফ্যাক্ট | “মাত্র ৩,০০০ টাকায় ওয়েবসাইট!” · “কোনো এডভান্স নেই!” · `codepixelweb.vercel.app` · `01876892958` — হুবহু |
-| নিষিদ্ধ ফর্ম | “৩,০০০ টাকা থেকে” কোথাও নেই |
-| ভুয়া ক্লেইম | কোনো রিভিউ/রেটিং/ক্লায়েন্ট লোগো/বিক্রির পরিসংখ্যান নেই; অ্যাডমিন ডেটা নমুনা |
-| অপশনাল ফিচার | কুরিয়ার/পেমেন্ট/মেটা পিক্সেল/টেলিগ্রাম-ইমেইল/ফ্রি হোস্টিং/ল্যান্ডিং পেজ — সবই “ইন্টিগ্রেশন ও স্কোপ সাপেক্ষে” |
-| টাইপোগ্রাফি | Noto Sans Bengali (৪ ওজন) + Inter; যুক্তাক্ষর/কার-চিহ্ন/৳ ঠিকভাবে render হয় |
-| Safe area | মূল টেক্সট y 232–1500, x 76–1004 (Reels UI-এর জন্য নিরাপদ) |
-
-## টাইমিং
-
-- ৭৭ সিনের মূল প্ল্যান: ৩৪৩ s সোর্স → আউটপুট ০৮:১২.৩৫৬ (×1.435440233)।
-- আপলোড করা অডিও 492.355875 s — পরিকল্পনার সাথে ০.০০০১২৫ s পার্থক্য, তাই স্কেল ১.০।
-- দৃশ্য-সীমা ffmpeg `silencedetect` দিয়ে পাওয়া ১২৩টি স্বাভাবিক পজে snap করা।
-- ফ্রেম = প্রতিটি সীমার জন্য আলাদা `round(t × 30)` → ক্রমবর্ধমান রাউন্ডিং ড্রিফট নেই।
-- **সীমাবদ্ধতা:** word-level alignment করা হয়নি; word/phoneme-level sync দাবি করা হয় না।
-
-## ডেলিভারি কপি
-
-`output/CodePixel-Web-Promo-Reels.mp4` হলো CRF 23 ডেলিভারি এনকোড (মূল CRF 20
-মাস্টার থেকে, একই 1080×1920 · 30 fps · AAC)। সাইজ কমানো হয়েছে যাতে ডাউনলোড
-সহজ হয়; রেজোলিউশন, দৈর্ঘ্য ও অডিও অপরিবর্তিত।
+- [1080p MP4](output/CodePixel-Web-Promo-Reels-1080p.mp4)
+- [720p MP4](output/CodePixel-Web-Promo-Reels-720p.mp4)

@@ -111,7 +111,7 @@ async function renderVideo({ audio, out, width = 1080, height = 1920 }) {
 
   const silences = await detectSilences(audio);
   const schedule = buildSchedule(probed.duration, { snapPoints: silences });
-  emit({ type: 'schedule', totalFrames: schedule.totalFrames, snapped: silences.length, duration: probed.duration });
+  emit({ type: 'schedule', totalFrames: schedule.totalFrames, snapped: silences.length, duration: probed.duration, alignment: schedule.alignment });
 
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const temp = out.replace(/\.mp4$/, '') + '.part.mp4';

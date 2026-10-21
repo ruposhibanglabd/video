@@ -255,23 +255,25 @@ export function vignette(ctx, w = W, h = H, strength = 0.5) {
 /** Cinematic base background: deep navy, dual aurora glows, vignette, grain. */
 export function cinematicBG(ctx, t = 0, opts = {}) {
   const { w = W, h = H, drift = 1, violetSide = 'right' } = opts;
-  ctx.fillStyle = opts.base || C.navy;
+  const palette = opts.palette || {};
+  ctx.fillStyle = palette.base || opts.base || C.navy;
   ctx.fillRect(0, 0, w, h);
   const dx = Math.sin(t * 0.22) * 70 * drift;
   const dy = Math.cos(t * 0.17) * 50 * drift;
-  glowOrb(ctx, w * 0.18 + dx, h * 0.22 + dy, w * 0.85, '#1E5BFF', 0.42);
-  glowOrb(ctx, violetSide === 'right' ? w * 0.92 - dx * 0.6 : w * 0.4, h * 0.62 - dy, w * 0.8, '#6A48FF', 0.3);
-  glowOrb(ctx, w * 0.5, h * 1.02, w * 0.9, '#0E7FA8', 0.18);
-  vignette(ctx, w, h, 0.55);
-  // subtle technical grid
+  glowOrb(ctx, w * 0.18 + dx, h * 0.22 + dy, w * 0.85, palette.primary || '#1E5BFF', palette.primaryAlpha ?? 0.32);
+  glowOrb(ctx, violetSide === 'right' ? w * 0.92 - dx * 0.6 : w * 0.4, h * 0.62 - dy, w * 0.8, palette.secondary || '#6A48FF', palette.secondaryAlpha ?? 0.24);
+  glowOrb(ctx, w * 0.5, h * 1.02, w * 0.9, palette.tertiary || '#0E7FA8', palette.tertiaryAlpha ?? 0.16);
+  vignette(ctx, w, h, palette.vignette ?? 0.48);
+  // A restrained, slowly drifting grid adds product-tech texture without
+  // overpowering the UI; chapter palettes keep the long reel from feeling flat.
   ctx.save();
-  ctx.strokeStyle = 'rgba(130,175,255,0.045)';
+  ctx.strokeStyle = palette.grid || 'rgba(184,198,218,0.024)';
   ctx.lineWidth = 1;
-  const gs = 72;
+  const gs = palette.gridSize || 84;
   for (let x = ((t * 8) % gs) - gs; x < w; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
   for (let y = 0; y < h; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
   ctx.restore();
-  grain(ctx, 0.045, w, h);
+  grain(ctx, 0.035, w, h);
 }
 
 /** Diagonal light sweep across a region. p in 0..1 */
