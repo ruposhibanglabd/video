@@ -81,6 +81,53 @@ CLI রেন্ডারে অডিও থেকে শুধু AAC-তে �
 
 ---
 
+## ৩.১ রেন্ডার হওয়া ভিডিও নামানো (Git থেকে)
+
+তৈরি ভিডিওটা `output/CodePixel-Web-Promo-Reels-share.mp4` (৭১ MB · CRF 28 ·
+১০৮০×১৯২০ · 30 fps · h264 + AAC) — এই একটি ফাইল ইচ্ছাকৃতভাবে Git-এ রাখা আছে,
+তাই ক্লোন করলেই পাবেন। মাস্টার (১৩৬ MB, CRF 20) Git-এ নেই — GitHub ১০০ MB-র বেশি
+ফাইল নেয় না; দরকার হলে নিচের কমান্ডে নিজে বানিয়ে নিন।
+
+**ক. ব্রাউজার থেকে (সবচেয়ে সহজ)**
+
+1. https://github.com/ruposhibanglabd/video/blob/arena/a85c4bc8-video/output/CodePixel-Web-Promo-Reels-share.mp4
+2. ডান দিকে **Download raw file** (⤓ আইকন) চাপুন।
+
+সরাসরি লিংক (রাইট-ক্লিক → Save link as):
+
+```
+https://raw.githubusercontent.com/ruposhibanglabd/video/arena/a85c4bc8-video/output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**খ. শুধু ওই একটি ফাইল, git দিয়ে (পুরো রিপো ক্লোন না করে)**
+
+```bash
+git clone --depth 1 --branch arena/a85c4bc8-video \
+  --filter=blob:none --sparse https://github.com/ruposhibanglabd/video.git codepixel
+cd codepixel
+git sparse-checkout set output
+ls -lh output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**গ. পুরো রিপো ক্লোন**
+
+```bash
+git clone --branch arena/a85c4bc8-video https://github.com/ruposhibanglabd/video.git
+open output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**ঘ. মাস্টার কোয়ালিটি (CRF 20, ১৩৬ MB) নিজে বানাতে**
+
+```bash
+npm install
+npm run render:fast -- --audio assets/voiceover/voiceover.mp3 \
+  --out output/CodePixel-Web-Promo-Reels.mp4 --workers 4
+```
+
+> ফাইলটা Git-এ থাকায় রিপো ~৭৯ MB হয়ে যায়। না চাইলে
+> `output/CodePixel-Web-Promo-Reels-share.mp4` ডিলিট করে `.gitignore`-এর ব্যতিক্রম
+> লাইনটা সরিয়ে দিন — তখন ভিডিও শুধু রেন্ডার করে পাবেন।
+
 ## ৪. আর্কিটেকচার
 
 | ফোল্ডার | কাজ |
