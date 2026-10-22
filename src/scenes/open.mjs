@@ -49,8 +49,24 @@ function lightBeam(ctx, t, { x = W / 2, color = C.cyan, w = 760 } = {}) {
 export const openScenes = {
   hook(ctx, t, d) {
     lightBeam(ctx, t);
-    // small capability pills under the headline
-    const pills = [['globe', 'কাস্টমার ওয়েবসাইট'], ['grid', 'অ্যাডমিন প্যানেল']];
+
+    // opening "shutter": a hairline light bar snaps open behind the first line
+    const sh = easeOutQuint(clamp(t / 0.42));
+    const shFade = 1 - clamp((t - 0.9) / 0.7);
+    if (sh < 1.02 && shFade > 0) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha *= shFade;
+      const w = W * 0.86 * sh;
+      const g = lin(ctx, (W - w) / 2, 0, (W + w) / 2, 0, [
+        [0, 'rgba(120,200,255,0)'], [0.5, 'rgba(150,215,255,0.5)'], [1, 'rgba(120,200,255,0)'],
+      ]);
+      fillRR(ctx, (W - w) / 2, 246, w, 2.5, 2, g);
+      ctx.restore();
+    }
+
+    // two brand facts — the two strongest reasons to keep watching
+    const pills = [['sparkle', 'কাস্টম ডিজাইন'], ['checkCircle', 'কোনো এডভান্স নেই']];
     const widths = pills.map(([, label]) => {
       ctx.save(); ctx.font = `600 22px 'BN', Inter`;
       const w = ctx.measureText(label).width + 92; ctx.restore();
@@ -59,19 +75,20 @@ export const openScenes = {
     const totalW = widths[0] + widths[1] + 14;
     let cx = (W - totalW) / 2;
     pills.forEach(([ic, label], i) => {
-      const p = beat(t, 0.6 + i * 0.14, 0.5, easeOutBack);
+      const p = beat(t, 0.55 + i * 0.14, 0.5, easeOutBack);
       if (p > 0) {
         ctx.save();
         ctx.globalAlpha *= clamp(p);
         ctx.translate(0, (1 - p) * 16);
         const y = 566;
         glassPanel(ctx, cx, y, widths[i], 56, { r: 28, fill: 'rgba(10,17,33,0.86)' });
-        icon(ctx, ic, cx + 18, y + 16, 24, i ? C.violet : C.cyan, 1.9);
+        icon(ctx, ic, cx + 18, y + 16, 24, i ? C.green : C.cyan, 1.9);
         text(ctx, label, cx + 50, y + 36, { size: 22, weight: 600, color: C.white });
         ctx.restore();
       }
       cx += widths[i] + 14;
     });
+
     // phone hero with a slow push-in
     const push = 1 + 0.045 * clamp(t / d);
     ctx.save();
@@ -87,6 +104,24 @@ export const openScenes = {
       }),
     });
     lightSweep(ctx, 312, 664, 456, 990, clamp((t - 1.5) / 1.4), 'rgba(150,200,255,0.13)', 110);
+
+    // floating price tag — a quiet early promise of the offer
+    const tp = beat(t, 1.1, 0.7, easeOutBack);
+    if (tp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(tp);
+      const px = 788 + (1 - tp) * 26;
+      const py = 1180 + Math.sin(t * 1.1) * 6;
+      ctx.translate(px, py);
+      ctx.rotate(0.05);
+      shadow(ctx, 'rgba(6,20,60,0.6)', 50, 18);
+      fillRR(ctx, 0, 0, 200, 94, 26, 'rgba(9,17,34,0.94)');
+      noShadow(ctx);
+      strokeRR(ctx, 0, 0, 200, 94, 26, alpha(C.cyan, 0.5), 1.6);
+      text(ctx, 'শুরু', 22, 33, { size: 19, weight: 600, color: 'rgba(190,212,245,0.85)' });
+      text(ctx, '৳৩,০০০', 22, 78, { size: 42, weight: 800, color: C.white });
+      ctx.restore();
+    }
     ctx.restore();
     brandWatermark(ctx, t, 0.4);
   },

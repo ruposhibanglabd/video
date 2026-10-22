@@ -4,7 +4,8 @@
  */
 import { PLATFORM_READY } from './src/render/platform.mjs';
 import { Compositor, buildSchedule } from './src/render/frame.mjs';
-import { probeAudio, toEncoderBuffer, detectPauseEnds } from './src/browser/audio.js';
+import { probeAudio, toEncoderBuffer, detectPauseEnds, buildEnvelope } from './src/browser/audio.js';
+import { setVoiceEnvelope } from './src/render/voice.mjs';
 import { capabilities, renderMp4 } from './src/browser/encode.js';
 
 const REFERENCE_DURATION = 492.356; // expected narration length (08:12.356)
@@ -193,6 +194,8 @@ el.render.addEventListener('click', async () => {
     await PLATFORM_READY;
     setProgress(0.02, 'অডিও বিশ্লেষণ হচ্ছে', '');
     const pauses = detectPauseEnds(state.probe.buffer);
+    const env = buildEnvelope(state.probe.buffer);
+    setVoiceEnvelope(env.rms, env.fps);
     const schedule = buildSchedule(state.probe.duration, { snapPoints: pauses });
     setProgress(0.04, 'ভয়েসওভার প্রস্তুত হচ্ছে', `${schedule.scenes.length} দৃশ্য · ${schedule.totalFrames} ফ্রেম`);
 

@@ -67,7 +67,7 @@ export const SCENES = [
   {
     n: 11, srcStart: 57, srcEnd: 65, outStart: 81.82, outEnd: 93.304,
     narration: 'আপনার ব্যবসা ফ্যাশন পোশাক জুতা ঘড়ি কসমেটিক্স ইলেকট্রনিক্স গ্রোসারি রেস্টুরেন্ট কিংবা অন্য কোন পণ্যের হোক',
-    kicker: 'যেকোনো ব্যবসার জন্য', headline: 'ফ্যাশন থেকে\nরেস্টুরেন্ট', kind: 'categoriesMontage', transition: 'push',
+    kicker: 'যেকোনো ব্যবসার জন্য', headline: 'ফ্যাশন থেকে\nরেস্টুরেন্ট', kind: 'categoriesMontage', transition: 'whip',
   },
   {
     n: 12, srcStart: 65, srcEnd: 70, outStart: 93.304, outEnd: 100.481,
@@ -97,7 +97,7 @@ export const SCENES = [
   {
     n: 17, srcStart: 93, srcEnd: 98, outStart: 133.496, outEnd: 140.673,
     narration: 'এবার কল্পনা করুন আপনার ব্যবসার প্রোডাক্ট অর্ডার স্টক কাস্টমার এবং বিক্রির গুরুত্বপূর্ণ তথ্য',
-    kicker: 'কল্পনা করুন', headline: 'প্রোডাক্ট • অর্ডার • স্টক\nকাস্টমার • বিক্রি', kind: 'modulesIntro', transition: 'push',
+    kicker: 'কল্পনা করুন', headline: 'প্রোডাক্ট • অর্ডার • স্টক\nকাস্টমার • বিক্রি', kind: 'modulesIntro', transition: 'whip',
   },
   {
     n: 18, srcStart: 98, srcEnd: 100, outStart: 140.673, outEnd: 143.544,
@@ -107,7 +107,7 @@ export const SCENES = [
   {
     n: 19, srcStart: 100, srcEnd: 110, outStart: 143.544, outEnd: 157.898,
     narration: 'এডমিন প্যানেল থেকেই নতুন প্রোডাক্ট যোগ করতে পারবেন প্রোডাক্টের ছবি ও দাম পরিবর্তন করতে পারবেন ক্যাটাগরি তৈরি করতে পারবেন এবং প্রয়োজন অনুযায়ী ক্যাটাগরি এডিট বা ডিলিট করতে পারবেন',
-    kicker: 'প্রোডাক্ট ও ক্যাটাগরি', headline: 'যোগ করুন, বদলান,\nমুছুনও', kind: 'productMgmt', transition: 'push',
+    kicker: 'প্রোডাক্ট ও ক্যাটাগরি', headline: 'যোগ করুন, বদলান,\nমুছুনও', kind: 'productMgmt', transition: 'whip',
   },
   {
     n: 20, srcStart: 110, srcEnd: 117, outStart: 157.898, outEnd: 167.947,
@@ -132,7 +132,7 @@ export const SCENES = [
   {
     n: 24, srcStart: 126, srcEnd: 134, outStart: 180.865, outEnd: 192.349,
     narration: 'প্রতিটি নতুন প্রোডাক্ট বিশেষ অফার কিংবা আলাদা বিজ্ঞাপন ক্যাম্পেইনের জন্য তৈরি করতে পারবেন নিজের প্রয়োজনমতো ল্যান্ডিং পেজ',
-    kicker: 'প্রতিটি ক্যাম্পেইনের জন্য', headline: 'প্রোডাক্ট • অফার\nক্যাম্পেইন', kind: 'landingThree', transition: 'push',
+    kicker: 'প্রতিটি ক্যাম্পেইনের জন্য', headline: 'প্রোডাক্ট • অফার\nক্যাম্পেইন', kind: 'landingThree', transition: 'whip',
   },
   {
     n: 25, srcStart: 134, srcEnd: 140, outStart: 192.349, outEnd: 200.962,
@@ -162,7 +162,7 @@ export const SCENES = [
   {
     n: 30, srcStart: 160, srcEnd: 165, outStart: 229.67, outEnd: 236.848,
     narration: 'অর্ডার পেন্ডিং কনফার্ম প্রসেসিং শিফট ডেলিভারড কিংবা ক্যান্সেল্ড',
-    kicker: 'অর্ডার স্ট্যাটাস', headline: 'পেন্ডিং → কনফার্ম → ডেলিভারড', kind: 'orderStatus', transition: 'push',
+    kicker: 'অর্ডার স্ট্যাটাস', headline: 'পেন্ডিং → কনফার্ম → ডেলিভারড', kind: 'orderStatus', transition: 'zoom',
   },
   {
     n: 31, srcStart: 165, srcEnd: 167, outStart: 236.848, outEnd: 239.719,
@@ -182,7 +182,7 @@ export const SCENES = [
   {
     n: 34, srcStart: 176, srcEnd: 180, outStart: 252.637, outEnd: 258.379,
     narration: 'এবার এমন একটি সুবিধার কথা বলি যা আপনার সম্ভাব্য বিক্রি বাড়ানোর সুযোগ তৈরি করতে পারে',
-    kicker: 'আরেকটি সুবিধা', headline: 'সম্ভাব্য বিক্রি বাড়ানোর\nসুযোগ', kind: 'abandonIntro', transition: 'push',
+    kicker: 'আরেকটি সুবিধা', headline: 'সম্ভাব্য বিক্রি বাড়ানোর\nসুযোগ', kind: 'abandonIntro', transition: 'whip',
   },
   {
     n: 35, srcStart: 180, srcEnd: 187, outStart: 258.379, outEnd: 268.427,
@@ -217,7 +217,7 @@ export const SCENES = [
   {
     n: 41, srcStart: 207, srcEnd: 212, outStart: 297.136, outEnd: 304.313,
     narration: 'যারা প্রোডাক্ট দেখেছেন কার্টে যোগ করেছেন কিংবা কেনাকাটার আগ্রহ দেখিয়েছেন',
-    kicker: 'অডিয়েন্স সেগমেন্ট', headline: 'দেখেছেন • কার্টে\nযোগ করেছেন • আগ্রহ', kind: 'retargetAudience', transition: 'push',
+    kicker: 'অডিয়েন্স সেগমেন্ট', headline: 'দেখেছেন • কার্টে\nযোগ করেছেন • আগ্রহ', kind: 'retargetAudience', transition: 'whip',
   },
   {
     n: 42, srcStart: 212, srcEnd: 217, outStart: 304.313, outEnd: 311.491,
@@ -237,7 +237,7 @@ export const SCENES = [
   {
     n: 45, srcStart: 226, srcEnd: 231, outStart: 324.409, outEnd: 331.587,
     narration: 'আপনার অনলাইন ব্যবসায় অর্ডার নেওয়ার পর পার্সেল পাঠানো ট্র্যাকিং করা এবং ডেলিভারি আপডেট রাখাও অত্যন্ত গুরুত্বপূর্ণ',
-    kicker: 'পার্সেল পাঠানো', headline: 'ট্র্যাকিং ও\nডেলিভারি আপডেট', kind: 'courierJourney', transition: 'push',
+    kicker: 'পার্সেল পাঠানো', headline: 'ট্র্যাকিং ও\nডেলিভারি আপডেট', kind: 'courierJourney', transition: 'zoom',
   },
   {
     n: 46, srcStart: 231, srcEnd: 238, outStart: 331.587, outEnd: 341.635,
@@ -262,7 +262,7 @@ export const SCENES = [
   {
     n: 50, srcStart: 251, srcEnd: 256, outStart: 360.295, outEnd: 367.473,
     narration: 'প্রয়োজন অনুযায়ী আইপি ভিত্তিক রেট লিমিটিং সন্দেহজনক অর্ডার শনাক্তকরণ এবং ডুপ্লিকেট অর্ডার নিয়ন্ত্রণের মত ফিচার যুক্ত করা যেতে পারে',
-    kicker: 'প্রয়োজন অনুযায়ী', headline: 'রেট লিমিট • ডুপ্লিকেট\nসনাক্তকরণ', kind: 'securityRules', transition: 'push',
+    kicker: 'প্রয়োজন অনুযায়ী', headline: 'রেট লিমিট • ডুপ্লিকেট\nসনাক্তকরণ', kind: 'securityRules', transition: 'zoom',
   },
   {
     n: 51, srcStart: 256, srcEnd: 260, outStart: 367.473, outEnd: 373.214,
@@ -297,7 +297,7 @@ export const SCENES = [
   {
     n: 57, srcStart: 280, srcEnd: 284, outStart: 401.923, outEnd: 407.665,
     narration: 'অর্থাৎ আপনার অনলাইন ব্যবসার জন্য শুধু একটি ওয়েবসাইট নয় একটি সমন্বিত ব্যবসা পরিচালনা ব্যবস্থা',
-    kicker: 'শুধু ওয়েবসাইট নয়', headline: 'সমন্বিত ব্যবসা\nপরিচালনা ব্যবস্থা', kind: 'systemDiagram', transition: 'push',
+    kicker: 'শুধু ওয়েবসাইট নয়', headline: 'সমন্বিত ব্যবসা\nপরিচালনা ব্যবস্থা', kind: 'systemDiagram', transition: 'zoom',
   },
   {
     n: 58, srcStart: 284, srcEnd: 288, outStart: 407.665, outEnd: 413.407,
@@ -327,7 +327,7 @@ export const SCENES = [
   {
     n: 63, srcStart: 299, srcEnd: 301, outStart: 429.197, outEnd: 432.068,
     narration: 'কেউ চান একটি সুন্দর অনলাইন শপ',
-    kicker: 'কেউ চান', headline: 'সুন্দর অনলাইন শপ', kind: 'solShop', transition: 'push',
+    kicker: 'কেউ চান', headline: 'সুন্দর অনলাইন শপ', kind: 'solShop', transition: 'whip',
   },
   {
     n: 64, srcStart: 301, srcEnd: 302, outStart: 432.068, outEnd: 433.503,
@@ -342,7 +342,7 @@ export const SCENES = [
   {
     n: 66, srcStart: 307, srcEnd: 310, outStart: 440.68, outEnd: 444.986,
     narration: 'আপনার প্রয়োজন অনুযায়ী উপযুক্ত ওয়েব সলিউশন বেছে নেওয়ার সুযোগ রয়েছে কোড পিক্সেল ওয়েবের সঙ্গে',
-    kicker: 'CodePixel Web-এর সঙ্গে', headline: 'আপনার উপযুক্ত\nওয়েব সলিউশন', kind: 'solutions', transition: 'push',
+    kicker: 'CodePixel Web-এর সঙ্গে', headline: 'আপনার উপযুক্ত\nওয়েব সলিউশন', kind: 'solutions', transition: 'whip',
   },
   {
     n: 67, srcStart: 310, srcEnd: 313, outStart: 444.986, outEnd: 449.293,
