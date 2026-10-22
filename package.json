@@ -9,6 +9,7 @@
     "build": "node tools/build-web.mjs",
     "serve": "node tools/serve.mjs",
     "render": "node src/render/render.mjs",
+    "render:fast": "node tools/render-fast.mjs",
     "qa": "node tools/qa-frames.mjs"
   },
   "dependencies": {
