@@ -1,12 +1,9 @@
 /** Scene registry + frame compositor + schedule math. */
 import { createCanvas, PLATFORM_READY } from './platform.mjs';
 export { PLATFORM_READY };
-import {
-  W, H, C, clamp, lerp, easeIn, easeOut, easeInOut, easeOutQuint, alpha, cinematicBG,
-  grain, vignette, glowOrb, text, lin, fillRR, circle,
-} from './kit.mjs';
+import { W, H, clamp, lerp, easeIn, easeOut, easeInOut, easeOutQuint } from './kit.mjs';
 import { SCENES, BRAND } from '../scenes/timeline.mjs';
-import { kicker, headline, L } from '../scenes/stage.mjs';
+import { backdrop, progressRail, brandTag } from '../scenes/premium.mjs';
 import { openScenes } from '../scenes/open.mjs';
 import { featureScenes } from '../scenes/features.mjs';
 import { orderScenes } from '../scenes/orders.mjs';
@@ -54,6 +51,7 @@ export function buildSchedule(duration, { snapPoints = [], snapWindow = 0.9, min
   // frames: absolute rounding per boundary (no cumulative drift)
   const totalFrames = Math.max(1, Math.ceil(duration * FPS));
   boundaries.forEach((b) => {
+    b.tone = b.tone || 'dark';
     b.f0 = Math.round(b.start * FPS);
     b.f1 = Math.round(b.end * FPS);
     b.dur = (b.f1 - b.f0) / FPS;
@@ -98,7 +96,7 @@ export class Compositor {
     return { idx, scene: s, t: Math.max(0, t), dur: Math.max(0.001, (s.f1 - s.f0) / this.fps) };
   }
 
-  drawSceneBody(ctx, scene, t, dur) {
+  drawSceneBody(ctx, scene, t, dur, absT) {
     const fn = REGISTRY[scene.kind];
     if (!fn) {
       if (!this.warned.has(scene.kind)) {
@@ -107,24 +105,16 @@ export class Compositor {
       }
       return false;
     }
-    // subtle camera push for every scene (keeps text inside safe area)
-    const cam = 1.015 + 0.028 * easeInOut(clamp(t / dur));
+    // gentle camera life: dark scenes push in, light scenes settle
+    const tone = scene.tone || 'dark';
+    const cam = tone === 'dark'
+      ? 1.006 + 0.016 * easeInOut(clamp(t / dur))
+      : 1.004 + 0.008 * easeInOut(clamp(t / dur));
     ctx.save();
-    ctx.translate(this.width / 2, this.height / 2);
+    ctx.translate(this.width / 2, this.height * 0.52);
     ctx.scale(cam, cam);
-    ctx.translate(-this.width / 2, -this.height / 2);
-    if (scene.title !== false) {
-      kicker(ctx, scene.kicker, t, { delay: 0.04, y: scene.kickerY || L.kickerY });
-      if (scene.headline) {
-        headline(ctx, scene.headline, t, {
-          size: scene.titleSize || 84,
-          y: scene.titleY || L.titleY,
-          delay: 0.02,
-          stagger: 0.10,
-        });
-      }
-    }
-    fn(ctx, t, dur, scene);
+    ctx.translate(-this.width / 2, -this.height * 0.52);
+    fn(ctx, t, dur, scene, { absT });
     ctx.restore();
     return true;
   }
@@ -133,55 +123,76 @@ export class Compositor {
     const ctx = this.ctx;
     const { idx, scene, t, dur } = this.sceneTime(schedule, frame);
     const prev = schedule.scenes[idx - 1];
+    const absT = frame / this.fps;
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // base cinematic background (drifting, deterministic)
-    cinematicBG(ctx, frame / this.fps, { w: this.width, h: this.height });
+    ctx.globalAlpha = 1;
 
+    const tone = scene.tone || 'dark';
     const style = scene.transition || 'fade';
-    const inDur = style === 'snap' ? 0.10 : style === 'hold' ? 0 : style === 'wipe' ? 0.32 : 0.30;
+    const inDur = style === 'snap' ? 0.16 : style === 'hold' ? 0.01 : style === 'wipe' ? 0.38 : 0.34;
     const blend = inDur > 0 ? clamp(t / inDur) : 1;
+    const prevTone = prev ? (prev.tone || 'dark') : tone;
+
+    // --- backdrop (tone cross-dissolve keeps the light continuous)
+    if (prev && prevTone !== tone && blend < 1) {
+      backdrop(ctx, prevTone, absT, { strength: 1 });
+      ctx.save();
+      ctx.globalAlpha = easeOut(blend);
+      backdrop(ctx, tone, absT, { strength: 1 });
+      ctx.restore();
+    } else {
+      backdrop(ctx, tone, absT, { strength: 1 });
+    }
 
     if (prev && blend < 1) {
       const prevDur = Math.max(0.001, (prev.f1 - prev.f0) / this.fps);
+      const outEase = easeIn(blend);
       ctx.save();
-      ctx.globalAlpha = 1 - easeOut(blend) * 0.95;
-      this.drawSceneBody(ctx, prev, Math.max(0, prevDur - 0.001), prevDur);
+      ctx.globalAlpha = 1 - outEase * 0.98;
+      if (prevTone === tone) {
+        const s = 1 + outEase * 0.012;
+        ctx.translate(this.width / 2, this.height / 2);
+        ctx.scale(s, s);
+        ctx.translate(-this.width / 2, -this.height / 2);
+      }
+      this.drawSceneBody(ctx, prev, Math.max(0, prevDur - 0.001), prevDur, absT);
       ctx.restore();
     }
 
     ctx.save();
-    if (prev && style === 'push') {
-      const e = easeOut(blend);
-      ctx.globalAlpha = e;
-      ctx.translate((1 - e) * this.width * 0.06, 0);
-    } else if (prev && style === 'snap') {
-      ctx.globalAlpha = blend;
-    } else if (prev) {
-      ctx.globalAlpha = easeOutQuint(blend);
+    if (prev && blend < 1) {
+      if (style === 'push') {
+        const e = easeOutQuint(blend);
+        ctx.globalAlpha = e;
+        ctx.translate((1 - e) * this.width * 0.045, (1 - e) * 12);
+      } else if (style === 'snap') {
+        ctx.globalAlpha = easeOut(blend);
+      } else {
+        ctx.globalAlpha = easeOutQuint(blend);
+      }
     }
-    this.drawSceneBody(ctx, scene, t, dur);
+    this.drawSceneBody(ctx, scene, t, dur, absT);
     ctx.restore();
 
     if (prev && style === 'wipe') {
       const e = easeInOut(blend);
       if (e < 1) {
         ctx.save();
-        ctx.fillStyle = '#050912';
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(this.width, 0);
-        ctx.lineTo(this.width, this.height * (1 - e));
-        ctx.lineTo(0, this.height * (1 - e) * 0.86);
-        ctx.closePath();
-        ctx.fill();
+        const g = ctx.createLinearGradient(0, this.height * (1 - e) - 120, 0, this.height * (1 - e) + 120);
+        g.addColorStop(0, 'rgba(4,7,15,0)');
+        g.addColorStop(0.5, 'rgba(6,10,20,0.92)');
+        g.addColorStop(1, 'rgba(4,7,15,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, this.width, this.height);
         ctx.restore();
       }
     }
 
-    // film finish
-    grain(ctx, 0.035, this.width, this.height);
-    vignette(ctx, this.width, this.height, 0.34);
+    // --- persistent chrome
+    brandTag(ctx, tone, tone === 'light' ? 0.9 : 0.8);
+    progressRail(ctx, clamp((frame + 1) / schedule.totalFrames));
+
     ctx.restore();
     return this.canvas;
   }

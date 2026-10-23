@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CodePixel Web — মাত্র ৳৩,০০০ টাকায় কাস্টম ওয়েবসাইট + অ্যাডমিন প্যানেল</title>
+<meta name="description" content="মাত্র ৩,০০০ টাকায় আপনার ব্যবসার জন্য কাস্টম ডিজাইনের ওয়েবসাইট ও অ্যাডমিন প্যানেল — অর্ডার, প্রোডাক্ট ও স্টক ম্যানেজমেন্ট। কোনো এডভান্স নেই।" />
+<meta name="theme-color" content="#04060c" />
+<meta property="og:title" content="CodePixel Web — মাত্র ৳৩,০০০ টাকায় কাস্টম ওয়েবসাইট" />
+<meta property="og:description" content="কাস্টম ডিজাইন, অ্যাডমিন প্যানেল, অর্ডার ও কুরিয়ার ম্যানেজমেন্ট। কোনো এডভান্স নেই।" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/media/poster.jpg" />
+<link rel="preload" href="/fonts/NotoSansBengali-Bold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/media/poster.jpg" as="image" />
+<link rel="stylesheet" href="/styles.css" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+<a class="skip" href="#main">মূল কনটেন্টে যান</a>
+
+<!-- ambient background -->
+<div class="aurora" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="orb orb-3"></span>
+  <span class="grid-lines"></span>
+</div>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="CodePixel Web হোম">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <defs>
+          <linearGradient id="bm" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4FD8FF" /><stop offset="1" stop-color="#3B6BFF" />
+          </linearGradient>
+        </defs>
+        <rect x="4" y="4" width="40" height="40" rx="13" fill="url(#bm)" />
+        <path d="M17 18 L13 24 L17 30 M31 18 L35 24 L31 30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M27 16 L21 32" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.2" stroke-linecap="round" />
+      </svg>
+      <span class="brand-text"><strong>CODEPIXEL</strong><em>WEB</em></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="প্রধান মেনু">
+      <a href="#video">ভিডিও</a>
+      <a href="#features">সুবিধা</a>
+      <a href="#admin">অ্যাডমিন</a>
+      <a href="#demos">ডেমো</a>
+      <a href="#pricing">প্যাকেজ</a>
+      <a href="#faq">প্রশ্ন</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="tel:01876892958">
+        <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M4 5c0-1 1-2 2-2h2l2 5-2 1c1 3 3 5 6 6l1-2 5 2v2c0 1-1 2-2 2C10 19 4 12 4 5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        ০১৮৭৬৮৯২৯৫৮
+      </a>
+      <a class="btn btn-wa btn-sm" href="https://wa.me/8801876892958?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%A8%E0%A6%BF%E0%A6%9C%E0%A7%87%E0%A6%B0%20%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%B0%20%E0%A6%9C%E0%A6%A8%E0%A7%8D%E0%A6%AF%20%E0%A7%A9%E0%A7%A9%2C%E0%A7%A6%E0%A7%A6%E0%A7%A6%20%E0%A6%9F%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%B0%20%E0%A6%93%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.6 7.4c-.4 0-.9.2-1.2.5-.5.5-.8 1.3-.6 2.2.3 1.7 1.4 3.4 3 4.6 1.3 1 2.9 1.7 4.3 1.7.9 0 1.7-.4 2.1-.9.3-.4.4-.9.4-1.3l-2.2-1c-.2 0-.4 0-.5.2l-.7.8c-.1.1-.3.2-.4.1-1-.5-2-1.4-2.5-2.4-.1-.2 0-.3.1-.4l.7-.7c.1-.2.1-.3.1-.5L10.5 8c-.1-.4-.3-.6-.7-.6h-1.2z" fill="currentColor"/></svg>
+        হোয়াটসঅ্যাপ
+      </a>
+      <button class="nav-burger" id="burger" aria-label="মেনু" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="nav-progress" id="navProgress"></div>
+</header>
+
+<main id="main">
+  <!-- ============================================================ HERO -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow reveal">
+          <span class="dot"></span> কাস্টম ওয়েবসাইট <span class="sep">+</span> অ্যাডমিন প্যানেল
+        </div>
+        <h1 class="reveal">
+          আপনার ব্যবসার জন্য<br />
+          <span class="grad">প্রফেশনাল ওয়েবসাইট</span>
+        </h1>
+        <p class="lede reveal">
+          রেডিমেড টেমপ্লেট নয় — আপনার ব্র্যান্ডের রঙ, লোগো ও পছন্দ অনুযায়ী কাস্টম ডিজাইন।
+          সাথে অর্ডার, প্রোডাক্ট ও স্টক পরিচালনার সম্পূর্ণ অ্যাডমিন প্যানেল।
+        </p>
+
+        <div class="price-row reveal">
+          <div class="price-lock">
+            <span class="cur">৳</span><span class="amount">৩,০০০</span>
+            <span class="once">একবারেই</span>
+          </div>
+          <div class="price-chip">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            কোনো এডভান্স নেই
+          </div>
+        </div>
+
+        <div class="hero-actions reveal">
+          <button class="btn btn-primary" data-play-video>
+            <span class="play-dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l9 5-9 5z" fill="currentColor"/></svg></span>
+            ৮ মিনিটের ভিডিও দেখুন
+          </button>
+          <a class="btn btn-outline" href="#pricing">প্যাকেজ দেখুন</a>
+        </div>
+
+        <ul class="trust reveal">
+          <li><b>২–৩ দিনে</b> ডেলিভারির লক্ষ্য</li>
+          <li><b>মোবাইল</b> ফ্রেন্ডলি ডিজাইন</li>
+          <li><b>আনলিমিটেড</b> ল্যান্ডিং পেজ</li>
+        </ul>
+      </div>
+
+      <!-- device stack -->
+      <div class="hero-visual reveal" data-parallax>
+        <div class="halo" aria-hidden="true"></div>
+
+        <div class="float-card float-notify" data-depth="0.06" aria-hidden="true">
+          <div class="fc-ico green">
+            <svg viewBox="0 0 24 24"><path d="M12 3a5 5 0 0 0-5 5v3l-1.6 3h13.2L17 11V8a5 5 0 0 0-5-5z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 18a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+          <div>
+            <strong>নতুন অর্ডার</strong>
+            <span>#AUR-1048 · ৳৪,৯৬০</span>
+          </div>
+          <i class="live"></i>
+        </div>
+
+        <div class="float-card float-admin" data-depth="0.1" aria-hidden="true">
+          <div class="fa-head"><span>আজকের বিক্রি</span><em>ডেমো</em></div>
+          <div class="spark">
+            <svg viewBox="0 0 160 48" preserveAspectRatio="none"><path d="M2 40 L26 34 L50 37 L74 24 L98 27 L122 12 L158 6" fill="none" stroke="url(#sparkg)" stroke-width="2.4" stroke-linecap="round"/><defs><linearGradient id="sparkg" x1="0" x2="1"><stop offset="0" stop-color="#4FD8FF"/><stop offset="1" stop-color="#E3B87C"/></linearGradient></defs></svg>
+          </div>
+          <div class="fa-row"><span>অর্ডার</span><b>২৪</b></div>
+        </div>
+
+        <div class="phone" data-depth="0.02">
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="ps-status"><span>9:41</span><i class="ps-signal"></i></div>
+              <div class="ps-nav">
+                <span class="ps-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v16" stroke="currentColor" stroke-width="1.6"/></svg> AURUM</span>
+                <span class="ps-icons"><i class="ps-ic"></i><i class="ps-ic bag"></i></span>
+              </div>
+              <div class="ps-hero">
+                <span class="ps-kicker">নতুন কালেকশন</span>
+                <b>সময়ের<br />নিজস্ব ছন্দ</b>
+                <span class="ps-sub">প্রিমিয়াম ঘড়ির নতুন সংগ্রহ</span>
+                <span class="ps-cta">সংগ্রহ দেখুন</span>
+                <div class="ps-watch" aria-hidden="true">
+                  <span class="w-strap"></span>
+                  <span class="w-case"><i class="w-hand h1"></i><i class="w-hand h2"></i><i class="w-pin"></i></span>
+                </div>
+              </div>
+              <div class="ps-cats">
+                <span class="ps-cat on">ঘড়ি</span><span class="ps-cat">স্টাইলিশ</span><span class="ps-cat">কাপল</span>
+              </div>
+              <div class="ps-grid">
+                <div class="ps-card">
+                  <div class="ps-img"><div class="mini-watch"></div><span class="ps-tag">নতুন</span></div>
+                  <b>হেরিটেজ ক্রোনো</b><span class="ps-price">৳৪,৮৯০</span>
+                </div>
+                <div class="ps-card">
+                  <div class="ps-img dark"><div class="mini-watch noir"></div><span class="ps-tag gold">প্রিমিয়াম</span></div>
+                  <b>নয়্যার অটোমেটিক</b><span class="ps-price">৳৬,৪৫০</span>
+                </div>
+              </div>
+              <div class="ps-badge">ডেমো স্টোর</div>
+            </div>
+          </div>
+          <div class="phone-shadow" aria-hidden="true"></div>
+        </div>
+
+        <div class="float-pill float-pill-1" data-depth="0.08"><span class="pl-ico">✦</span> কাস্টম ডিজাইন</div>
+        <div class="float-pill float-pill-2" data-depth="0.12"><span class="pl-ico">▣</span> অ্যাডমিন প্যানেল</div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>ফ্যাশন</span><i>•</i><span>জুতা</span><i>•</i><span>ঘড়ি</span><i>•</i><span>কসমেটিক্স</span><i>•</i><span>ইলেকট্রনিক্স</span><i>•</i><span>গ্রোসারি</span><i>•</i><span>রেস্টুরেন্ট</span><i>•</i><span>ফার্নিচার</span><i>•</i>
+        <span>ফ্যাশন</span><i>•</i><span>জুতা</span><i>•</i><span>ঘড়ি</span><i>•</i><span>কসমেটিক্স</span><i>•</i><span>ইলেকট্রনিক্স</span><i>•</i><span>গ্রোসারি</span><i>•</i><span>রেস্টুরেন্ট</span><i>•</i><span>ফার্নিচার</span><i>•</i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ VIDEO -->
+  <section class="section section-video" id="video">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="eyebrow"><span class="dot gold"></span> পুরো প্রজেক্ট এক নজরে</div>
+          <h2>৮ মিনিটের <span class="grad-gold">অ্যানিমেটেড প্রেজেন্টেশন</span></h2>
+          <p class="sec-sub">প্রতিটি স্ক্রিন, প্রতিটি ফিচার আর পুরো অর্ডার ফ্লো — ধাপে ধাপে দেখানো হয়েছে।
+            নিচের চ্যাপ্টার থেকে সরাসরি যে অংশটি দেখতে চান সেখানে যান।</p>
+        </div>
+        <div class="sec-meta">
+          <span class="meta-chip"><svg viewBox="0 0 24 24" class="i"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> ০৮:১২</span>
+          <span class="meta-chip">১০৮০ × ১৯২০</span>
+          <span class="meta-chip">বাংলা ভয়েসওভার</span>
+        </div>
+      </div>
+
+      <div class="player-wrap reveal">
+        <div class="player" id="player">
+          <video id="promo" class="promo" poster="/media/poster.jpg" preload="none" playsinline controlslist="nodownload" data-src="/media/promo.mp4">
+            <p class="no-video">আপনার ব্রাউজার ভিডিও চালাতে পারে না। <a href="/media/promo.mp4">ভিডিও ডাউনলোড করুন</a>।</p>
+          </video>
+
+          <button class="poster-cta" id="posterCta" aria-label="ভিডিও চালু করুন">
+            <span class="pc-ring"><span class="pc-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5l9 5.5-9 5.5z" fill="currentColor"/></svg></span></span>
+            <span class="pc-text">চালু করুন <em>০৮:১২</em></span>
+          </button>
+
+          <div class="player-ui" id="playerUI">
+            <div class="pu-top">
+              <span class="pu-title">CodePixel Web — প্রমো ভিডিও</span>
+              <span class="pu-chapter" id="puChapter">শুরু</span>
+            </div>
+            <div class="pu-controls">
+              <button class="pu-btn" id="btnPlay" aria-label="চালান / থামান">
+                <svg viewBox="0 0 24 24" class="ic-play"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" class="ic-pause"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></svg>
+              </button>
+              <div class="pu-time"><span id="tCur">০০:০০</span> / <span id="tDur">০৮:১২</span></div>
+              <div class="pu-scrub" id="scrub" role="slider" tabindex="0" aria-label="ভিডিও টাইমলাইন" aria-valuemin="0" aria-valuemax="492" aria-valuenow="0">
+                <div class="pu-track"><div class="pu-buffer" id="buffer"></div><div class="pu-fill" id="fill"></div><div class="pu-knob" id="knob"></div></div>
+                <div class="pu-marks" id="marks"></div>
+              </div>
+              <button class="pu-btn small" id="btnMute" aria-label="সাউন্ড চালু / বন্ধ">
+                <svg viewBox="0 0 24 24" class="ic-vol"><path d="M4 9h3l4-3v12l-4-3H4z" fill="currentColor"/><path d="M15 9a4 4 0 0 1 0 6M17.5 6.5a7 7 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                <svg viewBox="0 0 24 24" class="ic-mute"><path d="M4 9h3l4-3v12l-4-3H4z" fill="currentColor"/><path d="M15 9.5l5 5m0-5l-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              </button>
+              <button class="pu-btn small" id="btnRate" aria-label="গতি পরিবর্তন"><span id="rateLabel">1×</span></button>
+              <button class="pu-btn small" id="btnFs" aria-label="ফুলস্ক্রিন">
+                <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapters" id="chapters" aria-label="ভিডিও চ্যাপ্টার">
+          <button class="chapter" data-t="0"><span class="ch-time">০০:০০</span><span class="ch-name">শুরু — ওয়েবসাইটের স্বপ্ন</span></button>
+          <button class="chapter" data-t="50"><span class="ch-time">০০:৫০</span><span class="ch-name">রেডিমেড নয়, কাস্টম ডিজাইন</span></button>
+          <button class="chapter" data-t="103"><span class="ch-time">০১:৪৩</span><span class="ch-name">কাস্টমার ওয়েবসাইট</span></button>
+          <button class="chapter" data-t="130"><span class="ch-time">০২:১০</span><span class="ch-name">ওয়েবসাইট + অ্যাডমিন প্যানেল</span></button>
+          <button class="chapter" data-t="208"><span class="ch-time">০৩:২৮</span><span class="ch-name">অর্ডার ম্যানেজমেন্ট</span></button>
+          <button class="chapter" data-t="286"><span class="ch-time">০৪:৪৬</span><span class="ch-name">রিটার্গেটিং মার্কেটিং</span></button>
+          <button class="chapter" data-t="322"><span class="ch-time">০৫:২২</span><span class="ch-name">কুরিয়ার অটোমেশন</span></button>
+          <button class="chapter" data-t="375"><span class="ch-time">০৬:১৫</span><span class="ch-name">পেমেন্ট ও নিরাপত্তা</span></button>
+          <button class="chapter" data-t="447"><span class="ch-time">০৭:২৭</span><span class="ch-name">অফার প্যাকেজ ও যোগাযোগ</span></button>
+        </div>
+      </div>
+
+      <!-- scene gallery -->
+      <div class="gallery-head reveal">
+        <h3>ভিডিওর ভেতরের দৃশ্যগুলো</h3>
+        <p>যেকোনো দৃশ্যে ক্লিক করে সেই মুহূর্ত থেকে ভিডিওটি দেখুন।</p>
+      </div>
+      <div class="gallery" id="gallery">
+        <button class="scene reveal" data-t="3.4" style="--i:0">
+          <img src="/media/still-hook.jpg" alt="ভিডিওর প্রথম দৃশ্য — নিজের প্রফেশনাল ওয়েবসাইট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ০১</b> নিজের প্রফেশনাল ওয়েবসাইট</span>
+        </button>
+        <button class="scene reveal" data-t="38.2" style="--i:1">
+          <img src="/media/still-offer.jpg" alt="মাত্র ৩,০০০ টাকায় কাস্টমাইজড ওয়েবসাইট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ০৫</b> মাত্র ৳৩,০০০ — অফার</span>
+        </button>
+        <button class="scene reveal" data-t="58.3" style="--i:2">
+          <img src="/media/still-custom.jpg" alt="কাস্টম ডিজাইন — ব্র্যান্ড কিট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ০৮</b> ব্র্যান্ড অনুযায়ী কাস্টম ডিজাইন</span>
+        </button>
+        <button class="scene reveal" data-t="112.5" style="--i:3">
+          <img src="/media/still-storefront.jpg" alt="কাস্টমার ওয়েবসাইট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ১৪</b> কাস্টমার ওয়েবসাইট</span>
+        </button>
+        <button class="scene reveal" data-t="152.2" style="--i:4">
+          <img src="/media/still-admin.jpg" alt="অ্যাডমিন প্যানেল — প্রোডাক্ট ম্যানেজমেন্ট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ১৯</b> অ্যাডমিন প্যানেল</span>
+        </button>
+        <button class="scene reveal" data-t="234" style="--i:5">
+          <img src="/media/still-orders.jpg" alt="অর্ডার স্ট্যাটাস ম্যানেজমেন্ট" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ৩০</b> অর্ডার স্ট্যাটাস</span>
+        </button>
+        <button class="scene reveal" data-t="451" style="--i:6">
+          <img src="/media/still-price.jpg" alt="মাত্র ৩,০০০ টাকায় ওয়েবসাইট, কোনো এডভান্স নেই" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ৬৮</b> অফার ও এডভান্স</span>
+        </button>
+        <button class="scene reveal" data-t="490.6" style="--i:7">
+          <img src="/media/still-end.jpg" alt="শেষ কার্ড — আপনার ব্যবসা, আপনার ডিজাইন" loading="lazy" width="720" height="1280" />
+          <span class="scene-meta"><b>দৃশ্য ৭৭</b> শেষ কার্ড</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FEATURES -->
+  <section class="section section-light" id="features">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow on-light"><span class="dot gold"></span> যা যা থাকছে</div>
+        <h2>ওয়েবসাইট + অ্যাডমিন — <span class="grad-ink">একসাথে</span></h2>
+        <p class="sec-sub">শুধু একটি সুন্দর সাইট নয়। অর্ডার আসা থেকে ডেলিভারি পর্যন্ত পুরো কাজটা
+          এক জায়গা থেকে চালানোর ব্যবস্থা।</p>
+      </div>
+
+      <div class="features">
+        <article class="feature reveal" style="--i:0">
+          <div class="f-ico gold"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.6L20 9.6l-4 4 1 6-5-2.8L7 19.6l1-6-4-4 5.6-1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <h3>কাস্টম ডিজাইন</h3>
+          <p>আপনার ব্র্যান্ডের রঙ, লোগো, ব্যানার আর পছন্দ অনুযায়ী ডিজাইন — রেডিমেড টেমপ্লেট নয়।</p>
+        </article>
+        <article class="feature reveal" style="--i:1">
+          <div class="f-ico cyan"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <h3>কাস্টমার ওয়েবসাইট</h3>
+          <p>ক্যাটাগরি, সার্চ, ছবি-দাম-বিস্তারিত, কার্ট আর সহজ চেকআউট — মোবাইলে দ্রুত ও পরিষ্কার।</p>
+        </article>
+        <article class="feature reveal" style="--i:2">
+          <div class="f-ico violet"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div>
+          <h3>অ্যাডমিন প্যানেল</h3>
+          <p>প্রোডাক্ট, ক্যাটাগরি, অর্ডার, কাস্টমার, স্টক আর রিপোর্ট — সব একটাই ড্যাশবোর্ডে।</p>
+        </article>
+        <article class="feature reveal" style="--i:3">
+          <div class="f-ico green"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="18.5" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div>
+          <h3>অর্ডার ও স্ট্যাটাস</h3>
+          <p>পেন্ডিং → কনফার্ম → প্রসেসিং → ডেলিভারড। নতুন অর্ডার এলে সাথে সাথে নোটিফিকেশন।</p>
+        </article>
+        <article class="feature reveal" style="--i:4">
+          <div class="f-ico gold"><svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2-2h9l5 5v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <h3>ল্যান্ডিং পেজ</h3>
+          <p>প্রতিটি প্রোডাক্ট, অফার বা বিজ্ঞাপন ক্যাম্পেইনের জন্য আলাদা পেজ — যত ইচ্ছা তত।</p>
+        </article>
+        <article class="feature reveal" style="--i:5">
+          <div class="f-ico cyan"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7 15l4-5 3 3 5-7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>রিপোর্ট ও পেমেন্ট</h3>
+          <p>বিক্রি, স্টক, COD/অ্যাডভান্স আর পেমেন্ট স্ট্যাটাস — হিসাব মিলিয়ে নেওয়ার সুবিধা।</p>
+        </article>
+      </div>
+
+      <div class="integrations reveal">
+        <div class="int-head">
+          <span class="int-badge">ঐচ্ছিক</span>
+          <h3>প্রয়োজন হলে যোগ করা যায়</h3>
+          <p>এই সুবিধাগুলো ইন্টিগ্রেশন ও কাজের স্কোপ সাপেক্ষে — শুরুর আগেই আলোচনা করে নির্ধারণ করা হয়।</p>
+        </div>
+        <div class="int-chips">
+          <span>কুরিয়ার অটোমেশন</span>
+          <span>কুরিয়ার হিস্ট্রি</span>
+          <span>মেটা পিক্সেল ও কনভার্শন</span>
+          <span>টেলিগ্রাম বট</span>
+          <span>ইমেইল নোটিফিকেশন</span>
+          <span>পেমেন্ট গেটওয়ে</span>
+          <span>রেট লিমিট ও ডুপ্লিকেট চেক</span>
+          <span>ফ্রি হোস্টিং প্ল্যাটফর্ম</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ ADMIN -->
+  <section class="section section-admin" id="admin">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="eyebrow"><span class="dot cyan"></span> অ্যাডমিন প্যানেল</div>
+          <h2>ব্যবসার সব হিসাব — <span class="grad">একটি ড্যাশবোর্ডে</span></h2>
+          <p class="sec-sub">নিচের ট্যাবে ক্লিক করে দেখুন অ্যাডমিন প্যানেলের ভেতরে কী কী থাকে।
+            (সব ডেটা নমুনা — ডেমো ব্র্যান্ড AURUM)</p>
+        </div>
+      </div>
+
+      <div class="admin-shell reveal">
+        <div class="ad-side">
+          <div class="ad-logo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v16" stroke="currentColor" stroke-width="1.6"/></svg>
+            <div><b>AURUM</b><span>অ্যাডমিন প্যানেল</span></div>
+          </div>
+          <nav class="ad-nav" id="adNav">
+            <button class="ad-item is-active" data-tab="dash"><span class="ad-dot"></span>ড্যাশবোর্ড</button>
+            <button class="ad-item" data-tab="orders">অর্ডার <i class="ad-count">৩</i></button>
+            <button class="ad-item" data-tab="products">প্রোডাক্ট</button>
+            <button class="ad-item" data-tab="courier">কুরিয়ার</button>
+            <button class="ad-item" data-tab="reports">রিপোর্ট</button>
+          </nav>
+          <div class="ad-foot">ডেমো ডেটা</div>
+        </div>
+
+        <div class="ad-main">
+          <!-- dashboard -->
+          <div class="ad-panel is-active" data-panel="dash">
+            <div class="ad-top">
+              <div><h3>ড্যাশবোর্ড</h3><p>আজকের অবস্থা এক নজরে</p></div>
+              <span class="ad-pill">লাইভ ডেমো</span>
+            </div>
+            <div class="ad-kpis">
+              <div class="kpi"><span>আজকের অর্ডার</span><b>২৪</b><em class="up">+১২%</em></div>
+              <div class="kpi"><span>মোট বিক্রি</span><b>৳৮৪,২০০</b><em class="up">+৮%</em></div>
+              <div class="kpi"><span>প্রোডাক্ট</span><b>৩৬</b></div>
+              <div class="kpi"><span>স্টক কম</span><b>৫</b><em class="warn">দ্রষ্টব্য</em></div>
+            </div>
+            <div class="ad-charts">
+              <div class="chart-card">
+                <div class="cc-head"><b>বিক্রির ধারা</b><span>সাপ্তাহিক</span></div>
+                <div class="bars">
+                  <i style="--h:.42"></i><i style="--h:.62"></i><i style="--h:.38"></i><i style="--h:.78"></i><i style="--h:.55"></i><i style="--h:.9"></i><i style="--h:.68"></i>
+                </div>
+                <div class="bars-x"><span>শনি</span><span>রবি</span><span>সোম</span><span>মঙ্গল</span><span>বুধ</span><span>বৃহঃ</span><span>শুক্র</span></div>
+              </div>
+              <div class="chart-card donut-card">
+                <div class="cc-head"><b>ক্যাটাগরি</b><span>৩৬ পণ্য</span></div>
+                <div class="donut" aria-hidden="true"><span>৩৬<em>পণ্য</em></span></div>
+                <ul class="legend">
+                  <li><i style="background:#2F6FED"></i>ঘড়ি</li>
+                  <li><i style="background:#7A5AF8"></i>ব্যাগ</li>
+                  <li><i style="background:#12AFCB"></i>জুতা</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- orders -->
+          <div class="ad-panel" data-panel="orders">
+            <div class="ad-top">
+              <div><h3>অর্ডার</h3><p>নতুন থেকে ডেলিভারি পর্যন্ত</p></div>
+              <div class="ad-tabs"><span class="on">সব</span><span>পেন্ডিং</span><span>ডেলিভারড</span></div>
+            </div>
+            <div class="ad-table">
+              <div class="tr th"><span>অর্ডার</span><span>কাস্টমার</span><span>মোট</span><span>স্ট্যাটাস</span></div>
+              <div class="tr"><span>#AUR-1048</span><span>রাফিদ হাসান</span><span>৳৪,৯৬০</span><span><i class="st amber">পেন্ডিং</i></span></div>
+              <div class="tr"><span>#AUR-1047</span><span>সাদিয়া আক্তার</span><span>৳৬,৫২০</span><span><i class="st blue">কনফার্ম</i></span></div>
+              <div class="tr"><span>#AUR-1046</span><span>তানভীর আহমেদ</span><span>৳৪,২২০</span><span><i class="st violet">প্রসেসিং</i></span></div>
+              <div class="tr"><span>#AUR-1045</span><span>মেহজাবীন রহমান</span><span>৳৪,০৬০</span><span><i class="st green">শিপড</i></span></div>
+            </div>
+            <div class="ad-note"><span class="live-dot"></span> নতুন অর্ডার এলে সাথে সাথে নোটিফিকেশন — টেলিগ্রাম/ইমেইল ঐচ্ছিক</div>
+          </div>
+
+          <!-- products -->
+          <div class="ad-panel" data-panel="products">
+            <div class="ad-top">
+              <div><h3>প্রোডাক্ট</h3><p>যোগ করুন, বদলান, মুছুন</p></div>
+              <span class="ad-pill">+ নতুন প্রোডাক্ট</span>
+            </div>
+            <div class="prod-grid">
+              <div class="prod"><div class="prod-img"><span class="mini-watch"></span></div><b>হেরিটেজ ক্রোনো</b><span>৳৪,৮৯০ · স্টক ১২</span></div>
+              <div class="prod"><div class="prod-img dark"><span class="mini-watch noir"></span></div><b>নয়্যার অটোমেটিক</b><span>৳৬,৪৫০ · স্টক ৪</span></div>
+              <div class="prod"><div class="prod-img"><span class="mini-watch rose"></span></div><b>রোজ পেটিট</b><span>৳৪,১৫০ · স্টক ৯</span></div>
+              <div class="prod"><div class="prod-img"><span class="mini-watch sage"></span></div><b>ক্লাসিক মেশ</b><span>৳৩,৯৯০ · স্টক ২</span></div>
+            </div>
+            <div class="ad-note"><span class="live-dot"></span> ছবি, দাম, স্টক আর ক্যাটাগরি — নিজেই বদলাতে পারবেন</div>
+          </div>
+
+          <!-- courier -->
+          <div class="ad-panel" data-panel="courier">
+            <div class="ad-top">
+              <div><h3>কুরিয়ার</h3><p>কনসাইনমেন্ট, ট্র্যাকিং ও আপডেট</p></div>
+              <span class="ad-pill muted">ইন্টিগ্রেশন সাপেক্ষে</span>
+            </div>
+            <div class="ad-table">
+              <div class="tr th"><span>ট্র্যাকিং</span><span>কাস্টমার</span><span>স্ট্যাটাস</span><span>আপডেট</span></div>
+              <div class="tr"><span>TRK-88214</span><span>সাদিয়া আক্তার</span><span><i class="st green">ডেলিভারড</i></span><span>আজ</span></div>
+              <div class="tr"><span>TRK-87102</span><span>রাফিদ হাসান</span><span><i class="st blue">পথে আছে</i></span><span>আজ</span></div>
+              <div class="tr"><span>TRK-80415</span><span>ইমরান কবির</span><span><i class="st red">রিটার্নড</i></span><span>গতকাল</span></div>
+            </div>
+            <div class="ad-note"><span class="live-dot"></span> সমর্থিত কুরিয়ার সার্ভিসের ইন্টিগ্রেশন থাকলে স্বয়ংক্রিয় হয়</div>
+          </div>
+
+          <!-- reports -->
+          <div class="ad-panel" data-panel="reports">
+            <div class="ad-top">
+              <div><h3>রিপোর্ট</h3><p>বিক্রি, পেমেন্ট ও স্টক</p></div>
+              <span class="ad-pill">ডেমো ডেটা</span>
+            </div>
+            <div class="rep-rows">
+              <div class="rep"><b>৳৮৪,২০০</b><span>মোট বিক্রি (ডেমো)</span></div>
+              <div class="rep"><b>২১ / ২৪</b><span>পেমেন্ট মিলেছে</span></div>
+              <div class="rep"><b>৫</b><span>স্টক কম</span></div>
+            </div>
+            <div class="chart-card wide">
+              <div class="cc-head"><b>সাপ্তাহিক পার্সেল</b><span>ডেমো</span></div>
+              <div class="bars big"><i style="--h:.5"></i><i style="--h:.72"></i><i style="--h:.44"></i><i style="--h:.86"></i><i style="--h:.63"></i><i style="--h:.95"></i><i style="--h:.7"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ DEMOS -->
+  <section class="section section-light" id="demos">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow on-light"><span class="dot gold"></span> নিজে দেখে নিন</div>
+        <h2>লাইভ <span class="grad-ink">ডেমো</span> ও বিস্তারিত</h2>
+        <p class="sec-sub">আমাদের সাইটে লাইভ ডেমো, প্যাকেজের বিস্তারিত আর অ্যাডমিন প্যানেলের প্রিভিউ — সব এক জায়গায়।</p>
+      </div>
+
+      <div class="demo-cards">
+        <a class="demo-card reveal" style="--i:0" href="https://codepixelweb.vercel.app/#demos" target="_blank" rel="noopener">
+          <div class="dc-ico cyan"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
+          <h3>লাইভ ডেমো ওয়েবসাইট</h3>
+          <p>বাস্তব স্টোরফ্রন্ট কেমন দেখায় — ঘুরে দেখুন।</p>
+          <span class="dc-link">codepixelweb.vercel.app/#demos <svg viewBox="0 0 24 24" class="i"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+        <a class="demo-card reveal" style="--i:1" href="https://codepixelweb.vercel.app/#pricing" target="_blank" rel="noopener">
+          <div class="dc-ico gold"><svg viewBox="0 0 24 24"><path d="M12 3v18M8 7h6a3 3 0 0 1 0 6H8h7a3 3 0 0 1 0 6H8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>৳৩,০০০ প্যাকেজে কী কী</h3>
+          <p>প্যাকেজের ভেতরে কোন কোন ফিচার থাকছে — বিস্তারিত দেখুন।</p>
+          <span class="dc-link">codepixelweb.vercel.app/#pricing <svg viewBox="0 0 24 24" class="i"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+        <a class="demo-card reveal" style="--i:2" href="https://codepixelweb.vercel.app/#admin" target="_blank" rel="noopener">
+          <div class="dc-ico violet"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 9.5h17M9 9.5v10" stroke="currentColor" stroke-width="1.5"/></svg></div>
+          <h3>আপনার অ্যাডমিন প্যানেল</h3>
+          <p>অর্ডার, প্রোডাক্ট আর রিপোর্টের ড্যাশবোর্ড প্রিভিউ।</p>
+          <span class="dc-link">codepixelweb.vercel.app/#admin <svg viewBox="0 0 24 24" class="i"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ PROCESS -->
+  <section class="section section-process">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow"><span class="dot gold"></span> কীভাবে কাজ হয়</div>
+        <h2>চার ধাপে <span class="grad">আপনার ওয়েবসাইট</span></h2>
+      </div>
+      <ol class="steps">
+        <li class="step reveal" style="--i:0">
+          <span class="st-num">০১</span>
+          <h3>কথা বলুন</h3>
+          <p>আপনার ব্যবসা, পণ্য আর কাস্টমার — শুনে নিই। কোনো এডভান্স লাগবে না।</p>
+        </li>
+        <li class="step reveal" style="--i:1">
+          <span class="st-num">০২</span>
+          <h3>স্কোপ ঠিক করুন</h3>
+          <p>কোন ফিচার প্যাকেজে থাকবে, কোনটা ঐচ্ছিক — শুরুর আগেই লিখিতভাবে স্পষ্ট।</p>
+        </li>
+        <li class="step reveal" style="--i:2">
+          <span class="st-num">০৩</span>
+          <h3>ডিজাইন ও ডেভেলপ</h3>
+          <p>আপনার ব্র্যান্ডের রঙে ডিজাইন, তারপর ওয়েবসাইট ও অ্যাডমিন প্যানেল তৈরি।</p>
+        </li>
+        <li class="step reveal" style="--i:3">
+          <span class="st-num">০৪</span>
+          <h3>লাইভ ডেলিভারি</h3>
+          <p>লক্ষ্য ২–৩ দিনের মধ্যে — কনটেন্ট ও কাজের পরিধি অনুযায়ী।</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================ PRICING -->
+  <section class="section section-light" id="pricing">
+    <div class="wrap">
+      <div class="sec-head center reveal">
+        <div class="eyebrow on-light"><span class="dot gold"></span> প্যাকেজ</div>
+        <h2>সরল হিসাব, <span class="grad-ink">লুকানো খরচ নেই</span></h2>
+        <p class="sec-sub">একবারের পেমেন্টে ওয়েবসাইট ও অ্যাডমিন প্যানেল। কাজ শুরুর আগে কোনো এডভান্স নেই।</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="plan reveal">
+          <div class="plan-top">
+            <span class="plan-tag">স্টার্টার — আপনার ব্যবসার জন্য</span>
+            <div class="plan-price"><span class="cur">৳</span><b>৩,০০০</b><span class="per">একবারেই</span></div>
+            <p class="plan-note">কোনো এডভান্স নেই · কাজ বুঝে নিন, তারপর সিদ্ধান্ত</p>
+          </div>
+          <ul class="plan-list">
+            <li>আপনার ব্র্যান্ডের কাস্টম ডিজাইন (টেমপ্লেট নয়)</li>
+            <li>কাস্টমার ওয়েবসাইট — ক্যাটাগরি, সার্চ, ছবি, দাম</li>
+            <li>কার্ট ও সহজ চেকআউট</li>
+            <li>অ্যাডমিন প্যানেল — প্রোডাক্ট, ক্যাটাগরি, অর্ডার</li>
+            <li>অর্ডার স্ট্যাটাস ও নোটিফিকেশন</li>
+            <li>আনলিমিটেড কাস্টম ল্যান্ডিং পেজ</li>
+            <li>মোবাইল ফ্রেন্ডলি ও দ্রুত লোডিং</li>
+            <li>উপযুক্ত ফ্রি হোস্টিং প্ল্যাটফর্মে চালানোর সুযোগ</li>
+          </ul>
+          <a class="btn btn-wa wide" href="https://wa.me/8801876892958?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%2C%20%E0%A7%A9%E0%A7%A9%2C%E0%A7%A6%E0%A7%A6%E0%A7%A6%20%E0%A6%9F%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%B0%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%E0%A7%87%E0%A6%9C%E0%A6%9F%E0%A6%BF%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            হোয়াটসঅ্যাপে শুরু করুন
+          </a>
+          <span class="plan-foot">কোনো কার্ড লাগবে না — শুধু কথা বলুন</span>
+        </div>
+
+        <aside class="costs reveal">
+          <h3>আলাদা খরচ হতে পারে</h3>
+          <p class="costs-sub">স্বচ্ছতার জন্য আগেই বলে রাখছি — এগুলো ওয়েবসাইটের ডিজাইন ফি-র বাইরে।</p>
+          <div class="cost-row"><div><b>ডোমেইন</b><span>আপনার নামে নিবন্ধন (যেমন .com)</span></div><em>আলাদা</em></div>
+          <div class="cost-row"><div><b>হোস্টিং</b><span>উপযুক্ত ফ্রি প্ল্যাটফর্মে ৳০ — লিমিট প্ল্যাটফর্ম অনুযায়ী</span></div><em>৳০</em></div>
+          <div class="cost-row"><div><b>পেইড থার্ড পার্টি সার্ভিস</b><span>প্রয়োজন অনুযায়ী, আগে আলোচনা করে</span></div><em>আলাদা</em></div>
+          <div class="cost-row"><div><b>ঐচ্ছিক ইন্টিগ্রেশন</b><span>কুরিয়ার, পেমেন্ট গেটওয়ে, টেলিগ্রাম/ইমেইল</span></div><em>স্কোপ সাপেক্ষে</em></div>
+          <div class="costs-note">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            কাজ শুরুর আগেই কোন ফিচার প্যাকেজে থাকবে তা লিখিতভাবে ঠিক করে নেওয়া হয়।
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ FAQ -->
+  <section class="section section-faq" id="faq">
+    <div class="wrap faq-wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="eyebrow"><span class="dot cyan"></span> প্রশ্ন ও উত্তর</div>
+          <h2>যা জানতে চান</h2>
+        </div>
+      </div>
+      <div class="faq" id="faqList">
+        <details class="fq reveal" open>
+          <summary>সত্যিই মাত্র ৩,০০০ টাকায়?</summary>
+          <p>হ্যাঁ। প্যাকেজের মূল্য ৩,০০০ টাকা — কাজ শুরুর জন্য কোনো এডভান্স লাগে না। ডোমেইন বা পেইড থার্ড পার্টি সার্ভিসের খরচ আলাদা, সেটাও আগেই বলে দেওয়া হয়।</p>
+        </details>
+        <details class="fq reveal">
+          <summary>রেডিমেড টেমপ্লেট হবে তো?</summary>
+          <p>না। আপনার ব্যবসা, ব্র্যান্ডের রঙ, লোগো আর পছন্দ অনুযায়ী ডিজাইন করা হয় — কপি-পেস্ট টেমপ্লেট নয়।</p>
+        </details>
+        <details class="fq reveal">
+          <summary>ডেলিভারি কতদিনে?</summary>
+          <p>লক্ষ্য ২–৩ দিনের মধ্যে। কাজের পরিধি আর প্রয়োজনীয় উপকরণ (ছবি, লেখা, লোগো) কত দ্রুত পাওয়া যায় তার উপর সময় নির্ভর করে।</p>
+        </details>
+        <details class="fq reveal">
+          <summary>নিজে কি কনটেন্ট বদলাতে পারব?</summary>
+          <p>হ্যাঁ — অ্যাডমিন প্যানেল থেকে প্রোডাক্ট, দাম, স্টক, লোগো, ব্যানার ও কনটেন্ট নিজেই বদলাতে পারবেন।</p>
+        </details>
+        <details class="fq reveal">
+          <summary>কুরিয়ার বা পেমেন্ট গেটওয়ে থাকবে?</summary>
+          <p>সমর্থিত কুরিয়ার বা পেমেন্ট গেটওয়ের ইন্টিগ্রেশন প্রয়োজন ও স্কোপ অনুযায়ী যোগ করা যায়। কোনটা লাগবে সেটা শুরুতেই ঠিক করে নেওয়া হয়।</p>
+        </details>
+        <details class="fq reveal">
+          <summary>হোস্টিং খরচ কত?</summary>
+          <p>উপযুক্ত ফ্রি হোস্টিং প্ল্যাটফর্ম ব্যবহার করে মাসিক হোস্টিং ফি ছাড়াই চালানোর সুযোগ থাকে। ফ্রি টিয়ারের সীমা প্ল্যাটফর্ম অনুযায়ী ভিন্ন হতে পারে।</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ CTA -->
+  <section class="cta" id="contact">
+    <div class="wrap cta-inner">
+      <div class="cta-glow" aria-hidden="true"></div>
+      <div class="reveal">
+        <div class="eyebrow center-eb"><span class="dot gold"></span> আজই শুরু করুন</div>
+        <h2>আপনার ব্যবসা · আপনার ডিজাইন<br /><span class="grad">আপনার অনলাইন পরিচয়</span></h2>
+        <p class="cta-sub">মাত্র ৩,০০০ টাকায় ওয়েবসাইট — কোনো এডভান্স নেই। এক মেসেজেই কথা শুরু করুন।</p>
+        <div class="cta-actions">
+          <a class="btn btn-wa lg" href="https://wa.me/8801876892958?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%93%E0%A6%AF%E0%A6%BC%E0%A7%87%E0%A6%AC%E0%A6%B8%E0%A6%BE%E0%A6%87%E0%A6%9F%20%E0%A6%A4%E0%A7%88%E0%A6%B0%E0%A6%BF%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.6 7.4c-.4 0-.9.2-1.2.5-.5.5-.8 1.3-.6 2.2.3 1.7 1.4 3.4 3 4.6 1.3 1 2.9 1.7 4.3 1.7.9 0 1.7-.4 2.1-.9.3-.4.4-.9.4-1.3l-2.2-1c-.2 0-.4 0-.5.2l-.7.8c-.1.1-.3.2-.4.1-1-.5-2-1.4-2.5-2.4-.1-.2 0-.3.1-.4l.7-.7c.1-.2.1-.3.1-.5L10.5 8c-.1-.4-.3-.6-.7-.6h-1.2z" fill="currentColor"/></svg>
+            হোয়াটসঅ্যাপে মেসেজ দিন
+          </a>
+          <button class="btn btn-outline lg" data-copy="01876892958">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M4 5c0-1 1-2 2-2h2l2 5-2 1c1 3 3 5 6 6l1-2 5 2v2c0 1-1 2-2 2C10 19 4 12 4 5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            <span class="copy-label">০১৮৭৬৮৯২৯৫৮</span>
+          </button>
+        </div>
+        <div class="cta-links">
+          <a href="https://codepixelweb.vercel.app/" target="_blank" rel="noopener">codepixelweb.vercel.app</a>
+          <span>·</span>
+          <a href="https://codepixelweb.vercel.app/#demos" target="_blank" rel="noopener">লাইভ ডেমো</a>
+          <span>·</span>
+          <a href="https://codepixelweb.vercel.app/#admin" target="_blank" rel="noopener">অ্যাডমিন প্রিভিউ</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-inner">
+    <div class="foot-brand">
+      <a class="brand" href="#top">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="4" width="40" height="40" rx="13" fill="url(#bm)"/><path d="M17 18 L13 24 L17 30 M31 18 L35 24 L31 30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 16 L21 32" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span class="brand-text"><strong>CODEPIXEL</strong><em>WEB</em></span>
+      </a>
+      <p>আপনার ব্যবসা · আপনার ডিজাইন · আপনার অনলাইন পরিচয়</p>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h4>পেজ</h4>
+        <a href="#video">ভিডিও</a>
+        <a href="#features">সুবিধা</a>
+        <a href="#admin">অ্যাডমিন</a>
+        <a href="#pricing">প্যাকেজ</a>
+      </div>
+      <div>
+        <h4>যোগাযোগ</h4>
+        <a href="https://wa.me/8801876892958" target="_blank" rel="noopener">WhatsApp: 01876892958</a>
+        <a href="tel:01876892958">কল করুন</a>
+        <a href="https://codepixelweb.vercel.app/" target="_blank" rel="noopener">codepixelweb.vercel.app</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© <span id="year">2026</span> CodePixel Web</span>
+    <span class="foot-note">ডেমো ব্র্যান্ড "AURUM" ও সব ডেটা নমুনা — কোনো ক্লায়েন্টের তথ্য নয়।</span>
+  </div>
+</footer>
+
+<div class="mobile-cta" id="mobileCta">
+  <a class="mc-wa" href="https://wa.me/8801876892958" target="_blank" rel="noopener">হোয়াটসঅ্যাপে মেসেজ</a>
+  <a class="mc-call" href="tel:01876892958" aria-label="কল করুন">কল</a>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/app.js" defer></script>
+</body>
+</html>

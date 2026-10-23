@@ -1,425 +1,667 @@
 /**
- * Scenes 14–26 — storefront detail, checkout, admin panel, product/category
- * management, content editing and campaign landing pages.
+ * Scenes 14–26 — the shop floor and the admin panel.
+ * This is the section where the viewer should feel they are using the site.
  */
 import {
-  C, W, H, alpha, clamp, lerp, easeOut, easeInOut, easeOutQuint, easeOutBack, beat,
-  lin, text, eyebrow, rr, fillRR, strokeRR, circle, shadow, noShadow, icon, fontStr,
-  glowOrb, lightSweep, chip, line, mix, drawWatch, statusChip, brandMark, paragraph,
+  C, W, H, alpha, clamp, lerp, easeOut, easeIn, easeInOut, easeOutQuint, easeOutBack,
+  beat, lin, text, rr, fillRR, strokeRR, circle, shadow, noShadow, icon, fontStr,
+  glowOrb, lightSweep, drawWatch,
 } from '../render/kit.mjs';
-import { L, headline, kicker, accentRule, glassPanel, phoneStage, brandWatermark, seq, chapterCard } from './stage.mjs';
-import { adminStage } from './uiStage.mjs';
+import {
+  P, LAY, SEED, headlineBlock, kickerLine, stdTitle, glassCard, lightCard, phone, screenCrop,
+  browser, pill, callout, cursor, notifyCard, kpiTile, chain, chapterCard, priceHero, seal,
+  featureTile, ghostNumeral, dashLine, screenSwitch, stepper,
+} from './premium.mjs';
 import * as SF from '../ui/storefront.mjs';
 import * as AD from '../ui/admin.mjs';
 import { BRAND } from './timeline.mjs';
 
-function stepRail(ctx, t, steps, { active = 0, y = 1560, x0 = 120, w = 840 } = {}) {
-  const n = steps.length;
-  const gap = w / (n - 1);
+function titleOf(ctx, t, s, tone, opts = {}) {
+  if (s.title === false) return kickerLine(ctx, s.kicker, t, { tone, ...opts });
+  return stdTitle(ctx, t, s, { tone, ...opts });
+}
+
+function halo(ctx, cx, cy, r, tone, a = 0.5) {
   ctx.save();
-  for (let i = 0; i < n; i++) {
-    const cx = x0 + i * gap;
-    const done = i < active;
-    const cur = i === active;
-    const p = beat(t, 0.1 + i * 0.12, 0.4);
-    ctx.globalAlpha *= clamp(p);
-    circle(ctx, cx, y, cur ? 11 : 8, cur ? C.cyan : done ? alpha(C.cyan, 0.9) : 'rgba(150,175,215,0.35)');
-    if (i < n - 1) line(ctx, cx + 14, y, cx + gap - 14, y, i < active ? alpha(C.cyan, 0.6) : 'rgba(150,175,215,0.25)', 2);
-    text(ctx, steps[i], cx, y + 34, { size: 19, weight: cur ? 700 : 500, color: cur ? C.white : 'rgba(180,198,226,0.6)', align: 'center' });
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  if (tone === 'light') {
+    g.addColorStop(0, `rgba(255,255,255,${a})`);
+    g.addColorStop(0.6, `rgba(246,232,206,${a * 0.5})`);
+    g.addColorStop(1, 'rgba(246,232,206,0)');
+  } else {
+    g.addColorStop(0, `rgba(90,160,255,${a * 0.45})`);
+    g.addColorStop(1, 'rgba(90,160,255,0)');
   }
+  ctx.fillStyle = g;
+  ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+  ctx.restore();
+}
+
+/** Step badge on the left of a feature row. */
+function stepBadge(ctx, x, y, n, tone, p = 1, accent = null) {
+  const ac = accent || (tone === 'light' ? P.light.goldDeep : P.dark.cyan);
+  ctx.save();
+  ctx.globalAlpha *= clamp(p);
+  circle(ctx, x, y, 26, alpha(ac, 0.14));
+  text(ctx, String(n), x, y + 9, { size: 24, weight: 800, color: ac, align: 'center' });
   ctx.restore();
 }
 
 export const featureScenes = {
-  storefrontWalk(ctx, t, d) {
-    const S = seq(t, [
-      { at: 0, fn: (c, w, h, o) => SF.sfHome(c, w, h, { scroll: 0.03 + 0.3 * clamp(t / 5), cart: 0, activeCat: 1, tapCat: 1, tapCatP: clamp((t - 2.4) / 0.5) }) },
-      { at: 4.6, fn: (c, w, h) => SF.sfCategories(c, w, h, { p: 1 }) },
-      { at: 6.2, fn: (c, w, h) => SF.sfSearch(c, w, h, { p: clamp((t - 6.3) / 1.4) }) },
-      { at: 9.0, fn: (c, w, h) => SF.sfProduct(c, w, h, { zoom: clamp((t - 9.0) / 3), feat: clamp((t - 9.3) / 1.5), thumb: t > 10.4 ? 1 : 0 }) },
-    ]);
-    const z = 1 + 0.04 * clamp(t / d);
-    ctx.save();
-    ctx.translate(W / 2, 980);
-    ctx.scale(z, z);
-    ctx.translate(-W / 2, -980);
-    phoneStage(ctx, t, { x: 200, y: 556, scale: 1.16, enter: 1, draw: (w, h) => S.draw(ctx, w, h) });
-    ctx.restore();
-    // callouts
-    const calls = [
-      ['ক্যাটাগরি ব্রাউজ', 'grid', 0.3], ['সার্চ', 'search', 6.2], ['ছবি, দাম ও তথ্য', 'tag', 9.0],
+  /* 14 — the customer website, walked through */
+  storefrontWalk(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 80 });
+
+    // three-step tour of the real storefront: home → search → product
+    const step = t < 4.4 ? 0 : t < 8.0 ? 1 : 2;
+    const scroll = 0.03 + 0.16 * easeInOut(clamp(t / Math.max(3, d * 0.8)));
+    const ph = phone(ctx, t, {
+      x: 92, y: 700, w: 452, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      draw: (w, h) => screenSwitch(ctx, t, w, h, [
+        { at: 0, draw: (c, ww, hh) => SF.sfHome(c, ww, hh, { scroll, cart: 0, activeCat: 1 }) },
+        { at: 4.4, draw: (c, ww, hh) => SF.sfSearch(c, ww, hh, { p: clamp((t - 4.4) / 1.8) }) },
+        { at: 8.0, draw: (c, ww, hh) => SF.sfProduct(c, ww, hh, { feat: 1, zoom: 0.5 * easeInOut(clamp((t - 8) / 2.4)) }) },
+      ]),
+    });
+
+    // magnifier card on the right, focused on the current step
+    const crops = [
+      { k: 1.9, cx: 195, cy: 470, label: 'ক্যাটাগরি ও প্রোডাক্ট', ic: 'grid', draw: 'home' },
+      { k: 2.0, cx: 195, cy: 250, label: 'সার্চ ও ফিল্টার', ic: 'search', draw: 'search' },
+      { k: 1.35, cx: 195, cy: 430, label: 'ছবি, দাম ও বিস্তারিত', ic: 'cash', draw: 'product' },
     ];
-    calls.forEach(([label, ic, at], i) => {
-      const p = beat(t, at, 0.5, easeOutBack);
-      if (p <= 0) return;
-      const y = 700 + i * 96;
-      ctx.save(); ctx.globalAlpha *= clamp(p);
-      ctx.translate((1 - p) * 34, 0);
-      glassPanel(ctx, 712, y, 306, 62, { r: 31, fill: 'rgba(9,15,30,0.9)' });
-      icon(ctx, ic, 730, y + 17, 26, C.cyan, 2);
-      text(ctx, label, 770, y + 40, { size: 23, weight: 600, color: C.white, maxWidth: 236 });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.0);
-  },
-
-  checkoutFlow(ctx, t, d) {
-    const S = seq(t, [
-      { at: 0, fn: (c, w, h) => SF.sfProduct(c, w, h, { addToCart: clamp(t / 0.8), feat: 1, disc: '১৮% ছাড়' }) },
-      { at: 1.5, fn: (c, w, h) => SF.sfCart(c, w, h, { enter: clamp((t - 1.5) / 0.8), checkout: clamp((t - 3.4) / 0.6) }) },
-      { at: 3.9, fn: (c, w, h) => SF.sfCheckout(c, w, h, { fill: clamp((t - 4.0) / 2.4), confirm: clamp((t - 7.1) / 0.6), paySel: 0 }) },
-      { at: 7.5, fn: (c, w, h) => SF.sfConfirm(c, w, h, { p: clamp((t - 7.5) / 1.2) }) },
-    ]);
-    phoneStage(ctx, t, { x: 206, y: 548, scale: 1.17, enter: 1, draw: (w, h) => S.draw(ctx, w, h) });
-    // flow pills
-    const labels = [['কার্টে যোগ', 'cart'], ['চেকআউট', 'edit'], ['অর্ডার সম্পন্ন', 'checkCircle']];
-    labels.forEach(([label, ic], i) => {
-      const active = (i === 0 && t < 1.6) || (i === 1 && t >= 1.6 && t < 7.4) || (i === 2 && t >= 7.4);
-      const p = beat(t, 0.2 + i * 0.2, 0.5);
-      const y = 1150 + i * 100;
+    const cr = crops[step];
+    const mp = beat(t, step === 0 ? 0.7 : step === 1 ? 4.2 : 7.8, 0.7, easeOutQuint);
+    if (mp > 0) {
       ctx.save();
-      ctx.globalAlpha *= p;
-      fillRR(ctx, 716, y, 300, 62, 31, active ? 'rgba(40,123,255,0.22)' : 'rgba(12,20,38,0.78)');
-      strokeRR(ctx, 716, y, 300, 62, 31, active ? alpha(C.cyan, 0.7) : 'rgba(130,170,255,0.18)', active ? 2 : 1.2);
-      circle(ctx, 748, y + 31, 17, active ? C.cyan : 'rgba(120,150,210,0.2)');
-      icon(ctx, ic, 736, y + 20, 24, active ? '#04101F' : 'rgba(200,218,245,0.7)', 2.2);
-      text(ctx, label, 780, y + 40, { size: 22, weight: active ? 700 : 500, color: active ? C.white : 'rgba(200,218,245,0.7)' });
+      ctx.globalAlpha *= clamp(mp);
+      screenCrop(ctx, {
+        x: 588, y: 700, w: 396, h: 430, k: cr.k, cx: cr.cx, cy: cr.cy, tone, ring: true,
+        draw: (w2, h2) => (cr.draw === 'home'
+          ? SF.sfHome(ctx, w2, h2, { scroll: 0.05, cart: 0, activeCat: 1 })
+          : cr.draw === 'search'
+            ? SF.sfSearch(ctx, w2, h2, { p: 1 })
+            : SF.sfProduct(ctx, w2, h2, { feat: 1 })),
+      });
+      lightCard(ctx, 588, 1152, 396, 74, { r: 22, lift: 0.95 });
+      icon(ctx, cr.ic, 610, 1174, 28, P.light.goldDeep, 1.9);
+      text(ctx, cr.label, 650, 1198, { size: 23, weight: 700, color: P.light.ink, maxWidth: 320 });
+      ctx.restore();
+    }
+
+    // step rail under the phone
+    const steps = [['ক্যাটাগরি', 'grid'], ['সার্চ', 'search'], ['ছবি ও দাম', 'cash']];
+    steps.forEach(([label, ic], i) => {
+      const p = beat(t, 1.0 + i * 0.16, 0.5, easeOutBack);
+      if (p <= 0) return;
+      const on = i <= step;
+      const y = 1258 + i * 82;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p) * (on ? 1 : 0.7);
+      ctx.translate((1 - p) * 30, 0);
+      fillRR(ctx, 588, y, 396, 66, 33, on ? P.light.ink : '#FFFFFF');
+      if (!on) strokeRR(ctx, 588, y, 396, 66, 33, P.light.cardLine, 1.2);
+      icon(ctx, ic, 614, y + 18, 26, on ? '#7BE7B8' : P.light.muted, 2);
+      text(ctx, label, 654, y + 42, { size: 22, weight: 600, color: on ? '#fff' : P.light.ink2 });
+      if (on) seal(ctx, 952, y + 33, 14, 'yes', p, { tone });
       ctx.restore();
     });
-    brandWatermark(ctx, t, 0.0);
   },
 
-  adminBridge(ctx, t, d) {
-    const p = easeInOut(clamp((t - 0.3) / 1.4));
-    phoneStage(ctx, t, {
-      x: 56, y: 884, scale: 0.76, enter: 1, float: false,
-      draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.22, cart: 1, activeCat: 1 }),
+  /* 15 — cart → checkout → order */
+  checkoutFlow(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 80 });
+
+    stepper(ctx, 132, 660, 816, ['কার্ট', 'ঠিকানা', 'কনফার্ম', 'অর্ডার'], t, { tone, delay: 0.3, current: null });
+
+    halo(ctx, 540, 1200, 460, 'light', 0.4);
+    const ph = phone(ctx, t, {
+      x: 348, y: 800, w: 384, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      draw: (w, h) => screenSwitch(ctx, t, w, h, [
+        { at: 0, draw: (c, ww, hh) => SF.sfProduct(c, ww, hh, { addToCart: 1, feat: 1 }) },
+        { at: 1.5, draw: (c, ww, hh) => SF.sfCart(c, ww, hh, { enter: 1, checkout: clamp((t - 2.6) / 0.5) }) },
+        { at: 3.3, draw: (c, ww, hh) => SF.sfCheckout(c, ww, hh, { fill: clamp((t - 3.5) / 2.4), paySel: 0, confirm: clamp((t - 6.0) / 0.6) }) },
+        { at: 6.9, draw: (c, ww, hh) => SF.sfConfirm(c, ww, hh, { p: clamp((t - 6.9) / 1.0) }) },
+      ]),
     });
-    adminStage(ctx, t, {
-      box: { x: 424, y: 832, w: 600, h: 472 }, vw: 780, vh: 560, enter: clamp((t - 0.8) / 1.0),
-      active: 0, title: 'ড্যাশবোর্ড', draw: (c, w, h) => AD.adDashboard(c, w, h, { p: clamp((t - 1.4) / 1.8) }),
-      showChrome: true, scale: 1.0,
+
+    // floating proof chips
+    const chips = [
+      { at: 1.2, label: 'কার্টে যোগ', ic: 'bag' },
+      { at: 3.4, label: 'নাম-ফোন-ঠিকানা', ic: 'users' },
+      { at: 7.2, label: 'অর্ডার কনফার্ম', ic: 'checkCircle' },
+    ];
+    chips.forEach((c, i) => {
+      const p = beat(t, c.at, 0.55, easeOutBack);
+      if (p <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      const y = 900 + i * 132;
+      pill(ctx, 66, y, c.label, { tone, iconName: c.ic, p, size: 20 });
+      ctx.restore();
     });
-    const cp = beat(t, 1.4, 0.8);
+
+    callout(ctx, ph.x + ph.w * 0.82, ph.y + ph.h * 0.62, '২ ধাপেই অর্ডার', t, {
+      dx: 120, dy: 40, tone, delay: 4.2, size: 20, align: 'left',
+    });
+  },
+
+  /* 16 — website + admin panel */
+  adminBridge(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const ph = phone(ctx, t, {
+      x: 92, y: 760, w: 344, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.1, cart: 0, activeCat: 1 }),
+    });
+    const br = browser(ctx, t, {
+      x: 470, y: 810, w: 500, vw: 900, vh: 660, enter: beat(t, 0.3, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop', draw: (w, h) => AD.adDashboard(ctx, w, h, { p: clamp((t - 0.4) / 2) }),
+    });
+
+    // labels
+    pill(ctx, 264, 1440, 'কাস্টমার ওয়েবসাইট', { tone, align: 'center', iconName: 'globe', p: beat(t, 1.1, 0.5, easeOutBack), size: 21 });
+    pill(ctx, 720, 1490, 'অ্যাডমিন প্যানেল', { tone, align: 'center', iconName: 'grid', p: beat(t, 1.3, 0.5, easeOutBack), size: 21 });
+
+    // connecting plus + sync pulses
+    const cp = beat(t, 1.6, 0.6, easeOutBack);
     if (cp > 0) {
       ctx.save();
-      ctx.globalAlpha *= cp;
-      line(ctx, 380, 1156, 424, 1156, alpha(C.cyan, 0.5), 3, [10, 8]);
-      circle(ctx, 398, 1156, 20, alpha(C.blue, 0.32));
-      icon(ctx, 'arrow', 388, 1146, 20, C.cyan, 2.2);
+      ctx.globalAlpha *= clamp(cp);
+      const cx = 452, cy = 1080;
+      circle(ctx, cx, cy, 40, '#FFFFFF');
+      strokeRR(ctx, cx - 40, cy - 40, 80, 80, 40, P.light.cardLine, 1.2);
+      icon(ctx, 'link', cx - 15, cy - 15, 30, P.light.goldDeep, 2);
+      for (let i = 0; i < 3; i++) {
+        const ph2 = ((t * 0.55 + i * 0.33) % 1);
+        ctx.globalAlpha = cp * (1 - ph2) * 0.5;
+        circle(ctx, cx, cy, 40 + ph2 * 60, 'transparent');
+        ctx.strokeStyle = P.light.gold;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(cx, cy, 40 + ph2 * 60, 0, Math.PI * 2); ctx.stroke();
+      }
       ctx.restore();
     }
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  modulesIntro(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 700, w: 968, h: 660 }, vw: 780, vh: 860, panY: clamp((t - 4.4) / 3) * 0.5,
-      enter: clamp(t / 0.9), active: 0, title: 'ড্যাশবোর্ড',
-      draw: (c, w, h) => AD.adDashboard(c, w, h, { p: clamp((t - 0.6) / 2.4) }),
-    });
-    const mods = [['প্রোডাক্ট', 'box'], ['অর্ডার', 'list'], ['স্টক', 'chart'], ['কাস্টমার', 'users'], ['বিক্রি', 'cash']];
-    mods.forEach(([label, ic], i) => {
-      const p = beat(t, 1.6 + i * 0.16, 0.5, easeOutBack);
-      if (p <= 0) return;
-      const x = 92 + i * 180, y = 1392;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate(0, (1 - p) * 20);
-      fillRR(ctx, x, y, 164, 58, 29, 'rgba(12,20,38,0.9)');
-      strokeRR(ctx, x, y, 164, 58, 29, alpha(C.blue, 0.4), 1.2);
-      icon(ctx, ic, x + 16, y + 16, 24, C.cyan, 1.9);
-      text(ctx, label, x + 52, y + 38, { size: 23, weight: 600, color: C.white });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  onePlace(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 620, w: 968, h: 720 }, vw: 780, vh: 900, enter: 1, panY: 0.35,
-      active: 0, title: 'ড্যাশবোর্ড', draw: (c, w, h) => AD.adDashboard(c, w, h, { p: 1 }),
-    });
-    const p = beat(t, 0.2, 0.6, easeOutBack);
     ctx.save();
-    ctx.globalAlpha *= p;
-    chip(ctx, 'এক জায়গা থেকে পরিচালনা', W / 2, 1380, { align: 'center', color: C.green, size: 26 });
+    ctx.globalAlpha *= 0.8;
+    dashLine(ctx, ph.x + ph.w, 1080, 412, 1080, alpha(P.light.goldDeep, 0.5), 2, [5, 7], beat(t, 1.4, 0.6));
+    dashLine(ctx, 492, 1080, br.x, 1080, alpha(P.light.goldDeep, 0.5), 2, [5, 7], beat(t, 1.4, 0.6));
     ctx.restore();
-    brandWatermark(ctx, t, 0.3);
   },
 
-  productMgmt(ctx, t, d) {
-    const modal = t > 2.0 && t < 8.6;
-    const saved = t > 7.6 && t < 8.6;
-    adminStage(ctx, t, {
-      box: { x: 56, y: 700, w: 968, h: 620 }, vw: 760, vh: 820, enter: 1,
-      active: 1, title: 'প্রোডাক্ট', sub: 'প্রোডাক্ট ও ক্যাটাগরি ব্যবস্থাপনা',
-      panY: 0,
-      draw: (c, w, h) => {
-        if (t < 8.8) {
-          AD.adProducts(c, w, h, {
-            p: clamp((t - 0.2) / 1.2), addGlow: t > 1.2 && t < 2.2,
-            modal: modal ? clamp((t - 2.0) / 0.5) : 0,
-            typing: clamp((t - 2.8) / 2.0), saved: saved, savedP: clamp((t - 7.6) / 0.4),
-            highlight: t > 7.4 ? 0 : -1,
-          });
-        } else {
-          AD.adCategories(c, w, h, {
-            p: clamp((t - 8.8) / 1.0), editIndex: t > 10.4 ? 0 : -1,
-            deleteIndex: t > 12.4 ? 2 : -1, deleteP: clamp((t - 12.4) / 0.8),
-            newCatP: t > 11.4 ? clamp((t - 11.4) / 1.2) : 0,
-          });
-        }
-      },
-    });
-    // annotation chips
-    const notes = [
-      [1.4, 'নতুন প্রোডাক্ট যোগ'],
-      [3.2, 'ছবি ও দাম পরিবর্তন'],
-      [9.2, 'ক্যাটাগরি তৈরি'],
-      [12.4, 'এডিট বা ডিলিট'],
+  /* 17 — the modules */
+  modulesIntro(ctx, t, d, s) {
+    const tone = 'dark';
+    titleOf(ctx, t, s, tone, { size: 86 });
+    ghostNumeral(ctx, '02', W / 2, 1060, 520, P.dark.cyan, 0.05);
+
+    const mods = [
+      ['box', 'প্রোডাক্ট'], ['list', 'অর্ডার'], ['chart', 'স্টক'],
+      ['users', 'কাস্টমার'], ['cash', 'বিক্রি'],
     ];
-    notes.forEach(([at, label], i) => {
-      const p = beat(t, at, 0.45, easeOutBack);
-      if (p <= 0 || t > at + 2.4) return;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p) * clamp((at + 2.4 - t) / 0.4);
-      fillRR(ctx, 90, 1372, 400, 58, 29, 'rgba(10,17,33,0.9)');
-      strokeRR(ctx, 90, 1372, 400, 58, 29, alpha(C.cyan, 0.4), 1.2);
-      icon(ctx, 'check', 110, 1386, 26, C.cyan, 2.6);
-      text(ctx, label, 150, 1410, { size: 24, weight: 600, color: C.white });
-      ctx.restore();
+    const tw = 172, th = 172, gap = 22;
+    const rows = [[0, 1, 2], [3, 4]];
+    let idx = 0;
+    rows.forEach((row, ri) => {
+      const totalW = row.length * tw + (row.length - 1) * gap;
+      const x0 = (W - totalW) / 2;
+      row.forEach((m, ci) => {
+        const [ic, label] = mods[idx];
+        const p = beat(t, 0.3 + idx * 0.13, 0.65, easeOutBack);
+        if (p > 0) {
+          const x = x0 + ci * (tw + gap);
+          const y = 790 + ri * (th + gap) - (1 - p) * 30;
+          ctx.save();
+          ctx.globalAlpha *= clamp(p);
+          glassCard(ctx, x, y, tw, th, { r: 28, fill: 'rgba(16,26,46,0.72)', glow: P.dark.cyan });
+          fillRR(ctx, x + tw / 2 - 26, y + 26, 52, 52, 16, 'rgba(79,216,255,0.14)');
+          icon(ctx, ic, x + tw / 2 - 15, y + 37, 30, P.dark.cyan, 1.9);
+          text(ctx, label, x + tw / 2, y + 128, { size: 27, weight: 700, color: P.dark.ink, align: 'center' });
+          ctx.restore();
+        }
+        idx++;
+      });
     });
-    brandWatermark(ctx, t, 0.3);
+    // connnecting line to the "one place" promise
+    const lp = beat(t, 1.5, 0.7, easeOut);
+    if (lp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(lp);
+      dashLine(ctx, W / 2, 1200, W / 2, 1300, alpha(P.dark.cyan, 0.5), 2, [4, 7], lp);
+      pill(ctx, W / 2, 1370, 'সবকিছু এক জায়গা থেকে', { tone, align: 'center', iconName: 'grid', p: lp, size: 24 });
+      ctx.restore();
+    }
   },
 
-  contentMgmt(ctx, t, d) {
-    const tap = t < 2.2 ? 0 : t < 4.6 ? 1 : t < 6.8 ? 2 : 3;
-    adminStage(ctx, t, {
-      box: { x: 56, y: 690, w: 968, h: 660 }, vw: 760, vh: 840, enter: 1,
-      active: 0, title: 'কনটেন্ট', sub: 'লোগো • ব্যানার • প্রোডাক্ট • কনটেন্ট',
-      draw: (c, w, h) => AD.adContent(c, w, h, {
-        tap, saved: t > 7.4 ? clamp((t - 7.4) / 0.5) : 0,
-        bannerHue: clamp((t - 4.0) / 2.5), bannerLight: clamp((t - 6.0) / 2),
-      }),
+  /* 18 — one place */
+  onePlace(ctx, t, d, s) {
+    const tone = 'dark';
+    kickerLine(ctx, s.kicker, t, { tone, y: 470, align: 'center', x: W / 2 });
+    headlineBlock(ctx, 'এক জায়গা থেকে\nপরিচালনা', t, {
+      tone, x: W / 2 - LAY.w / 2, y: 610, size: 104, align: 'center', maxWidth: LAY.w, delay: 0.15,
+      accentTo: ['#FFFFFF', '#4FD8FF'],
     });
-    const chipStates = [['লোগো বদলান', 'logo'], ['ব্যানার আপডেট', 'banner'], ['নতুন প্রোডাক্ট', 'plus'], ['কনটেন্ট সম্পাদনা', 'edit']];
-    const activeTap = t < 2.2 ? 0 : t < 4.6 ? 1 : t < 6.8 ? 2 : 3;
-    const cw2 = 218;
-    chipStates.forEach(([label, ic], i) => {
-      const x = 76 + i * (cw2 + 12);
-      const act = i === activeTap;
-      ctx.save();
-      ctx.globalAlpha *= act ? 1 : 0.6;
-      fillRR(ctx, x, 1400, cw2, 56, 28, act ? 'rgba(40,123,255,0.26)' : 'rgba(12,20,38,0.9)');
-      strokeRR(ctx, x, 1400, cw2, 56, 28, act ? alpha(C.cyan, 0.7) : 'rgba(130,170,255,0.2)', act ? 2 : 1.2);
-      icon(ctx, ic, x + 16, 1416, 24, act ? C.cyan : 'rgba(200,218,245,0.8)', 1.9);
-      text(ctx, label, x + 50, 1436, { size: 20, weight: 600, color: C.white, maxWidth: cw2 - 60 });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
 
-  editPreviewSave(ctx, t, d) {
-    const step = t < 1.3 ? 0 : t < 2.6 ? 1 : 2;
-    const steps = [['এডিট', 'edit'], ['প্রিভিউ', 'grid'], ['সেভ', 'check']];
-    steps.forEach(([label, ic], i) => {
-      const act = i === step;
-      const p = beat(t, 0.1 + i * 0.15, 0.5, easeOutBack);
-      const x = 90 + i * 310;
+    const cx = W / 2, cy = 1230;
+    const nodes = [
+      ['box', 'প্রোডাক্ট'], ['list', 'অর্ডার'], ['users', 'কাস্টমার'],
+      ['cash', 'বিক্রি'], ['truck', 'কুরিয়ার'], ['shield', 'নিরাপত্তা'],
+    ];
+    const R = 300;
+    // orbit rings
+    ctx.save();
+    for (let i = 0; i < 2; i++) {
+      ctx.strokeStyle = `rgba(120,185,255,${0.09 - i * 0.03})`;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(cx, cy, R - 40 + i * 90, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.restore();
+
+    // spokes
+    nodes.forEach(([ic, label], i) => {
+      const a = (-Math.PI / 2) + (i / nodes.length) * Math.PI * 2;
+      const x = cx + Math.cos(a) * R;
+      const y = cy + Math.sin(a) * R * 0.62;
+      const p = beat(t, 0.9 + i * 0.1, 0.6, easeOutQuint);
+      if (p <= 0) return;
       ctx.save();
       ctx.globalAlpha *= clamp(p);
-      fillRR(ctx, x, 760, 270, 120, 26, act ? 'rgba(40,123,255,0.22)' : 'rgba(12,20,38,0.85)');
-      strokeRR(ctx, x, 760, 270, 120, 26, act ? C.cyan : 'rgba(130,170,255,0.22)', act ? 2.2 : 1.2);
-      circle(ctx, x + 60, 820, 30, act ? C.cyan : 'rgba(120,150,210,0.18)');
-      icon(ctx, ic, x + 45, 805, 30, act ? '#04101F' : 'rgba(200,218,245,0.75)', 2.2);
-      text(ctx, label, x + 104, 834, { size: 32, weight: 700, color: act ? C.white : 'rgba(200,218,245,0.72)' });
+      dashLine(ctx, cx, cy, x, y, alpha(P.dark.cyan, 0.35), 1.6, [4, 8], p);
+      // node
+      circle(ctx, x, y, 46, 'rgba(13,22,40,0.9)');
+      ctx.strokeStyle = alpha(P.dark.cyan, 0.4);
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(x, y, 46, 0, Math.PI * 2); ctx.stroke();
+      icon(ctx, ic, x - 15, y - 16, 30, P.dark.cyan, 1.9);
+      text(ctx, label, x, y + 78, { size: 21, weight: 600, color: P.dark.ink2, align: 'center' });
       ctx.restore();
-      if (i < 2) {
-        const q = beat(t, 0.3 + i * 0.15, 0.4);
-        ctx.save(); ctx.globalAlpha *= q * 0.8;
-        line(ctx, x + 282, 820, x + 296, 820, alpha(C.cyan, 0.6), 2.4, [6, 6]);
-        ctx.restore();
+    });
+
+    // centre hub
+    const hp = beat(t, 0.3, 0.8, easeOutBack);
+    ctx.save();
+    ctx.globalAlpha *= clamp(hp);
+    glowOrb(ctx, cx, cy, 260, P.dark.cyan, 0.3);
+    circle(ctx, cx, cy, 92, 'rgba(11,20,36,0.95)');
+    ctx.strokeStyle = alpha(P.dark.gold, 0.6);
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(cx, cy, 92, 0, Math.PI * 2); ctx.stroke();
+    icon(ctx, 'grid', cx - 26, cy - 28, 52, P.dark.gold, 1.8);
+    text(ctx, 'অ্যাডমিন', cx, cy + 62, { size: 20, weight: 700, color: P.dark.ink2, align: 'center' });
+    ctx.restore();
+  },
+
+  /* 19 — product management */
+  productMgmt(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const br = browser(ctx, t, {
+      y: 620, w: 968, vw: 1000, vh: 640, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/products',
+      draw: (w, h) => AD.adProducts(ctx, w, h, { p: clamp((t - 0.2) / 2.2) }),
+    });
+
+    // floating add-product modal
+    const mp = beat(t, 2.0, 0.7, easeOutQuint);
+    if (mp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(mp);
+      ctx.translate(0, (1 - mp) * 40);
+      shadow(ctx, 'rgba(60,44,20,0.28)', 60, 26);
+      fillRR(ctx, 560, 1060, 388, 400, 26, '#FFFFFF');
+      noShadow(ctx);
+      strokeRR(ctx, 560, 1060, 388, 400, 26, P.light.cardLine, 1.2);
+      text(ctx, 'নতুন প্রোডাক্ট', 588, 1106, { size: 24, weight: 700, color: P.light.ink });
+      fillRR(ctx, 588, 1124, 332, 96, 14, '#F7F2E8');
+      drawWatch(ctx, 754, 1172, 34, SF.PRODUCTS[2].tone);
+      text(ctx, 'ছবি আপলোড করুন', 754, 1240, { size: 17, weight: 500, color: P.light.muted, align: 'center' });
+      [['নাম', 'অরাম লেদার'], ['দাম', '৳3,290'], ['স্টক', '১২']].forEach(([k, v], i) => {
+        const y = 1286 + i * 58;
+        text(ctx, k, 588, y + 18, { size: 17, weight: 500, color: P.light.muted, maxWidth: 80 });
+        fillRR(ctx, 660, y, 260, 42, 10, '#FBF8F2');
+        strokeRR(ctx, 660, y, 260, 42, 10, P.light.cardLine, 1.1);
+        text(ctx, v, 676, y + 27, { size: 18, weight: 600, color: P.light.ink });
+      });
+      fillRR(ctx, 588, 1380, 332, 52, 14, P.light.ink);
+      text(ctx, 'সেভ করুন', 754, 1414, { size: 21, weight: 700, color: '#fff', align: 'center' });
+      seal(ctx, 300, 1180, 34, 'yes', beat(t, 3.2, 0.5), { tone });
+      ctx.restore();
+    }
+
+    // callouts on the table
+    callout(ctx, br.x + 150, br.y + br.h * 0.42, 'ছবি ও দাম বদলান', t, { dx: -120, dy: 90, tone, delay: 1.2, size: 20, align: 'left' });
+    callout(ctx, br.x + br.w - 150, br.y + br.h * 0.34, 'ক্যাটাগরি তৈরি/এডিট', t, { dx: 60, dy: 100, tone, delay: 1.6, size: 20, align: 'right' });
+
+    pill(ctx, 300, 1520, 'যোগ • বদল • ডিলিট — সবই নিজে', { tone: 'light', align: 'center', iconName: 'edit', p: beat(t, 2.6, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 20 — content: logo, banner, pages */
+  contentMgmt(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const br = browser(ctx, t, {
+      y: 620, w: 880, vw: 980, vh: 620, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/content',
+      draw: (w, h) => AD.adContent(ctx, w, h, { p: clamp((t - 0.2) / 2) }),
+    });
+
+    // update chips float in
+    const items = [
+      ['logo', 'লোগো'],
+      ['banner', 'ব্যানার'],
+      ['box', 'প্রোডাক্ট'],
+      ['edit', 'কনটেন্ট'],
+    ];
+    items.forEach(([ic, label], i) => {
+      const p = beat(t, 1.6 + i * 0.18, 0.55, easeOutBack);
+      if (p <= 0) return;
+      const x = 92 + i * 236;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(0, (1 - p) * 26);
+      lightCard(ctx, x, 1420, 208, 160, { r: 24, lift: 0.9 });
+      fillRR(ctx, x + 74, 1446, 60, 60, 18, 'rgba(176,138,87,0.14)');
+      icon(ctx, ic === 'logo' ? 'watch' : ic === 'banner' ? 'tag' : ic, x + 88, 1458, 32, P.light.goldDeep, 2);
+      text(ctx, label, x + 104, 1552, { size: 23, weight: 700, color: P.light.ink, align: 'center' });
+      ctx.restore();
+    });
+  },
+
+  /* 21 — edit → preview → save */
+  editPreviewSave(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 84 });
+
+    // split: editor | live preview
+    const lp = beat(t, 0.15, 0.8, easeOutQuint);
+    lightCard(ctx, 78, 660, 452, 800, { r: 30, lift: 1 });
+    text(ctx, 'এডিট', 108, 712, { size: 22, weight: 600, color: P.light.muted });
+    // fields
+    [['ব্যানার হেডলাইন', 'সময়ের নিজস্ব ছন্দ'], ['সাব-টেক্সট', 'প্রিমিয়াম ঘড়ির নতুন সংগ্রহ'], ['বাটন', 'সংগ্রহ দেখুন']].forEach(([k, v], i) => {
+      const p = beat(t, 0.5 + i * 0.25, 0.5, easeOutQuint);
+      if (p <= 0) return;
+      const y = 748 + i * 108;
+      text(ctx, k, 108, y + 18, { size: 18, weight: 500, color: P.light.muted });
+      fillRR(ctx, 108, y + 30, 392, 50, 12, '#FBF8F2');
+      strokeRR(ctx, 108, y + 30, 392, 50, 12, i === 0 ? P.light.gold : P.light.cardLine, i === 0 ? 1.8 : 1.1);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(108, y + 30, 392 * p, 50);
+      ctx.clip();
+      text(ctx, v, 124, y + 62, { size: 18, weight: 600, color: P.light.ink, maxWidth: 366 });
+      ctx.restore();
+      if (i === 0) {
+        const cw = Math.min(392 * p, 240);
+        fillRR(ctx, 108 + cw, y + 42, 2, 26, 1, P.light.gold);
       }
     });
-    phoneStage(ctx, t, {
-      x: 250, y: 940, scale: 1.02, enter: 1,
-      draw: (w, h) => SF.sfHome(ctx, w, h, {
-        scroll: 0.02, cart: 1, activeCat: 2,
-        tapCat: step === 1 ? 2 : -1, tapCatP: clamp((t - 1.4) / 0.6),
-      }),
+    // color + image controls
+    [['কালার', ['#C2A167', '#7C9A8B', '#5C6BC0']], ['ছবি', []]].forEach(([label, cols], i) => {
+      const y = 1080 + i * 90;
+      text(ctx, label, 108, y + 18, { size: 18, weight: 500, color: P.light.muted });
+      cols.forEach((c, k) => circle(ctx, 176 + k * 44, y + 14, 15, c));
+      if (!cols.length) {
+        fillRR(ctx, 108, y + 32, 392, 44, 10, '#FBF8F2');
+        strokeRR(ctx, 108, y + 32, 392, 44, 10, P.light.cardLine, 1.1);
+        icon(ctx, 'upload', 128, y + 42, 22, P.light.goldDeep, 1.9);
+        text(ctx, 'banner.jpg আপলোড হয়েছে', 160, y + 61, { size: 17, weight: 500, color: P.light.ink2 });
+      }
     });
-    if (step === 2) {
-      const p = beat(t, 2.6, 0.5, easeOutBack);
-      ctx.save(); ctx.globalAlpha *= p;
-      fillRR(ctx, 690, 1290, 300, 66, 33, 'rgba(24,184,135,0.2)');
-      strokeRR(ctx, 690, 1290, 300, 66, 33, alpha(C.green, 0.6), 1.6);
-      icon(ctx, 'checkCircle', 710, 1304, 30, C.green, 2);
-      text(ctx, 'সেভ হয়েছে', 756, 1332, { size: 26, weight: 700, color: C.white });
+    fillRR(ctx, 108, 1300, 392, 54, 14, P.light.ink);
+    text(ctx, 'সেভ করুন', 304, 1336, { size: 21, weight: 700, color: '#fff', align: 'center' });
+
+    // arrow
+    const ap = beat(t, 1.4, 0.6, easeOut);
+    if (ap > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(ap);
+      circle(ctx, 554, 1060, 30, '#FFFFFF');
+      strokeRR(ctx, 524, 1030, 60, 60, 30, P.light.cardLine, 1.1);
+      text(ctx, '→', 554, 1072, { size: 34, weight: 700, color: P.light.goldDeep, align: 'center' });
       ctx.restore();
     }
-    brandWatermark(ctx, t, 0.3);
+
+    // live preview phone
+    const pp = beat(t, 0.5, 0.9, easeOutQuint);
+    if (pp > 0) {
+      phone(ctx, t, {
+        x: 598, y: 690, w: 356, enter: pp, tone,
+        draw: (w, h) => SF.sfHome(ctx, w, h, {
+          scroll: 0.02, cart: 0, activeCat: 1,
+        }),
+      });
+      pill(ctx, 776, 1560, 'লাইভ প্রিভিউ', { tone, align: 'center', iconName: 'play', p: beat(t, 1.8, 0.5, easeOutBack), size: 21 });
+      // saved toast
+      const sp = beat(t, 3.0, 0.6, easeOutQuint);
+      if (sp > 0) {
+        ctx.save();
+        ctx.globalAlpha *= clamp(sp);
+        notifyCard(ctx, 560, 1660, 470, t, { title: 'সেভ হয়েছে', body: 'পরিবর্তন লাইভ', iconName: 'checkCircle', tone: 'light', delay: 0 });
+        ctx.restore();
+      }
+    }
   },
 
-  landingIntro(ctx, t, d) {
-    // ad creative -> landing page
-    const p = easeInOut(clamp((t - 0.9) / 1.5));
-    // left: ad card
-    ctx.save();
-    ctx.globalAlpha *= 1 - p * 0.25;
-    glassPanel(ctx, 56, 800, 420, 470, { r: 24, fill: 'rgba(15,24,45,0.96)', glow: C.blue });
-    text(ctx, 'বিজ্ঞাপন ক্রিয়েটিভ', 86, 848, { size: 21, weight: 600, color: alpha(C.cyan, 0.9), letterSpacing: 1.2 });
-    fillRR(ctx, 82, 872, 368, 250, 16, '#241E17');
-    drawWatch(ctx, 266, 986, 74, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
-    fillRR(ctx, 82, 1140, 240, 14, 7, 'rgba(255,255,255,0.3)');
-    fillRR(ctx, 82, 1166, 170, 12, 6, 'rgba(255,255,255,0.18)');
-    fillRR(ctx, 82, 1198, 132, 42, 21, 'rgba(217,190,143,0.92)');
-    ctx.restore();
-    // arrow
-    const ap = beat(t, 1.2, 0.6);
-    ctx.save(); ctx.globalAlpha *= ap;
-    icon(ctx, 'arrow', 520, 990, 40, C.cyan, 2);
-    text(ctx, 'ল্যান্ডিং পেজ', 500, 1072, { size: 21, weight: 600, color: alpha(C.cyan, 0.9), align: 'center' });
-    ctx.restore();
-    phoneStage(ctx, t, {
-      x: 600, y: 720, scale: 0.98, enter: clamp((t - 1.0) / 1.2),
-      draw: (w, h) => SF.sfLanding(ctx, w, h, 0, { p: clamp((t - 1.6) / 1.6) }),
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
+  /* 22 — landing pages for ads */
+  landingIntro(ctx, t, d, s) {
+    const tone = 'dark';
+    titleOf(ctx, t, s, tone, { size: 86 });
 
-  landingUnlimited(ctx, t, d) {
-    const variants = [2, 0, 1];
-    variants.forEach((variant, i) => {
-      const p = beat(t, 0.1 + i * 0.16, 0.7, easeOutBack);
-      if (p <= 0) return;
-      const x = 84 + i * 108, y = 790 + i * 40;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p) * (i === 2 ? 1 : 0.8);
-      ctx.translate(0, (1 - p) * 40);
-      shadow(ctx, 'rgba(0,0,0,0.55)', 50, 20);
-      fillRR(ctx, x, y, 470, 600, 24, 'rgba(15,24,45,0.97)');
-      noShadow(ctx);
-      strokeRR(ctx, x, y, 470, 600, 24, i === 2 ? alpha(C.cyan, 0.6) : 'rgba(140,180,255,0.28)', i === 2 ? 2 : 1.2);
-      ctx.save();
-      rr(ctx, x, y, 470, 600, 24); ctx.clip();
-      ctx.translate(x, y);
-      const sc = 470 / 390;
-      ctx.scale(sc, sc);
-      SF.sfLanding(ctx, 390, 600 / sc, variant);
-      ctx.restore();
-      ctx.restore();
-    });
-    const p2 = beat(t, 0.8, 0.7, easeOutBack);
-    ctx.save();
-    ctx.globalAlpha *= p2;
-    ctx.translate(0, (1 - p2) * 20);
-    glassPanel(ctx, 96, 1432, 640, 72, { r: 36, fill: 'rgba(10,17,33,0.94)' });
-    icon(ctx, 'sparkle', 118, 1450, 32, C.cyan);
-    text(ctx, 'প্রতিটি ক্যাম্পেইনের জন্য আলাদা পেজ', 162, 1477, { size: 24, weight: 600, color: C.white, maxWidth: 560 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  landingThree(ctx, t, d) {
-    const items = [
-      ['নতুন প্রোডাক্ট', 1, 'পণ্য লঞ্চ'],
-      ['বিশেষ অফার', 0, 'অফার'],
-      ['বিজ্ঞাপন ক্যাম্পেইন', 2, 'ক্যাম্পেইন'],
-    ];
-    items.forEach(([label, variant, tag], i) => {
-      const p = beat(t, 0.2 + i * 0.5, 0.7, easeOutBack);
-      if (p <= 0) return;
-      const x = 62 + i * 320, y = 780 + i * 34;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate(0, (1 - p) * 50);
-      fillRR(ctx, x, y, 300, 470, 22, 'rgba(12,20,38,0.95)');
-      strokeRR(ctx, x, y, 300, 470, 22, alpha(C.cyan, 0.35), 1.4);
-      ctx.save();
-      rr(ctx, x, y, 300, 470, 22); ctx.clip();
-      ctx.translate(x, y);
-      const s = 300 / 390;
-      ctx.scale(s, s);
-      SF.sfLanding(ctx, 390, 470 / s, variant);
-      ctx.restore();
-      chip(ctx, tag, x + 14, y + 430, { color: C.cyan, size: 17, h: 32 });
-      ctx.restore();
-    });
-    const p = beat(t, 2.0, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p;
-    chip(ctx, 'প্রতিটি ক্যাম্পেইনের জন্য আলাদা পেজ', W / 2, 1430, { align: 'center', color: C.cyan, size: 24 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  landingDetail(ctx, t, d) {
-    phoneStage(ctx, t, {
-      x: 110, y: 700, scale: 1.04, enter: 1,
+    const enter = beat(t, 0.15, 0.9, easeOutQuint);
+    phone(ctx, t, {
+      x: 566, y: 680, w: 386, enter, tone, glow: '#2E5BFF', rotate: 0.02,
       draw: (w, h) => SF.sfLanding(ctx, w, h, 0, { p: clamp(t / 2) }),
     });
-    const notes = [
-      ['আকর্ষণীয় ব্যানার', 'globe', 0.4, 780],
-      ['প্রোডাক্টের বিবরণ', 'box', 2.4, 950],
-      ['বিশেষ অফার', 'tag', 4.4, 1120],
-      ['সরাসরি অর্ডার', 'cart', 6.2, 1290],
-    ];
-    notes.forEach(([label, ic, at, y], i) => {
-      const p = beat(t, at, 0.5, easeOutBack);
-      if (p <= 0) return;
+    // ad mock pointing to the landing page
+    const ap = beat(t, 0.8, 0.7, easeOutQuint);
+    if (ap > 0) {
       ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate((1 - p) * 40, 0);
-      glassPanel(ctx, 610, y, 380, 66, { r: 33, fill: 'rgba(9,15,30,0.92)' });
-      circle(ctx, 646, y + 33, 20, alpha(C.cyan, 0.18));
-      icon(ctx, ic, 633, y + 20, 26, C.cyan, 2);
-      text(ctx, label, 682, y + 43, { size: 23, weight: 600, color: C.white, maxWidth: 290 });
+      ctx.globalAlpha *= clamp(ap);
+      ctx.translate((1 - ap) * -50, 0);
+      glassCard(ctx, 66, 860, 420, 300, { r: 26, fill: 'rgba(16,26,46,0.84)' });
+      text(ctx, 'স্পন্সর্ড • বিজ্ঞাপন', 96, 912, { size: 19, weight: 600, color: P.dark.muted });
+      fillRR(ctx, 96, 932, 360, 128, 14, 'rgba(255,255,255,0.07)');
+      drawWatch(ctx, 276, 996, 46, SF.PRODUCTS[0].tone);
+      text(ctx, 'ঈদ কালেকশন', 96, 1094, { size: 26, weight: 700, color: P.dark.ink });
+      text(ctx, 'সীমিত সময়ের অফার', 96, 1124, { size: 19, weight: 500, color: P.dark.muted });
       ctx.restore();
+    }
+    const lp = beat(t, 1.6, 0.7, easeOut);
+    if (lp > 0) {
       ctx.save();
-      ctx.globalAlpha *= clamp(p) * 0.6;
-      line(ctx, 604, y + 33, 596, y + 33, alpha(C.cyan, 0.8), 2);
+      ctx.globalAlpha *= clamp(lp);
+      dashLine(ctx, 486, 1010, 566, 1010, alpha(P.dark.cyan, 0.6), 2, [5, 7], lp);
+      circle(ctx, 526, 1010, 17, alpha(P.dark.cyan, 0.18));
+      icon(ctx, 'arrow', 518, 1003, 16, P.dark.cyan, 2.4);
       ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.0);
-  },
-
-  marketingStrategy(ctx, t, d) {
-    // strategy board mapping ads -> landing pages, no invented results
-    glassPanel(ctx, 90, 740, 900, 600, { r: 28, fill: 'rgba(12,20,38,0.88)' });
-    text(ctx, 'ক্যাম্পেইন কাঠামো', 122, 792, { size: 28, weight: 700, color: C.white });
-    const cols = [['বিজ্ঞাপন', C.violet], ['ল্যান্ডিং পেজ', C.blue], ['ব্যবসার লক্ষ্য', C.green]];
-    cols.forEach(([label, color], i) => {
-      const x = 150 + i * 280;
-      text(ctx, label, x, 850, { size: 21, weight: 600, color: alpha(color, 0.95) });
-      line(ctx, x - 10, 866, x + 210, 866, alpha(color, 0.4), 1.4);
-    });
-    const rows = [
-      ['নতুন পণ্য', 'প্রোডাক্ট পেজ', 'অর্ডার নেওয়া'],
-      ['অফার', 'অফার পেজ', 'আগ্রহ তৈরি'],
-      ['ক্যাম্পেইন', 'কাস্টম পেজ', 'যোগাযোগ'],
-    ];
-    rows.forEach((row, i) => {
-      const p = beat(t, 0.7 + i * 0.5, 0.6, easeOutBack);
-      if (p <= 0) return;
-      const y = 910 + i * 120;
+    }
+    pill(ctx, 276, 1240, 'ক্যাম্পেইনের জন্য আলাদা পেজ', { tone, align: 'center', iconName: 'tag', p: beat(t, 2.2, 0.6, easeOutBack), size: 20 });
+    // result rail
+    const rp = beat(t, 2.6, 0.6, easeOutQuint);
+    if (rp > 0) {
       ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      fillRR(ctx, 120, y, 840, 92, 18, 'rgba(20,32,56,0.8)');
-      row.forEach((cell, k) => {
-        const x = 150 + k * 280;
-        fillRR(ctx, x - 8, y + 22, 210, 48, 12, alpha(cols[k][1], 0.26));
-        strokeRR(ctx, x - 8, y + 22, 210, 48, 12, alpha(cols[k][1], 0.5), 1);
-        text(ctx, cell, x + 6, y + 54, { size: 20, weight: 600, color: '#FFFFFF', maxWidth: 190 });
-        if (k < 2) {
-          icon(ctx, 'arrow', x + 220, y + 36, 20, alpha(cols[k][1], 0.9), 2);
-        }
+      ctx.globalAlpha *= clamp(rp);
+      glassCard(ctx, 66, 1330, 420, 230, { r: 26, fill: 'rgba(16,26,46,0.8)' });
+      text(ctx, 'ফলাফল', 96, 1380, { size: 20, weight: 600, color: P.dark.muted });
+      [['অর্ডার', 'list'], ['ট্র্যাকিং', 'chart'], ['রিটার্গেট', 'refresh']].forEach(([label, ic], i) => {
+        const y = 1410 + i * 48;
+        circle(ctx, 108, y + 8, 10, alpha(P.dark.cyan, 0.16));
+        icon(ctx, ic, 102, y + 2, 14, P.dark.cyan, 2.2);
+        text(ctx, label, 132, y + 16, { size: 21, weight: 600, color: P.dark.ink });
+        fillRR(ctx, 300, y + 10, 150 - i * 26, 6, 3, alpha(P.dark.gold, 0.55 - i * 0.12));
       });
       ctx.restore();
+    }
+  },
+
+  /* 23 — unlimited landing pages */
+  landingUnlimited(ctx, t, d, s) {
+    const tone = 'light';
+    kickerLine(ctx, s.kicker, t, { tone, y: 470, align: 'center', x: W / 2 });
+    headlineBlock(ctx, 'কাস্টম ল্যান্ডিং পেজ', t, {
+      tone, x: W / 2 - LAY.w / 2, y: 590, size: 96, align: 'center', maxWidth: LAY.w, delay: 0.1,
+      accentTo: ['#14171D', '#B08A57'],
     });
-    const p = beat(t, 2.6, 0.6);
-    ctx.save(); ctx.globalAlpha *= p;
-    text(ctx, 'কোনো নির্দিষ্ট ফলাফলের প্রতিশ্রুতি নয় — পরিকল্পনা ও সেটআপ', 90, 1400, { size: 20, weight: 500, color: 'rgba(170,190,220,0.62)' });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
+
+    // a fanned deck of landing pages, count ticking up
+    const n = 5;
+    for (let i = 0; i < n; i++) {
+      const p = beat(t, 0.35 + i * 0.13, 0.6, easeOutBack);
+      if (p <= 0) continue;
+      const cxi = W / 2 + (i - (n - 1) / 2) * 150;
+      const rot = (i - (n - 1) / 2) * 0.05;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(cxi, 1010 + (1 - p) * 60);
+      ctx.rotate(rot);
+      shadow(ctx, 'rgba(60,44,20,0.24)', 44, 20);
+      fillRR(ctx, -110, -206, 220, 400, 22, '#FFFFFF');
+      noShadow(ctx);
+      strokeRR(ctx, -110, -206, 220, 400, 22, P.light.cardLine, 1.2);
+      fillRR(ctx, -96, -192, 192, 168, 14, i % 2 ? '#F1E7D4' : '#E9EEF7');
+      drawWatch(ctx, 0, -110, 46, SF.PRODUCTS[i % SF.PRODUCTS.length].tone);
+      fillRR(ctx, -96, -8, 140, 13, 6.5, 'rgba(20,23,29,0.6)');
+      fillRR(ctx, -96, 18, 178, 9, 4.5, 'rgba(20,23,29,0.18)');
+      fillRR(ctx, -96, 38, 150, 9, 4.5, 'rgba(20,23,29,0.18)');
+      fillRR(ctx, -96, 70, 112, 40, 12, P.light.ink);
+      fillRR(ctx, -96, 132, 192, 30, 10, 'rgba(20,23,29,0.055)');
+      fillRR(ctx, -96, 172, 130, 10, 5, 'rgba(20,23,29,0.12)');
+      ctx.restore();
+    }
+
+    // counter
+    const cp = beat(t, 1.2, 0.7, easeOutQuint);
+    if (cp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(cp);
+      lightCard(ctx, 246, 1330, 588, 112, { r: 30, lift: 0.95 });
+      fillRR(ctx, 272, 1356, 60, 60, 20, 'rgba(176,138,87,0.16)');
+      icon(ctx, 'plus', 288, 1372, 28, P.light.goldDeep, 2.6);
+      text(ctx, 'যত ইচ্ছা তত পেজ', 356, 1378, { size: 28, weight: 700, color: P.light.ink });
+      text(ctx, 'প্রতিটি প্রোডাক্ট বা অফারের জন্য আলাদা', 356, 1410, { size: 19, weight: 500, color: P.light.muted, maxWidth: 440 });
+      seal(ctx, 792, 1386, 18, 'yes', beat(t, 1.9, 0.5), { tone });
+      ctx.restore();
+    }
+  },
+
+  /* 24 — three campaign landing pages */
+  landingThree(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const cards = [
+      { x: 74, label: 'প্রোডাক্ট লঞ্চ', variant: 1 },
+      { x: 372, label: 'স্পেশাল অফার', variant: 0 },
+      { x: 670, label: 'ক্যাম্পেইন', variant: 2 },
+    ];
+    cards.forEach((c, i) => {
+      const p = beat(t, 0.25 + i * 0.16, 0.7, easeOutQuint);
+      if (p <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(0, (1 - p) * 44);
+      phone(ctx, t, {
+        x: c.x, y: 700, w: 336, enter: 1, tone, float: false, shadowA: 0.35,
+        draw: (w, h) => SF.sfLanding(ctx, w, h, c.variant, { p: clamp((t - i * 0.2) / 1.5) }),
+      });
+      text(ctx, c.label, c.x + 168, 1480, { size: 24, weight: 700, color: P.light.ink, align: 'center' });
+      ctx.restore();
+    });
+    pill(ctx, W / 2, 1560, 'প্রতিটি ক্যাম্পেইনের জন্য আলাদা পেজ', { tone, align: 'center', iconName: 'link', p: beat(t, 1.5, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 25 — landing page anatomy */
+  landingDetail(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const ph = phone(ctx, t, {
+      x: 480, y: 660, w: 400, enter: beat(t, 0.1, 0.9, easeOutQuint), tone, float: false,
+      draw: (w, h) => SF.sfLanding(ctx, w, h, 0, { p: clamp(t / 1.4) }),
+    });
+
+    const rows = [
+      ['আকর্ষণীয় ব্যানার', 'banner', 0.30],
+      ['প্রোডাক্টের বিস্তারিত', 'box', 0.55],
+      ['বিশেষ অফার', 'tag', 0.75],
+      ['সরাসরি অর্ডার', 'cart', 0.9],
+    ];
+    rows.forEach(([label, ic, fy], i) => {
+      const p = beat(t, 0.7 + i * 0.22, 0.6, easeOutQuint);
+      if (p <= 0) return;
+      const y = 800 + i * 118;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate((1 - p) * -40, 0);
+      lightCard(ctx, 74, y, 356, 92, { r: 22, lift: 0.85 });
+      fillRR(ctx, 96, y + 22, 48, 48, 15, 'rgba(176,138,87,0.12)');
+      icon(ctx, ic === 'banner' ? 'grid' : ic, 106, y + 32, 28, P.light.goldDeep, 1.9);
+      text(ctx, label, 160, y + 55, { size: 23, weight: 600, color: P.light.ink, maxWidth: 250 });
+      // connector to the phone at the right height
+      dashLine(ctx, 430, y + 46, 480, ph.y + ph.h * fy, alpha(P.light.goldDeep, 0.45), 1.8, [4, 6], p);
+      circle(ctx, 480, ph.y + ph.h * fy, 6, P.light.goldDeep);
+      ctx.restore();
+    });
+  },
+
+  /* 26 — marketing strategy board */
+  marketingStrategy(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 78, maxWidth: 900 });
+
+    const chan = [
+      ['Facebook', 'art'],
+      ['Instagram', 'art'],
+      ['Messenger', 'chat'],
+      ['WhatsApp', 'chat'],
+    ];
+    // funnel: ads → landing pages → orders
+    const stages = [
+      { y: 640, label: 'বিজ্ঞাপন', w: 860 },
+      { y: 838, label: 'ল্যান্ডিং পেজ', w: 700 },
+      { y: 1036, label: 'অর্ডার', w: 540 },
+      { y: 1234, label: 'রিপোর্ট', w: 380 },
+    ];
+    stages.forEach((st, i) => {
+      const p = beat(t, 0.3 + i * 0.22, 0.7, easeOutQuint);
+      if (p <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      const x = (W - st.w) / 2;
+      lightCard(ctx, x, st.y, st.w, 166, { r: 28, lift: 0.95 });
+      fillRR(ctx, x, st.y, st.w, 6, 3, lin(ctx, x, st.y, x + st.w, st.y, [[0, '#C2A167'], [1, '#7C9A8B']]));
+      fillRR(ctx, x + 24, st.y + 28, 54, 54, 17, 'rgba(176,138,87,0.13)');
+      icon(ctx, ['tag', 'link', 'cart', 'chart'][i], x + 38, st.y + 42, 26, P.light.goldDeep, 2);
+      text(ctx, st.label, x + 96, st.y + 66, { size: 32, weight: 700, color: P.light.ink });
+      if (i === 0) {
+        chan.forEach(([name], k) => {
+          fillRR(ctx, x + 24 + k * ((st.w - 48) / 4), st.y + 106, (st.w - 60) / 4, 40, 12, 'rgba(20,23,29,0.05)');
+          text(ctx, name, x + 24 + k * ((st.w - 48) / 4) + ((st.w - 60) / 8), st.y + 133, { size: 18, weight: 600, color: P.light.ink2, align: 'center' });
+        });
+      }
+      if (i === 1) text(ctx, 'প্রতিটি অফারের জন্য আলাদা পেজ • A/B তুলনা', x + 96, st.y + 116, { size: 20, weight: 500, color: P.light.muted });
+      if (i === 2) text(ctx, 'পিক্সেল ও কনভার্শন দিয়ে মাপা যায়', x + 96, st.y + 116, { size: 20, weight: 500, color: P.light.muted });
+      if (i === 3) text(ctx, 'কোন পেজ কত এনেছে — স্পষ্ট', x + 96, st.y + 116, { size: 20, weight: 500, color: P.light.muted });
+      // funnel sides
+      if (i < stages.length - 1) {
+        const nextW = stages[i + 1].w;
+        ctx.strokeStyle = 'rgba(176,138,87,0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, st.y + 166);
+        ctx.lineTo((W - nextW) / 2, stages[i + 1].y);
+        ctx.moveTo(x + st.w, st.y + 166);
+        ctx.lineTo((W + nextW) / 2, stages[i + 1].y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    });
+
+    pill(ctx, W / 2, 1500, 'মার্কেটিং স্ট্রাটেজি অনুযায়ী পেজ সাজান', { tone, align: 'center', iconName: 'chart', p: beat(t, 1.6, 0.6, easeOutBack), size: 22 });
   },
 };

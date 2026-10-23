@@ -459,6 +459,79 @@ export function icon(ctx, name, x, y, size = 32, color = C.white, lw = 2) {
       ctx.strokeRect(3.5, 3.5, 6, 6); ctx.strokeRect(14.5, 3.5, 6, 6); ctx.strokeRect(3.5, 14.5, 6, 6);
       ctx.beginPath(); ctx.moveTo(14, 14); ctx.lineTo(14, 17); ctx.lineTo(17, 17); ctx.lineTo(17, 20.5); ctx.lineTo(20.5, 20.5); ctx.moveTo(20.5, 14); ctx.lineTo(17, 14); ctx.lineTo(17, 16); ctx.stroke();
       break;
+    case 'shirt':
+      ctx.beginPath();
+      ctx.moveTo(8.5, 3.2); ctx.lineTo(4, 6.2); ctx.lineTo(6.2, 10.2); ctx.lineTo(8.2, 9.1);
+      ctx.lineTo(8.2, 20.8); ctx.lineTo(15.8, 20.8); ctx.lineTo(15.8, 9.1); ctx.lineTo(17.8, 10.2);
+      ctx.lineTo(20, 6.2); ctx.lineTo(15.5, 3.2);
+      ctx.bezierCurveTo(14.6, 5.4, 9.4, 5.4, 8.5, 3.2);
+      ctx.stroke();
+      break;
+    case 'shoe':
+      ctx.beginPath();
+      ctx.moveTo(3, 15.5); ctx.lineTo(3, 11.4); ctx.lineTo(7.2, 10.2); ctx.lineTo(10.6, 13.4);
+      ctx.lineTo(14.8, 13.8); ctx.bezierCurveTo(18.2, 14.2, 20.4, 15.6, 20.6, 17.2);
+      ctx.lineTo(20.6, 18.4); ctx.lineTo(3, 18.4); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(8.6, 14.6); ctx.lineTo(12.4, 15.4); ctx.stroke();
+      break;
+    case 'watch':
+      ctx.beginPath(); ctx.arc(12, 12, 5.6, 0, 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(9.6, 6.6); ctx.lineTo(9, 2.6); ctx.lineTo(15, 2.6); ctx.lineTo(14.4, 6.6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(9.6, 17.4); ctx.lineTo(9, 21.4); ctx.lineTo(15, 21.4); ctx.lineTo(14.4, 17.4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(12, 9.2); ctx.lineTo(12, 12.2); ctx.lineTo(14.2, 13.4); ctx.stroke();
+      break;
+    case 'bottle':
+      ctx.beginPath();
+      ctx.moveTo(9.6, 2.6); ctx.lineTo(14.4, 2.6); ctx.lineTo(14.4, 6.4);
+      ctx.bezierCurveTo(17, 7.6, 17.6, 9.4, 17.6, 12); ctx.lineTo(17.6, 20.4);
+      ctx.lineTo(6.4, 20.4); ctx.lineTo(6.4, 12);
+      ctx.bezierCurveTo(6.4, 9.4, 7, 7.6, 9.6, 6.4); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(8, 13.6); ctx.lineTo(16, 13.6); ctx.stroke();
+      break;
+    case 'headphone':
+      ctx.beginPath(); ctx.arc(12, 12.6, 8.4, Math.PI * 1.06, Math.PI * 1.94); ctx.stroke();
+      ctx.beginPath(); rr(ctx, 3.2, 12.2, 4.4, 7.6, 2.2); ctx.stroke();
+      ctx.beginPath(); rr(ctx, 16.4, 12.2, 4.4, 7.6, 2.2); ctx.stroke();
+      break;
+    case 'plate':
+      ctx.beginPath(); ctx.arc(12, 12, 9, 0, 7); ctx.stroke();
+      ctx.beginPath(); ctx.arc(12, 12, 5, 0, 7); ctx.stroke();
+      break;
+    case 'rocket':
+      ctx.beginPath();
+      ctx.moveTo(12, 2.6); ctx.bezierCurveTo(16.2, 5.4, 17.4, 9.4, 16.6, 14.4);
+      ctx.lineTo(7.4, 14.4); ctx.bezierCurveTo(6.6, 9.4, 7.8, 5.4, 12, 2.6); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(12, 8.6, 1.9, 0, 7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(7.6, 11.4); ctx.lineTo(4.4, 14.6); ctx.lineTo(7.2, 15.4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(16.4, 11.4); ctx.lineTo(19.6, 14.6); ctx.lineTo(16.8, 15.4); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(10, 17); ctx.quadraticCurveTo(12, 21.4, 14, 17); ctx.stroke();
+      break;
+    case 'laptop':
+      ctx.beginPath(); rr(ctx, 4, 4.6, 16, 11, 1.6); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(2, 18.4); ctx.lineTo(22, 18.4); ctx.lineTo(20.4, 15.6); ctx.lineTo(3.6, 15.6); ctx.closePath(); ctx.stroke();
+      break;
+    case 'link':
+      ctx.beginPath(); ctx.moveTo(9.8, 14.2); ctx.lineTo(14.2, 9.8); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(13, 7.4); ctx.lineTo(14.8, 5.6); ctx.bezierCurveTo(16.4, 4, 19, 4, 20.4, 5.6, 21.8, 7.2, 21.8, 9.6, 20.2, 11.2); ctx.lineTo(18.4, 13); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(11, 16.6); ctx.lineTo(9.2, 18.4); ctx.bezierCurveTo(7.6, 20, 5, 20, 3.6, 18.4, 2.2, 16.8, 2.2, 14.4, 3.8, 12.8); ctx.lineTo(5.6, 11); ctx.stroke();
+      break;
+    case 'refresh':
+      ctx.beginPath(); ctx.arc(12, 12, 7.6, Math.PI * 0.55, Math.PI * 1.85); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(17.6, 6.2); ctx.lineTo(18.4, 10.4); ctx.lineTo(14.4, 9.8); ctx.stroke();
+      break;
+    case 'telegram':
+      ctx.beginPath();
+      ctx.moveTo(21.4, 4.2); ctx.lineTo(2.8, 11.2); ctx.lineTo(9.2, 13.4); ctx.lineTo(11.6, 20.2);
+      ctx.lineTo(14.6, 15.2); ctx.lineTo(19.6, 18.6); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(9.2, 13.4); ctx.lineTo(19.6, 18.6); ctx.stroke();
+      break;
+    case 'palette':
+      ctx.beginPath(); ctx.arc(12, 12, 9, Math.PI * 0.2, Math.PI * 1.75); ctx.stroke();
+      ctx.beginPath(); ctx.arc(8.6, 8.8, 1.5, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(13.4, 7.2, 1.5, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(17, 10.4, 1.5, 0, 7); ctx.fill();
+      ctx.beginPath(); ctx.arc(9, 14.6, 1.5, 0, 7); ctx.fill();
+      break;
     default: break;
   }
   ctx.restore();

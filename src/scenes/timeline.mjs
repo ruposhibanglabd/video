@@ -412,3 +412,27 @@ export const BRAND = {
   differentiator: 'রেডিমেড টেমপ্লেট নয় — আপনার পছন্দমতো কাস্টম ডিজাইন!',
   tagline: 'আপনার ব্যবসা • আপনার ডিজাইন • আপনার অনলাইন পরিচয়',
 };
+
+/* ------------------------------------------------------------------ tone map
+ * Which backdrops each beat plays against. Dark = cinematic hook / chapters,
+ * light = the product-demo core where the viewer "uses" the shop.
+ * Kept separate from the copy above so the narrative plan stays readable.
+ */
+const TONE = {
+  1: 'dark', 2: 'dark', 3: 'dark', 4: 'dark', 5: 'dark', 6: 'dark', 7: 'dark',
+  8: 'light', 9: 'light', 10: 'light', 11: 'light', 12: 'light', 13: 'dark',
+  14: 'light', 15: 'light', 16: 'light', 17: 'dark', 18: 'dark',
+  19: 'light', 20: 'light', 21: 'light', 22: 'dark', 23: 'light', 24: 'light',
+  25: 'light', 26: 'light',
+  27: 'dark', 28: 'light', 29: 'light', 30: 'light', 31: 'light', 32: 'light',
+  33: 'light', 34: 'dark', 35: 'light', 36: 'light', 37: 'light', 38: 'dark',
+  39: 'dark', 40: 'dark', 41: 'dark', 42: 'dark', 43: 'dark',
+  44: 'dark', 45: 'light', 46: 'light', 47: 'light', 48: 'light',
+  49: 'dark', 50: 'light', 51: 'light', 52: 'dark', 53: 'light', 54: 'light',
+  55: 'light', 56: 'dark',
+  57: 'dark', 58: 'dark', 59: 'dark', 60: 'dark', 61: 'dark', 62: 'dark',
+  63: 'light', 64: 'light', 65: 'light', 66: 'dark',
+  67: 'dark', 68: 'dark', 69: 'dark', 70: 'dark', 71: 'dark', 72: 'dark',
+  73: 'dark', 74: 'dark', 75: 'dark', 76: 'dark', 77: 'dark',
+};
+SCENES.forEach((s) => { s.tone = TONE[s.n] || 'dark'; });

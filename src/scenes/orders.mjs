@@ -1,404 +1,503 @@
 /**
- * Scenes 27–43 — order management, notifications, incomplete checkout and
- * retargeting (presented as a possible integration, never a guaranteed result).
+ * Scenes 27–37 — order management, reporting, and recovering incomplete
+ * checkouts.
  */
 import {
-  C, W, H, alpha, clamp, lerp, easeOut, easeInOut, easeOutQuint, easeOutBack, beat,
-  lin, text, paragraph, rr, fillRR, strokeRR, circle, shadow, noShadow, icon, fontStr,
-  glowOrb, lightSweep, chip, line, mix, drawWatch, statusChip,
+  C, W, H, alpha, clamp, lerp, easeOut, easeIn, easeInOut, easeOutQuint, easeOutBack,
+  beat, lin, text, rr, fillRR, strokeRR, circle, shadow, noShadow, icon, fontStr,
+  glowOrb, lightSweep, drawWatch,
 } from '../render/kit.mjs';
-import { L, headline, kicker, accentRule, glassPanel, phoneStage, brandWatermark, seq, chapterCard } from './stage.mjs';
-import { adminStage } from './uiStage.mjs';
+import {
+  P, LAY, headlineBlock, kickerLine, stdTitle, glassCard, lightCard, phone, screenCrop,
+  browser, pill, callout, cursor, notifyCard, kpiTile, chain, chapterCard, priceHero, seal,
+  featureTile, ghostNumeral, dashLine, screenSwitch, stepper,
+} from './premium.mjs';
 import * as SF from '../ui/storefront.mjs';
 import * as AD from '../ui/admin.mjs';
-import { BRAND } from './timeline.mjs';
+
+function titleOf(ctx, t, s, tone, opts = {}) {
+  if (s.title === false) return kickerLine(ctx, s.kicker, t, { tone, ...opts });
+  return stdTitle(ctx, t, s, { tone, ...opts });
+}
 
 export const orderScenes = {
-  sectionOrders(ctx, t, d) {
-    chapterCard(ctx, t, { index: 3, title: 'অর্ডার ম্যানেজমেন্ট', sub: 'নতুন অর্ডার থেকে ডেলিভারি পর্যন্ত', accent: C.cyan, p: clamp(t / 0.6) });
-    brandWatermark(ctx, t, 0.25);
+  /* 27 — chapter: orders */
+  sectionOrders(ctx, t, d, s) {
+    chapterCard(ctx, t, { n: 3, title: 'অর্ডার\nম্যানেজমেন্ট', sub: 'নতুন অর্ডার থেকে ডেলিভারি পর্যন্ত', tone: 'dark', accent: P.dark.cyan, p: beat(t, 0, 0.6) });
   },
 
-  orderIncoming(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 680, w: 968, h: 700 }, vw: 780, vh: 880, enter: 1, panY: 0.12,
-      active: 3, title: 'অর্ডার', sub: 'সব অর্ডার এক জায়গায়',
-      draw: (c, w, h) => AD.adOrders(c, w, h, { p: clamp((t - 0.4) / 2.0), highlight: t > 2.0 ? 0 : -1 }),
+  /* 28 — a new order arrives */
+  orderIncoming(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const br = browser(ctx, t, {
+      y: 640, w: 968, vw: 1000, vh: 700, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/orders',
+      draw: (w, h) => AD.adOrders(ctx, w, h, { p: clamp(t / 1.6), highlight: t > 1.6 ? 0 : -1 }),
     });
-    // incoming notification on phone (foreground)
-    const np = beat(t, 1.2, 0.7, easeOutBack);
+
+    // notification drops in over the table
+    const np = beat(t, 1.1, 0.7, easeOutQuint);
     if (np > 0) {
       ctx.save();
-      ctx.globalAlpha *= np;
-      ctx.translate((1 - np) * 200, 0);
-      SF.floatingToast(ctx, 500, 1320, 500, 'নতুন অর্ডার এসেছে', '#AUR-1048 • ৳4,960', { iconName: 'bell', tone: C.cyan, dark: true, p: 1 });
-      ctx.restore();
-    }
-    const pp = beat(t, 0.3, 0.6);
-    ctx.save(); ctx.globalAlpha *= pp;
-    chip(ctx, 'অর্ডারের বিস্তারিত তথ্য', 96, 1400, { color: C.cyan, size: 24 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  orderDetail(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 700, w: 968, h: 640 }, vw: 780, vh: 840, enter: 1,
-      active: 3, title: 'অর্ডার #AUR-1048',
-      draw: (c, w, h) => AD.adOrderDetail(c, w, h, { p: clamp((t - 0.3) / 1.6), step: t > 5.5 ? 2 : 1, pulse: t }),
-    });
-    const notes = [
-      ['নাম ও ফোন', 'users', 0.8], ['ঠিকানা', 'pin', 2.0], ['পণ্য ও পরিমাণ', 'box', 3.2],
-      ['দাম, ডেলিভারি ও মোট', 'cash', 4.6],
-    ];
-    notes.forEach(([label, ic, at], i) => {
-      const p = beat(t, at, 0.45, easeOutBack);
-      if (p <= 0) return;
-      const y = 780 + i * 108;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate((1 - p) * 30, 0);
-      glassPanel(ctx, 660, y, 356, 66, { r: 33, fill: 'rgba(9,15,30,0.92)' });
-      icon(ctx, ic, 680, y + 20, 26, C.cyan, 2);
-      text(ctx, label, 720, y + 43, { size: 23, weight: 600, color: C.white, maxWidth: 276 });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  orderStatus(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 700, w: 968, h: 620 }, vw: 780, vh: 820, enter: 1,
-      active: 3, title: 'অর্ডার স্ট্যাটাস',
-      draw: (c, w, h) => AD.adOrders(c, w, h, { p: 1, tab: 0, highlight: Math.min(6, Math.floor(clamp((t - 0.6) / 1.2))) }),
-    });
-    const states = [['পেন্ডিং', 'amber'], ['কনফার্ম', 'blue'], ['প্রসেসিং', 'blue'], ['শিপড', 'blue'], ['ডেলিভারড', 'green'], ['বাতিল', 'red']];
-    states.forEach(([label, tone], i) => {
-      const p = beat(t, 0.3 + i * 0.3, 0.4, easeOutBack);
-      if (p <= 0) return;
-      const x = 80 + (i % 3) * 320, y = 1370 + Math.floor(i / 3) * 70;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate(0, (1 - p) * 18);
-      statusChip(ctx, label, x, y, tone, { size: 22, h: 44 });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  orderFilter(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 720, w: 968, h: 600 }, vw: 780, vh: 820, enter: 1,
-      active: 3, title: 'স্ট্যাটাস অনুযায়ী ফিল্টার',
-      draw: (c, w, h) => AD.adOrders(c, w, h, { p: 1, tab: 2, highlight: 1 }),
-    });
-    const p = beat(t, 0.4, 0.5, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p;
-    chip(ctx, 'অর্ডারের অবস্থা অনুযায়ী পরিচালনা', W / 2, 1370, { align: 'center', color: C.green, size: 24 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  reports(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 690, w: 968, h: 680 }, vw: 780, vh: 860, enter: 1,
-      active: 7, title: 'রিপোর্ট', sub: 'বিক্রি • অর্ডার হিস্ট্রি • পেমেন্ট • স্টক',
-      draw: (c, w, h) => AD.adReports(c, w, h, { p: clamp((t - 0.3) / 2.2), tab: t > 3.4 ? 1 : 0 }),
-    });
-    const tabs = [['বিক্রির রিপোর্ট', 'chart'], ['অর্ডার হিস্ট্রি', 'list'], ['পেমেন্ট স্ট্যাটাস', 'card'], ['স্টকের তথ্য', 'box']];
-    tabs.forEach(([label, ic], i) => {
-      const p = beat(t, 0.4 + i * 0.25, 0.45, easeOutBack);
-      if (p <= 0) return;
-      const y = 1380 + Math.floor(i / 2) * 62, x = 80 + (i % 2) * 460;
-      ctx.save(); ctx.globalAlpha *= clamp(p);
-      fillRR(ctx, x, y, 420, 50, 25, 'rgba(10,17,33,0.9)');
-      strokeRR(ctx, x, y, 420, 50, 25, alpha(C.blue, 0.35), 1.2);
-      icon(ctx, ic, x + 18, y + 12, 24, C.cyan, 2);
-      text(ctx, label, x + 56, y + 32, { size: 22, weight: 600, color: C.white });
-      ctx.restore();
-    });
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  orderNotify(ctx, t, d) {
-    // phone with toast + admin bell
-    phoneStage(ctx, t, {
-      x: 92, y: 780, scale: 0.98, enter: 1,
-      draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.08, cart: 1, activeCat: 1 }),
-    });
-    const p1 = beat(t, 0.4, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p1;
-    SF.floatingToast(ctx, 460, 830, 520, 'নতুন অর্ডার', '#AUR-1049 • ৳6,520', { iconName: 'bell', tone: C.cyan, dark: true });
-    ctx.restore();
-    const p2 = beat(t, 2.0, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p2;
-    SF.floatingToast(ctx, 500, 1010, 480, 'হোয়াটসঅ্যাপ/ইমেইল', 'অর্ডার আপডেট পাঠানো হয়েছে', { iconName: 'mail', tone: C.green, dark: true });
-    ctx.restore();
-    const p3 = beat(t, 3.4, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p3;
-    glassPanel(ctx, 500, 1200, 480, 92, { r: 22, fill: 'rgba(10,17,33,0.92)' });
-    icon(ctx, 'bell', 520, 1224, 40, C.cyan, 2);
-    text(ctx, 'গুরুত্বপূর্ণ অর্ডারের খবর', 576, 1240, { size: 24, weight: 600, color: C.white });
-    text(ctx, 'দ্রুত জানতে পারবেন', 576, 1270, { size: 20, weight: 500, color: 'rgba(180,200,230,0.75)' });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  abandonIntro(ctx, t, d) {
-    const p = beat(t, 0.1, 0.8);
-    // fading cart with question
-    ctx.save();
-    ctx.globalAlpha *= 0.9;
-    circle(ctx, W / 2, 1040, 170, alpha(C.violet, 0.14));
-    circle(ctx, W / 2, 1040, 128, alpha(C.violet, 0.16));
-    icon(ctx, 'cart', W / 2 - 62, 978, 124, C.cyan, 1.5);
-    ctx.restore();
-    const q = beat(t, 1.4, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= q;
-    text(ctx, '?', W / 2 + 120, 930, { size: 110, weight: 800, color: alpha(C.amber, 0.9), align: 'center' });
-    ctx.restore();
-    const p2 = beat(t, 2.2, 0.7);
-    ctx.save(); ctx.globalAlpha *= p2;
-    text(ctx, 'সম্ভাব্য বিক্রি বাড়ানোর সুযোগ', W / 2, 1320, { size: 42, weight: 600, color: 'rgba(220,233,255,0.9)', align: 'center' });
-    text(ctx, '— নিশ্চয়তা নয়', W / 2, 1370, { size: 22, weight: 500, color: 'rgba(170,190,220,0.6)', align: 'center' });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  abandonJourney(ctx, t, d) {
-    const fill = clamp((t - 0.9) / 3.4);
-    const stop = clamp((t - 5.2) / 0.8);
-    phoneStage(ctx, t, {
-      x: 300, y: 620, scale: 1.0, enter: 1,
-      draw: (w, h) => SF.sfCheckout(ctx, w, h, { fill: fill * 0.92, paySel: 0, confirm: 0 }),
-    });
-    // journey path with a stop marker
-    const y0 = 1430;
-    const steps = [['ওয়েবসাইটে এলেন', 0.4], ['প্রোডাক্ট পছন্দ', 1.6], ['নাম, ফোন, ঠিকানা', 3.2], ['অর্ডার সম্পন্ন নয়', 5.2]];
-    const x0 = 96, x1 = 984;
-    line(ctx, x0, y0, x1, y0, 'rgba(150,175,215,0.25)', 4, [10, 10]);
-    steps.forEach(([label, at], i) => {
-      const p = beat(t, at, 0.45, easeOutBack);
-      if (p <= 0) return;
-      const x = x0 + (x1 - x0) * (i / (steps.length - 1));
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      const fail = i === steps.length - 1;
-      circle(ctx, x, y0, 22, fail ? alpha(C.red, 0.18) : C.blue);
-      if (fail) {
-        strokeRR(ctx, x - 13, y0 - 13, 26, 26, 6, C.red, 2.6);
-        icon(ctx, i === 3 ? 'minus' : 'check', x - 10, y0 - 10, 20, C.red, 3);
-      } else {
-        icon(ctx, 'check', x - 10, y0 - 10, 20, '#fff', 2.8);
-      }
-      text(ctx, label, x, y0 + 56, { size: 19, weight: 600, color: fail ? alpha(C.red, 0.95) : C.white, align: 'center', maxWidth: 200 });
-      ctx.restore();
-    });
-    if (stop > 0) {
-      ctx.save(); ctx.globalAlpha *= stop;
-      chip(ctx, 'চেকআউট অসম্পূর্ণ', 90, 1430, { color: C.red, size: 24 });
-      ctx.restore();
-    }
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  abandonAdmin(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 660, w: 968, h: 660 }, vw: 780, vh: 850, enter: 1,
-      active: 3, title: 'অসম্পূর্ণ চেকআউট', sub: 'চেকআউট তথ্য সংরক্ষণ (কনফিগারেশন সাপেক্ষে)',
-      draw: (c, w, h) => AD.adIncomplete(c, w, h, { p: clamp((t - 0.3) / 1.8), highlight: t > 3 ? 0 : -1, ring: t > 6.9 }),
-    });
-    const notes = [
-      ['নাম, ফোন ও ঠিকানা', 'users', 0.8], ['কোন ধাপে থেমেছেন', 'clock', 2.2], ['তথ্য এডমিনে দেখা যায়', 'list', 4.0],
-    ];
-    notes.forEach(([label, ic, at], i) => {
-      const p = beat(t, at, 0.45, easeOutBack);
-      if (p <= 0) return;
-      const y = 1344 + i * 66;
-      ctx.save(); ctx.globalAlpha *= clamp(p);
-      glassPanel(ctx, 476, y, 420, 58, { r: 29, fill: 'rgba(9,15,30,0.9)' });
-      icon(ctx, ic, 496, y + 16, 26, C.cyan, 2);
-      text(ctx, label, 534, y + 37, { size: 22, weight: 600, color: C.white, maxWidth: 340 });
-      ctx.restore();
-    });
-    text(ctx, 'প্রাইভেসি ও সম্মতি অনুসরণ করে', 96, 1306, { size: 19, weight: 500, color: 'rgba(170,190,220,0.6)' });
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  abandonContact(ctx, t, d) {
-    adminStage(ctx, t, {
-      box: { x: 56, y: 660, w: 968, h: 620 }, vw: 780, vh: 850, enter: 1,
-      active: 3, title: 'কাস্টমারের সঙ্গে যোগাযোগ', draw: (c, w, h) => AD.adIncomplete(c, w, h, { p: 1, ring: t > 0.4 }),
-    });
-    const p = beat(t, 0.8, 0.6, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p;
-    glassPanel(ctx, 500, 1330, 510, 90, { r: 24, fill: 'rgba(10,17,33,0.94)' });
-    circle(ctx, 546, 1375, 24, alpha(C.green, 0.18));
-    icon(ctx, 'chat', 530, 1357, 32, C.green, 2);
-    text(ctx, 'মেসেজ পাঠিয়ে অর্ডার সম্পন্ন করুন', 586, 1370, { size: 23, weight: 600, color: C.white });
-    text(ctx, 'স্বয়ংক্রিয় নয় — প্রয়োজনে ম্যানুয়াল যোগাযোগ', 586, 1398, { size: 18, weight: 500, color: 'rgba(180,200,230,0.7)' });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  notEnd(ctx, t, d) {
-    const p = beat(t, 0.05, 0.6);
-    ctx.save();
-    ctx.globalAlpha *= p;
-    glowOrb(ctx, W / 2, 900, 520, C.violet, 0.3);
-    text(ctx, 'আর এখানেই শেষ নয়', W / 2, 900, { size: 82, weight: 700, color: C.white, align: 'center', maxWidth: 900 });
-    const q = beat(t, 0.5, 0.7);
-    fillRR(ctx, W / 2 - 120 * q, 950, 240 * q, 4, 2, C.cyan);
-    ctx.restore();
-    brandWatermark(ctx, t, 0.25);
-  },
-
-  retargetTitle(ctx, t, d) {
-    const p = beat(t, 0.02, 0.5, easeOutQuint);
-    ctx.save();
-    glowOrb(ctx, W / 2, 940, 560, C.violet, 0.34);
-    const scale = 0.9 + 0.1 * p;
-    ctx.translate(W / 2, 940);
-    ctx.scale(scale, scale);
-    ctx.translate(-W / 2, -940);
-    ctx.globalAlpha *= p;
-    text(ctx, 'রিটার্গেটিং', W / 2, 880, { size: 96, weight: 800, color: C.white, align: 'center', maxWidth: 940 });
-    text(ctx, 'মার্কেটিং', W / 2, 990, { size: 96, weight: 800, color: C.cyan, align: 'center', maxWidth: 940 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  retargetFlow(ctx, t, d) {
-    // storefront events -> tracking layer -> campaign planner
-    phoneStage(ctx, t, {
-      x: 92, y: 860, scale: 0.88, enter: 1,
-      draw: (w, h) => SF.sfHome(ctx, w, h, { scroll: 0.1, cart: 2, activeCat: 1 }),
-    });
-    const events = [['ভিজিট', 'globe'], ['প্রোডাক্ট ভিউ', 'box'], ['কার্টে যোগ', 'cart']];
-    events.forEach(([label, ic], i) => {
-      const p = beat(t, 0.6 + i * 0.7, 0.6, easeOutBack);
-      if (p <= 0) return;
-      const y = 900 + i * 110;
-      ctx.save(); ctx.globalAlpha *= clamp(p);
-      ctx.translate(0, (1 - p) * 20);
-      fillRR(ctx, 420, y, 300, 70, 20, 'rgba(12,20,38,0.92)');
-      strokeRR(ctx, 420, y, 300, 70, 20, alpha(C.cyan, 0.35), 1.2);
-      icon(ctx, ic, 438, y + 20, 28, C.cyan, 2);
-      text(ctx, label, 480, y + 44, { size: 23, weight: 600, color: C.white });
-      // animated packet along the line
-      const t0 = 0.6 + i * 0.7;
-      const q = clamp((t - t0) / 1.2);
-      line(ctx, 320, y + 35, 420, y + 35, 'rgba(150,175,215,0.3)', 2, [6, 6]);
-      if (q > 0) circle(ctx, 320 + 100 * q, y + 35, 6, C.cyan);
-      ctx.restore();
-    });
-    // tracking panel
-    const p = beat(t, 2.4, 0.8, easeOutBack);
-    ctx.save(); ctx.globalAlpha *= p;
-    glassPanel(ctx, 744, 880, 280, 340, { r: 24, fill: 'rgba(15,24,45,0.94)' });
-    text(ctx, 'ট্র্যাকিং লেয়ার', 766, 924, { size: 21, weight: 700, color: C.white });
-    [['মেটা পিক্সেল', true], ['কনভার্শন ইভেন্ট', true], ['কাস্টম ইভেন্ট', false]].forEach(([label, on], i) => {
-      const y = 950 + i * 66;
-      icon(ctx, on ? 'checkCircle' : 'plus', 766, y, 22, on ? C.green : 'rgba(160,180,210,0.6)', 2);
-      text(ctx, label, 798, y + 18, { size: 19, weight: 500, color: 'rgba(215,228,248,0.9)', maxWidth: 210 });
-    });
-    text(ctx, 'ইন্টিগ্রেশন সাপেক্ষে', 766, 1180, { size: 17, weight: 500, color: 'rgba(170,190,220,0.6)' });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
-
-  retargetAudience(ctx, t, d) {
-    const cards = [
-      ['প্রোডাক্ট দেখেছেন', 'box', C.cyan],
-      ['কার্টে যোগ করেছেন', 'cart', C.blue],
-      ['কেনাকাটার আগ্রহ', 'sparkle', C.violet],
-    ];
-    cards.forEach(([label, ic, color], i) => {
-      const p = beat(t, 0.2 + i * 0.45, 0.6, easeOutBack);
-      if (p <= 0) return;
-      const y = 800 + i * 190;
-      ctx.save();
-      ctx.globalAlpha *= clamp(p);
-      ctx.translate((1 - p) * 60, 0);
-      glassPanel(ctx, 110, y, 860, 150, { r: 28, fill: 'rgba(13,22,42,0.92)' });
-      circle(ctx, 190, y + 75, 40, alpha(color, 0.16));
-      icon(ctx, ic, 166, y + 51, 48, color, 1.9);
-      text(ctx, label, 258, y + 68, { size: 36, weight: 700, color: C.white });
-      text(ctx, 'অডিয়েন্স সেগমেন্ট', 258, y + 104, { size: 22, weight: 500, color: 'rgba(180,200,230,0.7)' });
-      // audience bars
-      for (let k = 0; k < 3; k++) {
-        fillRR(ctx, 660 + k * 90, y + 104 - k * 8, 74, 8 + k * 8, 4, alpha(color, 0.25 + k * 0.18));
+      ctx.globalAlpha *= clamp(np);
+      ctx.translate(0, (1 - np) * -40);
+      shadow(ctx, 'rgba(60,44,20,0.22)', 50, 22);
+      fillRR(ctx, 520, 700, 440, 124, 24, '#FFFFFF');
+      noShadow(ctx);
+      strokeRR(ctx, 520, 700, 440, 124, 24, 'rgba(176,138,87,0.4)', 1.6);
+      fillRR(ctx, 544, 724, 52, 52, 16, 'rgba(30,158,116,0.14)');
+      icon(ctx, 'bell', 556, 736, 28, '#1E9E74', 2);
+      text(ctx, 'নতুন অর্ডার', 616, 752, { size: 24, weight: 700, color: P.light.ink });
+      text(ctx, '#AUR-1048 • ৳4,960', 616, 784, { size: 20, weight: 500, color: P.light.muted });
+      circle(ctx, 922, 732, 8, '#1E9E74');
+      // tap ripple
+      const tp = clamp((t - 1.9) / 0.6);
+      if (tp > 0 && tp < 1) {
+        ctx.strokeStyle = `rgba(176,138,87,${0.6 * (1 - tp)})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(900, 780, 10 + 26 * tp, 0, Math.PI * 2); ctx.stroke();
       }
       ctx.restore();
+    }
+
+    callout(ctx, br.x + br.w * 0.62, br.y + br.h * 0.5, 'সব অর্ডার এক তালিকায়', t, {
+      dx: -240, dy: 90, tone, delay: 1.5, size: 21, align: 'left',
     });
-    brandWatermark(ctx, t, 0.3);
   },
 
-  retargetCampaign(ctx, t, d) {
-    // an ad card → previously viewed product → storefront
-    const p = beat(t, 0.1, 0.7, easeOutBack);
-    ctx.save();
-    ctx.globalAlpha *= p;
-    glassPanel(ctx, 90, 740, 900, 290, { r: 30, fill: 'rgba(14,22,42,0.94)' });
-    chip(ctx, 'স্পনসর্ড • রিটার্গেটিং', 118, 762, { color: C.violet, size: 18, h: 36 });
-    fillRR(ctx, 118, 812, 246, 190, 18, '#241E17');
-    drawWatch(ctx, 241, 907, 60, { face: '#F6EFE0', bezel: '#CBA76C', strap: '#3B2A1D' });
-    text(ctx, 'Heritage Chrono', 392, 868, { size: 32, weight: 700, color: C.white });
-    text(ctx, 'আপনি এটি দেখেছিলেন', 392, 906, { size: 22, weight: 500, color: 'rgba(180,200,230,0.8)' });
-    text(ctx, '৳4,890', 392, 966, { size: 40, weight: 800, color: C.cyan });
-    fillRR(ctx, 690, 930, 260, 60, 30, C.cyan);
-    text(ctx, 'আবার দেখুন', 820, 969, { size: 24, weight: 700, color: '#04101F', align: 'center' });
-    ctx.restore();
-    // path to storefront
-    phoneStage(ctx, t, {
-      x: 300, y: 1060, scale: 0.72, enter: clamp((t - 1.2) / 1.2),
-      draw: (w, h) => SF.sfProduct(ctx, w, h, { feat: 1, disc: '১৮% ছাড়' }),
-    });
-    const q = beat(t, 2.0, 0.6);
-    ctx.save(); ctx.globalAlpha *= q;
-    chip(ctx, 'ক্যাম্পেইন চালানো যায়', W / 2, 1480, { align: 'center', color: C.violet, size: 24 });
-    ctx.restore();
-    brandWatermark(ctx, t, 0.3);
-  },
+  /* 29 — order detail */
+  orderDetail(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
 
-  retargetLoop(ctx, t, d) {
-    // circular journey: visit → leave → ad → return
-    const cx = W / 2, cy = 1040, r = 250;
-    ctx.save();
-    ctx.strokeStyle = alpha(C.blue, 0.3);
-    ctx.lineWidth = 2;
-    ctx.setLineDash([8, 10]);
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
-    ctx.restore();
-    const nodes = [
-      ['ভিজিট', 'globe', -Math.PI / 2],
-      ['চলে যান', 'arrow', 0],
-      ['অ্যাড দেখুন', 'sparkle', Math.PI / 2],
-      ['ফিরে আসা', 'cart', Math.PI],
+    const br = browser(ctx, t, {
+      y: 590, w: 940, vw: 1020, vh: 700, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/orders/AUR-1048',
+      draw: (w, h) => AD.adOrderDetail(ctx, w, h, { p: clamp((t - 0.2) / 1.8) }),
+    });
+
+    // data chips surface one by one
+    const data = [
+      ['users', 'নাম', 'রাফিদ হাসান'],
+      ['phone', 'মোবাইল', '01712-345678'],
+      ['pin', 'ঠিকানা', 'ধানমন্ডি, ঢাকা'],
+      ['box', 'পণ্য', 'হেরিটেজ ক্রোনো × ১'],
     ];
-    nodes.forEach(([label, ic, ang], i) => {
-      const p = beat(t, 0.3 + i * 0.5, 0.55, easeOutBack);
+    data.forEach(([ic, label, val], i) => {
+      const p = beat(t, 1.5 + i * 0.22, 0.6, easeOutQuint);
       if (p <= 0) return;
-      const x = cx + Math.cos(ang) * r, y = cy + Math.sin(ang) * r;
+      const y = 1400 + (i % 2) * 92;
+      const x = 92 + Math.floor(i / 2) * 456;
       ctx.save();
       ctx.globalAlpha *= clamp(p);
-      circle(ctx, x, y, 62, 'rgba(12,20,38,0.96)');
-      circle(ctx, x, y, 62 * p, 'none');
-      ctx.strokeStyle = alpha(i === 3 ? C.green : C.cyan, 0.8);
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(x, y, 62, 0, Math.PI * 2); ctx.stroke();
-      icon(ctx, ic, x - 22, y - 22, 44, i === 3 ? C.green : C.cyan, 1.9);
-      text(ctx, label, x, y + 92, { size: 24, weight: 600, color: C.white, align: 'center' });
+      ctx.translate(0, (1 - p) * 26);
+      lightCard(ctx, x, y, 432, 78, { r: 20, lift: 0.85 });
+      fillRR(ctx, x + 14, y + 16, 48, 48, 15, 'rgba(176,138,87,0.12)');
+      icon(ctx, ic, x + 24, y + 26, 28, P.light.goldDeep, 1.9);
+      text(ctx, label, x + 76, y + 32, { size: 17, weight: 500, color: P.light.muted });
+      text(ctx, val, x + 76, y + 60, { size: 21, weight: 700, color: P.light.ink, maxWidth: 340 });
       ctx.restore();
     });
-    // moving dot along the loop
-    const ang = -Math.PI / 2 + (t * 0.55) % (Math.PI * 2);
+
+    // total stamp
+    const tp = beat(t, 2.5, 0.7, easeOutBack);
+    if (tp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(tp);
+      ctx.translate(0, (1 - tp) * 26);
+      lightCard(ctx, 92, 1600, 892, 128, { r: 26, lift: 1.05 });
+      text(ctx, 'পণ্য + ডেলিভারি চার্জ', 124, 1656, { size: 22, weight: 500, color: P.light.muted });
+      text(ctx, 'মোট', 124, 1698, { size: 26, weight: 700, color: P.light.ink });
+      text(ctx, '৳4,960', 956, 1696, { size: 52, weight: 800, color: P.light.ink, align: 'right' });
+      ctx.restore();
+    }
+  },
+
+  /* 30 — status pipeline */
+  orderStatus(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 78, maxWidth: 920 });
+
+    // dimmed orders table behind
     ctx.save();
-    circle(ctx, cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, 10, alpha(C.cyan, 0.9));
-    circle(ctx, cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, 22, alpha(C.cyan, 0.15));
+    ctx.globalAlpha = 0.28;
+    browser(ctx, t, {
+      y: 600, w: 968, vw: 1000, vh: 700, enter: 1, tone, url: 'admin.aurum.shop/orders',
+      draw: (w, h) => AD.adOrders(ctx, w, h, { p: 1 }),
+    });
     ctx.restore();
-    text(ctx, 'ফিরিয়ে আনার সুযোগ', cx, cy + 10, { size: 34, weight: 700, color: 'rgba(220,233,255,0.92)', align: 'center' });
-    text(ctx, 'নিশ্চিত ফলাফল নয় — সম্ভাবনা', W / 2, 1420, { size: 20, weight: 500, color: 'rgba(170,190,220,0.6)', align: 'center' });
-    brandWatermark(ctx, t, 0.3);
+
+    // floating pipeline card
+    const stages = ['পেন্ডিং', 'কনফার্ম', 'প্রসেসিং', 'শিপড', 'ডেলিভারড'];
+    const active = Math.min(stages.length - 1, Math.floor(clamp((t - 1.0) / 4.2) * stages.length));
+    lightCard(ctx, 74, 760, 932, 320, { r: 32, lift: 1.1 });
+    text(ctx, '#AUR-1048 · অর্ডার স্ট্যাটাস', 108, 818, { size: 22, weight: 600, color: P.light.muted });
+    // rail
+    const x0 = 140, x1 = 940, y = 920;
+    ctx.strokeStyle = 'rgba(20,23,29,0.10)';
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+    const lit = clamp(active / (stages.length - 1));
+    ctx.strokeStyle = P.light.goldDeep;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(lerp(x0, x1, lit), y); ctx.stroke();
+    stages.forEach((label, i) => {
+      const p = beat(t, 0.6 + i * 0.12, 0.5, easeOutQuint);
+      if (p <= 0) return;
+      const x = lerp(x0, x1, i / (stages.length - 1));
+      const on = i <= active;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      circle(ctx, x, y, on ? 18 : 13, on ? P.light.goldDeep : '#FFFFFF');
+      ctx.strokeStyle = on ? P.light.goldDeep : 'rgba(20,23,29,0.18)';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(x, y, on ? 18 : 13, 0, Math.PI * 2); ctx.stroke();
+      if (on) {
+        ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x - 6, y + 1); ctx.lineTo(x - 2, y + 5); ctx.lineTo(x + 7, y - 5); ctx.stroke();
+      }
+      text(ctx, label, x, y + 52, { size: i === active ? 21 : 19, weight: on ? 700 : 500, color: on ? P.light.ink : P.light.muted, align: 'center', maxWidth: 170 });
+      ctx.restore();
+    });
+
+    // order card travels along the rail
+    const travel = clamp((t - 1.0) / 4.2);
+    const cx = lerp(x0, x1, clamp(travel * 1.0));
+    ctx.save();
+    shadow(ctx, 'rgba(60,44,20,0.25)', 30, 12);
+    fillRR(ctx, cx - 66, 828, 132, 58, 16, '#FFFFFF');
+    noShadow(ctx);
+    strokeRR(ctx, cx - 66, 828, 132, 58, 16, 'rgba(176,138,87,0.5)', 1.4);
+    icon(ctx, 'list', cx - 52, 842, 24, P.light.goldDeep, 2);
+    text(ctx, '#1048', cx - 20, 864, { size: 21, weight: 700, color: P.light.ink });
+    ctx.restore();
+
+    // bottom: swipe chips for filter
+    const chips = ['সব', 'পেন্ডিং', 'কনফার্ম', 'শিপড', 'ডেলিভারড'];
+    chips.forEach((c, i) => {
+      const p = beat(t, 1.4 + i * 0.1, 0.5, easeOutBack);
+      if (p <= 0) return;
+      const x = 108 + i * 172;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      fillRR(ctx, x, 1180, 156, 56, 28, i === active % chips.length ? P.light.ink : '#FFFFFF');
+      strokeRR(ctx, x, 1180, 156, 56, 28, i === active % chips.length ? P.light.ink : P.light.cardLine, 1.2);
+      text(ctx, c, x + 78, 1215, { size: 20, weight: 600, color: i === active % chips.length ? '#fff' : P.light.ink2, align: 'center' });
+      ctx.restore();
+    });
+    pill(ctx, W / 2, 1320, 'এক ট্যাপে স্ট্যাটাস বদলান', { tone, align: 'center', iconName: 'checkCircle', p: beat(t, 2.6, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 31 — filtering */
+  orderFilter(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const tab = Math.min(3, Math.floor(clamp((t - 0.6) / 1.4)));
+    const br = browser(ctx, t, {
+      y: 660, w: 968, vw: 1000, vh: 660, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/orders',
+      draw: (w, h) => AD.adOrders(ctx, w, h, { p: 1, tab }),
+    });
+    // cursor clicking the tabs
+    const cp = beat(t, 0.8, 0.7, easeInOut);
+    if (cp > 0) {
+      const x = lerp(br.x + 300, br.x + 180 + tab * 96, clamp((t - 0.6) / 1.4));
+      cursor(ctx, Math.min(x, br.x + br.w - 120), br.y + br.h * 0.14, clamp(cp * 2), { tapP: clamp(((t - 0.5) % 1.4) / 0.5), tone: 'light', scale: 1.05 });
+    }
+    pill(ctx, W / 2, 1520, 'স্ট্যাটাস অনুযায়ী ফিল্টার • হিস্ট্রি সংরক্ষিত', { tone, align: 'center', iconName: 'filter', p: beat(t, 1.4, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 32 — reports */
+  reports(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const br = browser(ctx, t, {
+      y: 620, w: 940, vw: 1020, vh: 640, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/reports',
+      draw: (w, h) => AD.adReports(ctx, w, h, { p: clamp((t - 0.2) / 2) }),
+    });
+
+    const tiles = [
+      ['বিক্রি', '৳৮৪,২০০', 'chart'],
+      ['পেমেন্ট', 'COD + অনলাইন', 'cash'],
+      ['স্টক', '৫টি কম', 'box'],
+    ];
+    tiles.forEach(([label, val, ic], i) => {
+      const p = beat(t, 1.4 + i * 0.18, 0.6, easeOutQuint);
+      if (p <= 0) return;
+      const x = 92 + i * 308;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(0, (1 - p) * 30);
+      lightCard(ctx, x, 1450, 288, 150, { r: 24, lift: 0.9 });
+      fillRR(ctx, x + 20, 1470, 44, 44, 14, 'rgba(176,138,87,0.12)');
+      icon(ctx, ic, x + 30, 1480, 24, P.light.goldDeep, 1.9);
+      text(ctx, label, x + 20, 1546, { size: 19, weight: 500, color: P.light.muted });
+      text(ctx, val, x + 20, 1580, { size: 28, weight: 800, color: P.light.ink, maxWidth: 250 });
+      ctx.restore();
+    });
+    pill(ctx, W / 2, 1660, 'ডেমো ডেটা — নিজের রিপোর্ট নিজে দেখুন', { tone, align: 'center', iconName: 'chart', p: beat(t, 2.2, 0.6, easeOutBack), size: 20 });
+  },
+
+  /* 33 — notifications for new orders */
+  orderNotify(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const ph = phone(ctx, t, {
+      x: 96, y: 700, w: 404, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      draw: (w, h) => screenSwitch(ctx, t, w, h, [
+        { at: 0, draw: (c, ww, hh) => SF.sfHome(c, ww, hh, { scroll: 0.1, cart: 0, activeCat: 1 }) },
+        { at: 1.2, draw: (c, ww, hh) => AD_ADMIN_PHONE(c, ww, hh, t) },
+      ]),
+    });
+
+    const notes = [
+      { at: 1.5, title: 'নতুন অর্ডার', body: '#AUR-1048 • ৳4,960' },
+      { at: 2.5, title: 'নতুন অর্ডার', body: '#AUR-1049 • ৳3,410' },
+      { at: 3.5, title: 'পেমেন্ট আপডেট', body: '#AUR-1046 • Paid' },
+    ];
+    notes.forEach((n, i) => {
+      const p = beat(t, n.at, 0.6, easeOutQuint);
+      if (p <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(0, (1 - p) * 30);
+      notifyCard(ctx, 552, 760 + i * 132, 432, t, { ...n, iconName: i === 2 ? 'cash' : 'bell', tone: 'light', delay: 0 });
+      ctx.restore();
+    });
+
+    // bell burst
+    const bp = beat(t, 4.2, 0.7, easeOutBack);
+    if (bp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(bp);
+      for (let i = 0; i < 3; i++) {
+        const ph2 = ((t - 4.2) * 0.6 + i * 0.33) % 1;
+        if (ph2 < 0 || ph2 > 1) continue;
+        ctx.strokeStyle = `rgba(176,138,87,${0.35 * (1 - ph2)})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(568, 1240, 20 + ph2 * 80, -Math.PI * 0.8, -Math.PI * 0.2); ctx.stroke();
+      }
+      pill(ctx, 552, 1320, 'প্রতিটি অর্ডারের খবর সাথে সাথে', { tone, align: 'left', iconName: 'bell', p: bp, size: 20 });
+      ctx.restore();
+    }
+  },
+
+  /* 34 — abandoned checkout intro */
+  abandonIntro(ctx, t, d, s) {
+    const tone = 'dark';
+    titleOf(ctx, t, s, tone, { size: 84 });
+
+    // ghost card with a rising spark line
+    const cp = beat(t, 0.2, 0.9, easeOutBack);
+    ctx.save();
+    ctx.globalAlpha *= clamp(cp);
+    glassCard(ctx, W / 2 - 230, 760, 460, 440, { r: 34, fill: 'rgba(16,26,46,0.74)' });
+    fillRR(ctx, W / 2 - 100, 830, 200, 200, 62, 'rgba(79,216,255,0.12)');
+    icon(ctx, 'cart', W / 2 - 56, 874, 112, P.dark.cyan, 1.6);
+    text(ctx, 'অসম্পূর্ণ অর্ডার', W / 2, 1096, { size: 32, weight: 700, color: P.dark.ink, align: 'center' });
+    text(ctx, 'নাম • ফোন • ঠিকানা — সব সংরক্ষিত', W / 2, 1140, { size: 21, weight: 500, color: P.dark.muted, align: 'center' });
+    ctx.restore();
+
+    const ap = beat(t, 1.0, 0.8, easeOutQuint);
+    if (ap > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(ap);
+      // spark line rising inside the card
+      const sx = W / 2 - 170, sy = 1240;
+      ctx.strokeStyle = alpha(P.dark.gold, 0.9);
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      const pts = [[0, 0], [70, 6], [140, -20], [210, -12], [280, -56], [340, -74]];
+      ctx.beginPath();
+      pts.forEach(([dx, dy], i) => {
+        const px = sx + dx * clamp(ap * 1.4), py = sy + dy * clamp(ap * 1.4);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+      circle(ctx, sx + 340 * clamp(ap * 1.4), sy - 74 * clamp(ap * 1.4), 7, P.dark.gold);
+      ctx.restore();
+    }
+    pill(ctx, 872, 900, 'সম্ভাব্য বিক্রি', { tone, align: 'center', iconName: 'chart', p: beat(t, 1.4, 0.6, easeOutBack), size: 22 });
+    pill(ctx, 208, 1440, 'হারানো অর্ডার ফেরান', { tone, align: 'center', iconName: 'refresh', p: beat(t, 1.7, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 35 — the customer journey that stops */
+  abandonJourney(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const steps = [
+      { label: 'প্রোডাক্ট দেখলেন', ic: 'box' },
+      { label: 'কার্টে যোগ', ic: 'cart' },
+      { label: 'তথ্য দিলেন', ic: 'users' },
+      { label: 'অর্ডার সম্পন্ন নয়', ic: 'clock', fail: true },
+    ];
+    const y = 780;
+    const cw = 200, gap = 40, x0 = (W - (steps.length * cw + (steps.length - 1) * gap)) / 2;
+    steps.forEach((st, i) => {
+      const p = beat(t, 0.3 + i * 0.35, 0.6, easeOutBack);
+      if (p <= 0) return;
+      const x = x0 + i * (cw + gap);
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate(0, (1 - p) * 40);
+      lightCard(ctx, x, y, cw, 260, { r: 28, lift: st.fail ? 0.6 : 0.9 });
+      const ac = st.fail ? '#C8503F' : P.light.goldDeep;
+      fillRR(ctx, x + cw / 2 - 36, y + 30, 72, 72, 22, alpha(st.fail ? '#C8503F' : '#B08A57', 0.12));
+      icon(ctx, st.ic, x + cw / 2 - 18, y + 48, 36, ac, 1.9);
+      text(ctx, st.label, x + cw / 2, y + 168, { size: 22, weight: 700, color: st.fail ? '#8E3B30' : P.light.ink, align: 'center', maxWidth: cw - 24 });
+      text(ctx, st.fail ? 'থেমে গেল' : 'সম্পন্ন', x + cw / 2, y + 204, { size: 18, weight: 500, color: st.fail ? '#C8503F' : P.light.muted, align: 'center' });
+      // connector
+      if (i < steps.length - 1) {
+        const nx = x + cw + gap;
+        dashLine(ctx, x + cw + 6, y + 130, nx - 6, y + 130, 'rgba(176,138,87,0.45)', 2.2, [5, 7], p);
+        icon(ctx, 'arrow', nx - 20, y + 122, 18, P.light.goldDeep, 2.4);
+      }
+      ctx.restore();
+    });
+
+    // red "lost" note
+    const lp = beat(t, 2.0, 0.7, easeOutQuint);
+    if (lp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(lp);
+      ctx.translate(0, (1 - lp) * 30);
+      lightCard(ctx, 132, 1140, 816, 240, { r: 28, lift: 0.9 });
+      fillRR(ctx, 164, 1172, 56, 56, 18, 'rgba(200,80,63,0.12)');
+      icon(ctx, 'clock', 178, 1186, 28, '#C8503F', 2);
+      text(ctx, 'কাস্টমার চলে গেলেন — অর্ডার হলো না', 244, 1208, { size: 26, weight: 700, color: P.light.ink, maxWidth: 660 });
+      text(ctx, 'নাম, ফোন ও ঠিকানা দিয়ে গেছেন — কিন্তু কনফার্ম করেননি। এই তথ্যটাই আপনার হারানো সুযোগ।', 164, 1284, { size: 20, weight: 500, color: P.light.muted, maxWidth: 752 });
+      ctx.restore();
+    }
+  },
+
+  /* 36 — the info is saved in the admin */
+  abandonAdmin(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const br = browser(ctx, t, {
+      y: 630, w: 968, vw: 1000, vh: 680, enter: beat(t, 0.1, 0.9, easeOutQuint), tone,
+      url: 'admin.aurum.shop/incomplete',
+      draw: (w, h) => AD.adIncomplete(ctx, w, h, { p: clamp((t - 0.2) / 1.8) }),
+    });
+
+    // saved-data chips
+    const chips = [
+      ['users', 'নাম', 'সাদিয়া আক্তার'],
+      ['phone', 'ফোন', '01712-345678'],
+      ['pin', 'ঠিকানা', 'ধানমন্ডি, ঢাকা'],
+    ];
+    chips.forEach(([ic, label, val], i) => {
+      const p = beat(t, 1.8 + i * 0.2, 0.6, easeOutQuint);
+      if (p <= 0) return;
+      const y = 1360 + i * 104;
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate((1 - p) * 40, 0);
+      lightCard(ctx, 92, y, 620, 88, { r: 22, lift: 0.9 });
+      fillRR(ctx, 110, y + 18, 52, 52, 16, 'rgba(176,138,87,0.12)');
+      icon(ctx, ic, 124, y + 32, 26, P.light.goldDeep, 1.9);
+      text(ctx, label, 180, y + 38, { size: 17, weight: 500, color: P.light.muted });
+      text(ctx, val, 180, y + 68, { size: 23, weight: 700, color: P.light.ink });
+      ctx.restore();
+    });
+    pill(ctx, 812, 1660, 'কাস্টমারের সঙ্গে যোগাযোগ', { tone, align: 'center', iconName: 'chat', p: beat(t, 2.6, 0.6, easeOutBack), size: 21 });
+  },
+
+  /* 37 — contact and recover */
+  abandonContact(ctx, t, d, s) {
+    const tone = 'light';
+    titleOf(ctx, t, s, tone, { size: 82 });
+
+    const ph = phone(ctx, t, {
+      x: 92, y: 700, w: 372, enter: beat(t, 0.1, 0.9, easeOutQuint), tone, float: false,
+      draw: (w, h) => SF.sfCart(ctx, w, h, { enter: 1, checkout: 0 }),
+    });
+
+    // chat thread
+    const msgs = [
+      { at: 1.0, side: 'in', text: 'আসসালামু আলাইকুম, আপনার অর্ডারটি অসম্পূর্ণ ছিল — সাহায্য করতে পারি?' },
+      { at: 2.2, side: 'out', text: 'হ্যাঁ, অর্ডারটা সম্পন্ন করতে চাই।' },
+      { at: 3.4, side: 'in', text: 'ধন্যবাদ! লিংক পাঠালাম — এক ট্যাপে কনফার্ম করে নিন।' },
+    ];
+    const px = 520, pw = 466;
+    msgs.forEach((m, i) => {
+      const p = beat(t, m.at, 0.55, easeOutQuint);
+      if (p <= 0) return;
+      const y = 760 + i * 168;
+      const isIn = m.side === 'in';
+      ctx.save();
+      ctx.globalAlpha *= clamp(p);
+      ctx.translate((1 - p) * (isIn ? -30 : 30), 0);
+      const lines = Math.ceil(m.text.length / 34);
+      const bh = 40 + lines * 34;
+      const bw = Math.min(pw, 240 + m.text.length * 8);
+      const bx = isIn ? px : px + pw - bw;
+      const fill = isIn ? '#FFFFFF' : '#1E9E74';
+      shadow(ctx, 'rgba(60,44,20,0.14)', 24, 10);
+      fillRR(ctx, bx, y, bw, bh, 22, fill);
+      noShadow(ctx);
+      if (isIn) strokeRR(ctx, bx, y, bw, bh, 22, P.light.cardLine, 1.1);
+      text(ctx, isIn ? 'AURUM স্টোর' : 'আপনি', bx + 22, y + 28, { size: 16, weight: 600, color: isIn ? P.light.goldDeep : 'rgba(255,255,255,0.8)' });
+      // wrapped body
+      const words = m.text.split(' ');
+      let line = '', ly = y + 60;
+      ctx.font = fontStr(19, 500, m.text);
+      for (const wd of words) {
+        const test = line ? line + ' ' + wd : wd;
+        if (ctx.measureText(test).width > bw - 44 && line) {
+          text(ctx, line, bx + 22, ly, { size: 19, weight: 500, color: isIn ? P.light.ink : '#FFFFFF' });
+          line = wd; ly += 30;
+        } else line = test;
+      }
+      if (line) text(ctx, line, bx + 22, ly, { size: 19, weight: 500, color: isIn ? P.light.ink : '#FFFFFF' });
+      ctx.restore();
+    });
+
+    // order recovered
+    const rp = beat(t, 4.4, 0.7, easeOutBack);
+    if (rp > 0) {
+      ctx.save();
+      ctx.globalAlpha *= clamp(rp);
+      ctx.translate(0, (1 - rp) * 28);
+      lightCard(ctx, 520, 1300, 466, 150, { r: 26, lift: 1.1 });
+      fillRR(ctx, 544, 1332, 60, 60, 20, 'rgba(30,158,116,0.14)');
+      icon(ctx, 'checkCircle', 556, 1344, 36, '#1E9E74', 2);
+      text(ctx, 'অর্ডার সম্পন্ন', 622, 1362, { size: 26, weight: 700, color: P.light.ink });
+      text(ctx, '#AUR-1050 • ৳4,960', 622, 1396, { size: 20, weight: 500, color: P.light.muted });
+      ctx.restore();
+    }
+    pill(ctx, 520, 1560, 'মেসেজ • কল • রিমাইন্ডার', { tone, align: 'left', iconName: 'chat', p: beat(t, 3.0, 0.6, easeOutBack), size: 21 });
   },
 };
+
+/** Miniature admin notifications screen for a phone. */
+function AD_ADMIN_PHONE(ctx, w, h, t) {
+  ctx.fillStyle = '#F3F6FB';
+  ctx.fillRect(0, 0, w, h);
+  text(ctx, 'নোটিফিকেশন', 24, 74, { size: 30, weight: 700, color: '#111827' });
+  const rows = [
+    ['নতুন অর্ডার', '#AUR-1048 • ৳4,960', 'green'],
+    ['নতুন অর্ডার', '#AUR-1049 • ৳3,410', 'green'],
+    ['পেমেন্ট আপডেট', '#AUR-1046 • Paid', 'blue'],
+    ['স্টক কম', 'Aurum Leather • ২টি', 'amber'],
+    ['কুরিয়ার আপডেট', '#AUR-1045 • শিপড', 'violet'],
+  ];
+  rows.forEach(([title, body, tone], i) => {
+    const y = 110 + i * 118;
+    fillRR(ctx, 20, y, w - 40, 100, 16, '#FFFFFF');
+    const col = tone === 'green' ? '#1E9E74' : tone === 'blue' ? '#2F6FED' : tone === 'amber' ? '#D98A24' : '#7A5AF8';
+    fillRR(ctx, 34, y + 22, 56, 56, 16, alpha(col, 0.14));
+    icon(ctx, i === 2 ? 'cash' : i === 3 ? 'box' : i === 4 ? 'truck' : 'bell', 46, y + 34, 32, col, 2);
+    text(ctx, title, 106, y + 44, { size: 22, weight: 700, color: '#111827' });
+    text(ctx, body, 106, y + 74, { size: 18, weight: 500, color: '#7C8798' });
+    if (i === 0) circle(ctx, w - 42, y + 44, 7, '#1E9E74');
+  });
+}
