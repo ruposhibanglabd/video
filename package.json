@@ -9,7 +9,11 @@
     "build": "node tools/build-web.mjs",
     "serve": "node tools/serve.mjs",
     "render": "node src/render/render.mjs",
-    "qa": "node tools/qa-frames.mjs"
+    "qa": "node tools/qa-frames.mjs",
+    "film:studio": "node film-production/studio-server.mjs",
+    "film:audio": "node film-production/audio/build-audio.mjs",
+    "film:qa": "node film-production/render/render-film.mjs --qa",
+    "film:render": "node film-production/render/render-film.mjs --master"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
