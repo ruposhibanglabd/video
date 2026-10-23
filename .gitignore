@@ -2,6 +2,7 @@ node_modules/
 .tmp/
 uploads/
 output/*.mp4
+!output/CodePixel-Web-Brand-Film-2026.mp4
 output/*.part.mp4
 output/stills/
 output/qa/

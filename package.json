@@ -9,7 +9,10 @@
     "build": "node tools/build-web.mjs",
     "serve": "node tools/serve.mjs",
     "render": "node src/render/render.mjs",
-    "qa": "node tools/qa-frames.mjs"
+    "qa": "node tools/qa-frames.mjs",
+    "render:brand-film": "node brand_film/render-master.mjs --out output/CodePixel-Web-Brand-Film-2026.mp4",
+    "qa:brand-film": "node brand_film/render-master.mjs --qa-sheet /tmp/cpw_qa",
+    "audio:brand-film": "node brand_film/audio/compose-audio.mjs"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
