@@ -1,133 +1,38 @@
-# CodePixel Web — প্রোমো ভিডিও জেনারেটর
+# CodePixel Web — প্রিমিয়াম বাংলা বিজ্ঞাপন ও MP4 স্টুডিও
 
-**অডিও আপলোড করুন → ভিডিও তৈরি করুন → ভিডিও ডাউনলোড করুন**
+**CodePixel Web (`https://codepixelweb.vercel.app/`)**-এর জন্য তৈরি সম্পূর্ণ বাংলা ভয়েসওভারযুক্ত, মিলিসেকেন্ড-সিঙ্ক করা, সিনেম্যাটিক `1080 × 1920` (`30 FPS`, `H.264 + AAC`) প্রিমিয়াম বিজ্ঞাপন এবং ইন্টারেক্টিভ ওয়েব প্লেয়ার ও MP4 ডাউনলোড স্টুডিও।
 
-একটি ছোট, সম্পূর্ণ কার্যকর অ্যাপ + একটি ডিটারমিনিস্টিক ৭৭-দৃশ্যের রেন্ডারার।
-আপলোড করা বাংলা ভয়েসওভার অপরিবর্তিত থাকে; ভিডিওর দৈর্ঘ্য ঠিক হয় আসল অডিওর
-duration দিয়ে, আর প্রতিটি দৃশ্য নারেশনের সাথে মিলিয়ে ডিজাইন করা।
+## ⬇️ সরাসরি ডাউনলোড (GitHub)
 
-**আউটপুট:** `1080 × 1920` · `30 fps` · `H.264 (MP4) + AAC` →
-`output/CodePixel-Web-Promo-Reels.mp4`
+- **One-click MP4 (Release Asset):** <https://github.com/ruposhibanglabd/video/releases/download/codepixel-web-ad-v1/CodePixel-Web-Premium-Ad.mp4>
+- **Release Page:** <https://github.com/ruposhibanglabd/video/releases/tag/codepixel-web-ad-v1>
+- **Repo Branch File:** <https://github.com/ruposhibanglabd/video/raw/arena/c6103df1-video/output/CodePixel-Web-Premium-Ad.mp4>
 
----
+**File:** `CodePixel-Web-Premium-Ad.mp4` · `1080×1920` (9:16) · `30 FPS` · `H.264 High + AAC-LC 48 kHz Stereo` · `02:13.87` · `42.31 MB`
+**SHA-256:** `e037ff66d96d5b2e850f598f6b36a31a012f0c3c8baa56a5eb5530ff3557f8fe`
 
-## ১. লোকালি চালানো
+## মূল আউটপুটসমূহ
+
+- **Final Rendered MP4 Video:** `output/CodePixel-Web-Premium-Ad.mp4` (`1080×1920`, `30 FPS`, `02:13.9`, `42.31 MB`)
+- **Bengali Master Voiceover:** `assets/voiceover/codepixel-voiceover.mp3` (`48 kHz`, `192 kbps`)
+- **Original Agency Score & UI SFX:** `assets/audio/codepixel-music-sfx.mp3`
+- **Decoded MP4 Storyboard Sheet:** `output/qa/storyboard-contact-sheet.png`
+- **Complete Script, Storyboard & Sync Timeline:** [`DELIVERABLES.md`](./DELIVERABLES.md) · [`QA-REPORT.md`](./QA-REPORT.md)
+
+## দ্রুত চালানো ও ডাউনলোড
 
 ```bash
 npm install
-npm start            # http://localhost:3000
+npm start            # http://localhost:3000 (লাইভ প্লেয়ার + ১-ক্লিকে MP4 ডাউনলোড)
 ```
 
-ব্রাউজারে (Chrome / Edge, কম্পিউটার) খুলুন → অডিও ফাইল দিন → **ভিডিও তৈরি করুন** →
-শেষ হলে **ভিডিও ডাউনলোড করুন**। রেন্ডার পুরোটাই আপনার ব্রাউজারে হয় (WebCodecs +
-mp4-muxer); কোনো ফাইল সার্ভারে যায় না, কোনো সার্ভার টাইমআউট নেই।
-
-> রেন্ডার সময়: ৮ মিনিটের ভিডিওর জন্য সাধারণ কম্পিউটারে ~১০–২৫ মিনিট।
-> ট্যাবটি খোলা রাখুন; প্রোগ্রেস, ফ্রেম-কাউন্ট ও ETA দেখানো হয়।
-
-### CLI দিয়ে মাস্টার রেন্ডার (সার্ভার/লোকাল, সবচেয়ে ভালো কোয়ালিটি)
+### কমান্ড লাইনে পুনরায় রেন্ডার ও যাচাই
 
 ```bash
+node tools/build-audio.mjs
 node src/render/render.mjs \
-  --audio assets/voiceover/voiceover.mp3 \
-  --out output/CodePixel-Web-Promo-Reels.mp4
+  --audio assets/audio/codepixel-final-audio.m4a \
+  --out output/CodePixel-Web-Premium-Ad.mp4
+node tools/qa-frames.mjs
+node tools/smoke-browser.mjs
 ```
-
-একটি ফ্রেম দেখতে / QA sheet বানাতে:
-
-```bash
-node src/render/render.mjs --still 130.6 --png output/stills/frame.png
-node tools/qa-frames.mjs            # ৭৭ সিনের contact sheet → output/qa/
-node tools/smoke-browser.mjs        # ব্রাউজার পাইপলাইনের wiring টেস্ট (WebCodecs stub)
-```
-
----
-
-## ২. Vercel-এ লাইভ করা (ধাপে ধাপে)
-
-অ্যাপটি সম্পূর্ণ স্ট্যাটিক — সার্ভারলেস ফাংশন, ব্লব স্টোরেজ বা পেইড সার্ভিস লাগে না।
-
-1. GitHub-এ কাজটা `main`-এ মার্জ করুন (Vercel সাধারণত `main` থেকে প্রোডাকশন বিল্ড করে)।
-2. [vercel.com/new](https://vercel.com/new) → **Import Git Repository** → `ruposhibanglabd/video`।
-3. Framework Preset: **Other**। Root Directory: ডিফল্ট (`./`)।
-   Build Command ও Output Directory `vercel.json` থেকেই আসবে
-   (`node tools/build-web.mjs`, `dist`)। দরকার হলে হাতে বসান।
-4. **Deploy** চাপুন। বিল্ড কেবল ফাইল কপি করে (`public/` + `src/` + `fonts/` + muxer)।
-5. লাইভ URL খুলুন → অডিও আপলোড → ভিডিও তৈরি → ডাউনলোড।
-   ডাউনলোড হওয়া ফাইলের নাম: `CodePixel-Web-Promo-Reels.mp4`।
-
-নোট:
-- Vercel-এ **রেন্ডার হয় না** — রেন্ডার হয় ভিজিটরের ব্রাউজারে। তাই ৮ মিনিটের
-  ভিডিওর জন্যও কোনো ১০-সেকেন্ড/৩০০-সেকেন্ড ফাংশন লিমিট সমস্যা নেই।
-- ফোনের Chrome-এ WebCodecs সীমিত হতে পারে; কম্পিউটারে চালানোই নিরাপদ।
-- Custom domain চাইলে Vercel Project → Settings → Domains।
-
----
-
-## ৩. ভয়েসওভার কোথায় রাখবেন
-
-```
-assets/voiceover/voiceover.mp3     # অথবা .wav / .m4a / .aac
-```
-
-অ্যাপ থেকে আপলোড করলে ফাইল শুধু ব্রাউজার মেমোরিতে থাকে; কোনো কপি সার্ভারে যায় না।
-CLI রেন্ডারে অডিও থেকে শুধু AAC-তে মাক্স করা হয় — স্পিড, পিচ, দৈর্ঘ্য বদলায় না।
-
-বর্তমান ভয়েসওভার: `492.355875s` (08:12.356), MP3 44.1 kHz mono।
-
----
-
-## ৪. আর্কিটেকচার
-
-| ফোল্ডার | কাজ |
-|---|---|
-| `src/render/platform.mjs` | একমাত্র প্ল্যাটফর্ম-নির্ভর অংশ: Node-এ Skia canvas + ফন্ট রেজিস্ট্রেশন, ব্রাউজারে `<canvas>` + FontFace |
-| `src/render/kit.mjs` | ডিটারমিনিস্টিক ড্রয়িং কিট (টাইপোগ্রাফি, গ্লো, গ্লাস, ডিভাইস, আইকন, প্রোডাক্ট ইলাস্ট্রেশন) |
-| `src/render/frame.mjs` | টাইমলাইন → ফ্রেম শিডিউল, ট্রানজিশন, কম্পোজিটর |
-| `src/render/render.mjs` | CLI: ffprobe দিয়ে duration, silence-snap, ffmpeg পাইপ, ভেরিফিকেশন |
-| `src/ui/storefront.mjs` | ফিকশনাল ডেমো স্টোরফ্রন্ট **AURUM** — হোম, প্রোডাক্ট, কার্ট, চেকআউট, ল্যান্ডিং |
-| `src/ui/admin.mjs` | বাংলা অ্যাডমিন প্যানেল — ড্যাশবোর্ড, প্রোডাক্ট, অর্ডার, কুরিয়ার, পেমেন্ট |
-| `src/scenes/timeline.mjs` | মূল ৭৭ সিনের প্ল্যান (নেশন, সোর্স/আউটপুট টাইমকোড, সিন টাইপ) |
-| `src/scenes/*.mjs` | সিন রেন্ডারার (open / features / orders / operations / closing) |
-| `src/browser/audio.js` | ব্রাউজারে ডিকোড, duration, পজ-ডিটেকশন, 48 kHz স্টেরিও কপি |
-| `src/browser/encode.js` | WebCodecs H.264 + AAC → mp4-muxer → Blob |
-| `public/` | ৩-ধাপের মিনিমাল UI (`index.html`, `app.css`, `app.js`) |
-| `tools/build-web.mjs` | স্ট্যাটিক বিল্ড → `dist/` (Vercel-এর জন্য) |
-| `tools/serve.mjs` | লোকাল স্ট্যাটিক সার্ভার (Range সাপোর্টসহ) |
-| `tools/qa-frames.mjs` | ৭৭ সিনের ভিজ্যুয়াল QA sheet |
-
-### টাইমিং
-
-মূল প্ল্যানের ৩৪৩ সেকেন্ড সোর্স টাইমকোড × `1.435440233` → ০৮:১২.৩৫৬ আউটপুট।
-আপলোড করা অডিওর আসল দৈর্ঘ্যে আনুপাতিক স্কেল, তারপর `silencedetect`/RMS দিয়ে
-পাওয়া স্বাভাবিক পজে স্ন্যাপ। ফ্রেম = `round(t × 30)` — প্রতিটি সীমার জন্য আলাদা,
-তাই ক্রমবর্ধমান রাউন্ডিং ড্রিফট নেই। শেষ ফ্রেম সম্পূর্ণ অডিও ঢেকে রাখে।
-
----
-
-## ৫. ব্র্যান্ড ফ্যাক্ট (অপরিবর্তিত)
-
-- **মাত্র ৩,০০০ টাকায় ওয়েবসাইট!**
-- **কোনো এডভান্স নেই!**
-- রেডিমেড টেমপ্লেট নয় — আপনার পছন্দমতো কাস্টম ডিজাইন
-- `https://codepixelweb.vercel.app/` · WhatsApp `01876892958`
-
-"৩,০০০ টাকা থেকে" কোথাও লেখা হয় না। কোনো রিভিউ, রেটিং, ক্লায়েন্ট লোগো বা
-বিক্রির পরিসংখ্যান বানানো হয়নি। অপশনাল ফিচার (কুরিয়ার, পেমেন্ট গেটওয়ে,
-মেটা পিক্সেল, টেলিগ্রাম/ইমেইল, ফ্রি হোস্টিং, ল্যান্ডিং পেজ) সবই
-"ইন্টিগ্রেশন ও স্কোপ সাপেক্ষে" হিসেবে দেখানো হয়।
-
----
-
-## ৬. সীমাবদ্ধতা (সৎভাবে)
-
-- ছোট Linux স্যান্ডবক্সে কোনো Chrome/Chromium নেই, তাই Remotion-এর ব্রাউজার
-  রেন্ডারার ব্যবহার করা হয়নি; একই ডিটারমিনিস্টিক আউটপুট Skia + ffmpeg দিয়ে
-  তৈরি হয়। ব্রাউজার পাইপলাইন (`src/browser/*`) শুধু stub-দিয়ে wiring-টেস্ট
-  করা যায় এখানে — আসল WebCodecs এনকোড এই পরিবেশে চালানো সম্ভব নয়।
-- `watchbd.vercel.app` ও `demoadmin-jet.vercel.app` থেকে স্ক্রিনশট নেওয়া যায়নি
-  (শুধু কাঠামো/ভাষা পড়া গেছে); তাই একই স্টাইলের নতুন, পরিষ্কার ডেমো UI আঁকা
-  হয়েছে — ফিকশনাল ব্র্যান্ড `AURUM`, নমুনা ডেটা, "ডেমো ডেটা" ব্যাজ।
-- অডিওর সাথে word-level অ্যালাইনমেন্ট করা হয়নি; দৃশ্য-সীমা আনুপাতিক ম্যাপিং +
-  pause-snap ব্যবহার করে।
-- ফন্ট: Noto Sans Bengali + Inter (SIL OFL) — `assets/fonts/`।

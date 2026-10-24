@@ -1,16 +1,17 @@
 # রেন্ডার আউটপুট
 
-- `CodePixel-Web-Promo-Reels.mp4` — 1080×1920 · 30 fps · H.264 + AAC · 08:12.367
-  · আসল বাংলা ভয়েসওভার (`assets/voiceover/voiceover.mp3`, 492.356 s) সহ।
+- `CodePixel-Web-Premium-Ad.mp4` — 1080×1920 · 30 FPS · H.264 High + AAC-LC · 02:13.87 (4,017 ফ্রেম) · 42.31 MB
+  · মাস্টারড বাংলা ভয়েসওভার + মিউজিক/এসএফএক্স মিক্স (`assets/audio/codepixel-final-audio.m4a`) সহ।
 
 আবার রেন্ডার করতে (এই ফোল্ডারে পুনরায় লেখা হবে):
 
 ```bash
-node src/render/render.mjs --audio assets/voiceover/voiceover.mp3 \
-  --out output/CodePixel-Web-Promo-Reels.mp4
+npm install
+node src/render/render.mjs --audio assets/audio/codepixel-final-audio.m4a \
+  --out output/CodePixel-Web-Premium-Ad.mp4
+node tools/qa-frames.mjs   # QA যাচাই + স্টোরিবোর্ড কন্টাক্ট শিট
 ```
 
-অথবা `npm start` → http://localhost:3000 → অডিও আপলোড → **ভিডিও তৈরি করুন** →
-**ভিডিও ডাউনলোড করুন** (রেন্ডার ব্রাউজারেই হয়)।
-
-`*.mp4` ফাইল Git-এ কমিট হয় না (`.gitignore`)।
+চূড়ান্ত মাস্টার `CodePixel-Web-Premium-Ad.mp4` Git-এ কমিট করা হয় এবং
+GitHub Release থেকেও ডাউনলোড করা যায়। অন্যান্য `*.mp4`, `output/qa/`,
+`output/stills/` ফাইল `.gitignore`-এ বাদ থাকে।

@@ -1,16 +1,14 @@
 /**
- * Platform adapter.
- *
- * The whole scene system is written against the standard Canvas 2D API, so the
- * exact same drawing code renders in Node (@napi-rs/canvas → ffmpeg) and in the
- * browser (<canvas> → WebCodecs). This module is the only place that knows
- * which one we are on.
+ * Platform adapter (Node @napi-rs/canvas + Browser <canvas>).
+ * Loads Noto Sans Bengali + Inter fonts AND the 6 studio product photographs
+ * deterministically before rendering begins.
  */
 const IS_NODE =
   typeof process !== 'undefined' && !!process.versions?.node && typeof document === 'undefined';
 
 export const IS_BROWSER = !IS_NODE;
 export const FONT_DIR = 'fonts/';
+export const PRODUCT_DIR = 'products/';
 
 const FONT_FILES = [
   ['NotoSansBengali-Regular.ttf', 'BN', '400'],
@@ -23,24 +21,43 @@ const FONT_FILES = [
   ['Inter-ExtraBold.ttf', 'Inter', '800'],
 ];
 
+const PRODUCT_FILES = {
+  panjabi: 'fashion-panjabi.jpg',
+  blazer: 'fashion-blazer.jpg',
+  watch: 'watch-chrono.jpg',
+  serum: 'cosmetics-serum.jpg',
+  boot: 'footwear-boot.jpg',
+  laptop: 'tech-laptop.jpg',
+};
+
+export const IMAGES = {};
+
 let createCanvasImpl = null;
 
 async function nodeSetup() {
   const napi = await import('@napi-rs/canvas');
-  const fs = await import('node:fs');
   const path = await import('node:path');
   const { fileURLToPath } = await import('node:url');
   const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-  const dir = path.join(root, 'assets', 'fonts');
+  const fontDir = path.join(root, 'assets', 'fonts');
   for (const [file, family] of FONT_FILES) {
     try {
-      napi.GlobalFonts.registerFromPath(path.join(dir, file), family);
+      napi.GlobalFonts.registerFromPath(path.join(fontDir, file), family);
     } catch (err) {
       console.warn(`[font] ${file}: ${err.message}`);
     }
   }
+  const prodDir = path.join(root, 'assets', 'products');
+  await Promise.all(
+    Object.entries(PRODUCT_FILES).map(async ([key, file]) => {
+      try {
+        IMAGES[key] = await napi.loadImage(path.join(prodDir, file));
+      } catch (err) {
+        console.warn(`[image] ${file}: ${err.message}`);
+      }
+    }),
+  );
   createCanvasImpl = (w, h) => napi.createCanvas(w, h);
-  void fs;
 }
 
 async function browserSetup() {
@@ -58,17 +75,29 @@ async function browserSetup() {
       faces.push(face.load().catch((err) => console.warn(`[font] ${file}:`, err?.message || err)));
     }
   }
-  await Promise.all(faces);
-  // make sure the renderer measures the real metrics, not fallback metrics
+  const imgs = typeof Image !== 'undefined'
+    ? Object.entries(PRODUCT_FILES).map(
+      ([key, file]) =>
+        new Promise((resolve) => {
+          const im = new Image();
+          im.onload = () => {
+            IMAGES[key] = im;
+            resolve();
+          };
+          im.onerror = () => resolve();
+          im.src = `${PRODUCT_DIR}${file}`;
+        }),
+    )
+    : [];
+  await Promise.all([...faces, ...imgs]);
   try {
     await document.fonts.ready;
-    await document.fonts.load('700 84px BN', 'মাত্র ৩,০০০ টাকায় ওয়েবসাইট!');
+    await document.fonts.load('700 84px BN', 'মাত্র ৩০০০ টাকা');
     await document.fonts.load('400 40px Inter', 'CodePixel Web');
-    await document.fonts.load('800 84px BN', 'কাস্টম ডিজাইন');
-  } catch { /* measurement fallback is still valid */ }
+    await document.fonts.load('800 84px BN', 'কাস্টম ওয়েবসাইট');
+  } catch { /* fallback safe */ }
 }
 
-/** Resolves once fonts + canvas backend are ready. Await before drawing. */
 export const PLATFORM_READY = (IS_NODE ? nodeSetup() : browserSetup()).then(() => true);
 
 export function createCanvas(w, h) {

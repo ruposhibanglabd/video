@@ -275,10 +275,10 @@ export function cinematicBG(ctx, t = 0, opts = {}) {
 }
 
 /** Diagonal light sweep across a region. p in 0..1 */
-export function lightSweep(ctx, x, y, w, h, p, color = 'rgba(120,190,255,0.16)', width = 160) {
+export function lightSweep(ctx, x, y, w, h, p, color = 'rgba(120,190,255,0.16)', width = 160, radius = 32) {
   if (p <= 0 || p >= 1.4) return;
   ctx.save();
-  rr(ctx, x, y, w, h, 0);
+  rr(ctx, x, y, w, h, radius);
   ctx.clip();
   ctx.globalCompositeOperation = 'screen';
   const cx = x - width + (w + width * 2) * p;

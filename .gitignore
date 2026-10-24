@@ -9,3 +9,5 @@ output/qa/
 .DS_Store
 dist/
 output/qa*/
+# চূড়ান্ত মাস্টার MP4 Git-এ কমিট হয় (ডাউনলোড ডেলিভারেবল) — বাকি সব রেন্ডার বাদ
+!output/CodePixel-Web-Premium-Ad.mp4
