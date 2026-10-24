@@ -1,0 +1,39 @@
+name: Release Master Ad MP4
+
+# চূড়ান্ত মাস্টার MP4-টিকে GitHub Release asset হিসেবে প্রকাশ করে, যাতে
+# এক-ক্লিকে ডাউনলোড লিংক পাওয়া যায়:
+#   https://github.com/ruposhibanglabd/video/releases/download/codepixel-web-ad-v1/CodePixel-Web-Premium-Ad.mp4
+# (release asset আপলোড GitHub-এর নিজস্ব runner থেকে হয়)
+
+on:
+  push:
+    branches:
+      - arena/c6103df1-video
+    paths:
+      - "output/CodePixel-Web-Premium-Ad.mp4"
+      - ".github/workflows/release-ad.yml"
+      - ".github/ad-release-notes.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Publish release with MP4 asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh release delete codepixel-web-ad-v1 --yes --cleanup-tag || true
+          gh release create codepixel-web-ad-v1 \
+            "output/CodePixel-Web-Premium-Ad.mp4" \
+            --target "$GITHUB_SHA" \
+            --title "CodePixel Web Premium Ad — Final Master MP4 (1080×1920 · 30fps · 2:14)" \
+            --notes-file ".github/ad-release-notes.md"
+          gh release view codepixel-web-ad-v1 --json tagName,isDraft,assets
