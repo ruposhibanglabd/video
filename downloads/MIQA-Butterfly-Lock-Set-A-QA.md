@@ -1,70 +1,87 @@
-# MIQA Set A — delivery and quality-control record
+# MIQA Set A — cinematic campaign, revision 3
 
 Date: 2026-10-30
 
-## Finished asset
+## Confirmed selling price
+
+The user explicitly confirmed **BDT 1,650 / ৳১,৬৫০** for this chain-version advertisement. This supersedes the earlier instruction to omit an unconfirmed price.
+
+The price is displayed in the full-watch scene and final CTA. The final Bengali narration now says: “এম আই কিউ এ। দাম এক হাজার ছয়শ পঞ্চাশ টাকা। অর্ডার করুন এখনই।” No discount, previous price, delivery offer or scarcity claim is added.
+
+## Finished video
 
 - File: `MIQA-Butterfly-Lock-Set-A-Reel.mp4`
 - Duration: 40.000 seconds
 - Video: H.264 High, 1080 × 1920, progressive, 30 FPS, yuv420p
-- Video frames: 1,200, confirmed by full frame count
-- Audio: AAC-LC stereo, 48 kHz, approximately 196 kb/s
-- File size: 11,745,347 bytes
-- SHA-256: `4af1fe0d28d303278ddf8dc673541f445db4135473940b7f881a9c55cfc11fcd`
-- Fast-start MP4: moov atom moved to beginning for streaming
+- Frames: 1,200, verified by complete decode/frame count
+- Audio: AAC-LC stereo, 48 kHz, approximately 192 kb/s
+- Size: 13,920,364 bytes
+- SHA-256: `b3bf91f97fa5eec815d85fcb1bb149e2f01d61c63576a9f276d8becb2bbe91de`
+- Fast-start MP4, with moov atom at beginning
 
-## Checks performed
+## Separate scene images
 
-- Decoded the entire final video and audio with FFmpeg: success, no decoding errors.
-- Ran black-frame detection over the full video: no black intervals reported.
-- Inspected visual contact sheets sampled once per second across the complete 40-second timeline, plus larger scene/feature samples.
-- Bengali text rendered with the repository's licensed Noto Sans Bengali fonts, not generated inside AI images.
-- Measured longer subtitle/CTA lines to check central safe-area fit.
-- Full-program EBU R128 audio measurement: -15.2 LUFS integrated, 4.5 LU loudness range, -2.3 dBFS true peak; no clipping.
-- Narration positioned separately at each scene boundary and time-fitted with modest tempo adjustment, without pitch shifting. Feature captions and sounds share their visual timeline.
+`MIQA-Set-A-Cinematic-Scene-Images.zip` contains fourteen separate clean 1080 × 1920 scene photographs, plus the finished price/CTA card and a short identification note. The MP4 is complete and does not require the user to assemble these images.
 
-## Supplied photographs inspected
+- ZIP size: 6,789,015 bytes
+- ZIP SHA-256: `d31838f43dd85d35d1cc215944ca3c317c45f00f0aadb1e3e5348de3771d3067`
 
-All ten attachments were inspected, including both original shop photographs:
+Images:
 
-1. IMG-20261030-WA0015.jpg
-2. IMG-20261030-WA0016.jpg
-3. IMG-20261030-WA0007.jpg
-4. IMG-20261030-WA0006.jpg
-5. IMG-20261030-WA0005.jpg
-6. IMG-20261030-WA0014(1).jpg
-7. IMG-20261030-WA0013.jpg
-8. e48c77fd-2e22-4131-8716-f2d19291fc5e.webp
-9. IMG20261029134012.jpg
-10. IMG20261029133741.jpg
+1. Dial cinematic macro
+2. White-dial full-watch ivory/travertine hero
+3. Actual butterfly-lock macro on emerald velvet
+4. Actual chain-finishing macro on emerald textile
+5. Two-tone chain / black dial
+6. Two-tone chain / white dial
+7. Gold chain / black dial
+8. Gold chain / blue dial
+9. Gold chain / champagne dial
+10. Office wrist styling
+11. Formal suit/cuff styling
+12. Gifting presentation
+13. Social-commitment still life
+14. Gold-chain black-dial final hero
+15. Additional finished price/CTA card
 
-## Product and creative controls
+## Production changes
 
-- Revision 2 uses the user-selected AI-edited premium product photograph for the hook, full-watch hero and final CTA. It was generated from the supplied black-dial two-tone watch references, and compared visually against them. As generated photography, it is a reference-based interpretation, not a claim of pixel-identical documentary capture. The real lock, chain macro, all five color appearances and wrist/gifting product shots retain the original supplied photographic cutouts/crops.
-- Observed chain finishes: gold and silver–gold two-tone. Supplied black, white/silver, blue and champagne/gold dial appearances are shown without inventing additional chain finishes.
-- Five supplied complete-watch photographic appearances are presented sequentially in the color section. Their original camera perspectives are retained rather than fabricating matching 3D angles.
-- No strap version, price, discount, review, scarcity, delivery offer, waterproof rating, warranty extension, beneficiary image or completed charitable-project claim was added.
-- Water resistance, chain-color guarantee, one-year warranty and future net-profit commitment are seller-provided claims; this production did not independently test/certify them.
-- MIQA is explicitly identified as the retailer/supplier. No MIQA marking was applied to the product.
-- The website content was inspected. Official logo artwork could not be retrieved; the user explicitly selected permission to use a typographic MIQA wordmark instead.
-- AI-generated environment plates include emerald product studios, office and gift display. The new visual direction follows the user-selected emerald stone plinth / ivory architectural light hero image. These are animated photographic scenes, not generated 3D product footage or a simulated mechanical lock operation.
-- Additional generated white- and blue-dial photographic candidates were not included in the final video; original product cutouts were retained for the color sequence.
-- Product framing, typographic entrances, photographic push/pull movements, scene dissolves and CTA styling were revised to match the new selected product image.
-- Lifestyle office/formal shots animate the actual supplied wrist photograph; they are not newly filmed/generated human-motion footage.
-- Gift presentation is illustrative, marked on-screen; no included packaging benefit is claimed.
-- Original electronic score and effects were synthesized specifically for this advertisement; no third-party music samples were used.
-- Bengali masculine commercial voice was auditioned and selected by the user.
+- Ten new scene-specific AI photographic/set plates were created from the supplied product references or the established emerald/champagne/ivory campaign direction.
+- The actual original clasp photograph was composited back into the new emerald velvet macro, preserving the real locking structure rather than inventing a mechanism.
+- The actual original chain crop was composited into the new textile macro, preserving its real link geometry and finishing.
+- Five color scene photographs use the supplied original complete-watch cutouts, without recoloring the bracelet or inventing additional colors.
+- The color sequence renders the actual product foreground independently of its studio background for 2.5D parallax and directional transitions.
+- Other scenes use their own reference-based product/lifestyle photographs, different camera push/pull and lateral moves, animated light accents, typography entrances and scene dissolves.
+- These are animated photographic/composited scenes, not newly filmed live action or fully reconstructed 3D product footage. Generated product photographs are reference-based interpretations, not pixel-identical documentary copies of the supplied photographs; visual comparisons were made and exact original crops retained for the detail-critical clasp, chain and color sequence.
+- Office, formal and gifting use distinct photographic assets rather than reusing one wrist picture in different crops. Product references were supplied to each image generation.
+- Illustrative gift packaging is marked on-screen; included packaging is not promised.
+
+## Quality-control checks
+
+- Entire final video and audio decoded successfully with FFmpeg.
+- Full video frame count: 1,200.
+- Black-frame detector over the full video: no black intervals reported.
+- Visual contact sheets inspected at one-second intervals across the complete 40-second timeline, plus larger feature, price and final CTA samples.
+- Bengali typography rendered during compositing with the repository's licensed Noto Sans Bengali fonts, not generated inside the product photographs.
+- Price spelling and numerals checked: ৳১,৬৫০ / এক হাজার ছয়শ পঞ্চাশ টাকা.
+- Final price narration regenerated with the previously auditioned and user-selected Bengali voice.
+- Scene narration fitted individually to its time slot with pitch-preserving tempo adjustment only where needed.
+- Audio loudness: -15.2 LUFS integrated, 4.5 LU loudness range, -2.3 dBFS true peak; no clipping.
+- Original synthesized score and sound effects; no third-party music samples.
+- ZIP archive integrity checked before delivery.
+
+## Product/business controls
+
+- The ten supplied photographs were inspected in the initial production, including the two original shop photographs, and reused as references/cutouts for this revision.
+- Observed chain finishes remain gold and silver–gold two-tone. Different supplied dial appearances are not advertised as additional chain designs.
+- Chain version only. No belt/strap variant or belt price.
+- Waterproof, chain-color guarantee and one-year warranty are seller-provided claims, not independently tested certifications. No waterproof rating or exaggerated underwater demonstration is added.
+- Social commitment is 5% of **net profit**, not gross sales. No beneficiary photograph, testimonial or completed-project claim is introduced.
+- MIQA is explicitly identified as the watch retailer/supplier, not the manufacturer. No MIQA marking is applied to the product.
+- The website content was inspected previously. The user authorized the MIQA typographic wordmark instead of unavailable official logo artwork; that permission remains in use.
 
 ## Repository isolation
 
-Only media deliverables (the final MP4, selected hero PNG) and this quality-control record are added/updated. Existing website/frontend/backend, rendering app, dependencies and production configuration are unchanged. No deployment was requested or initiated.
+Only media deliverables and this QA document are updated/added. Existing application, frontend, backend, dependencies and production configuration are unchanged. No deployment was initiated.
 
-This session's fixed working branch is `arena/297d3995-video`; no other branch was created or used.
-
-## Selected image deliverable
-
-- File: `miqa-images/MIQA-Set-A-Premium-Hero.png`
-- User selected option 2 of 2 for this product photograph.
-- Size: 2,930,144 bytes
-- SHA-256: `29dec3461db030d39a1bdc78a20924ae91ff6574af230654daad9ea2df45645d`
-- The same selected image is used in the revised MP4; no additional hero-image variation was substituted.
+Work remains on the session's fixed branch `arena/297d3995-video`.
