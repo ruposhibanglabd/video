@@ -1,87 +1,90 @@
-# MIQA Set A — cinematic campaign, revision 3
+# Patek Philippe watch advertisement — revision 4
 
 Date: 2026-10-30
 
-## Confirmed selling price
+## Correct product and retailer identity
 
-The user explicitly confirmed **BDT 1,650 / ৳১,৬৫০** for this chain-version advertisement. This supersedes the earlier instruction to omit an unconfirmed price.
+- Product name: **Patek Philippe** watch, butterfly-lock chain version / Set A.
+- Seller: **মিকা (MIQA)**, a watch retailer/supplier, not the manufacturer.
+- Confirmed selling price: **BDT 1,650 / ৳১,৬৫০**.
+- Product name is prominent in the hero, headers and final CTA. MIQA is identified separately as seller; no MIQA logo is applied to the watch body.
+- Bengali narration now names the watch “পাটেক ফিলিপ” and the seller “মিকা”, not a letter-by-letter MIQA pronunciation.
+- No independent manufacturer affiliation, authenticity certification or authorized-dealer status is claimed.
 
-The price is displayed in the full-watch scene and final CTA. The final Bengali narration now says: “এম আই কিউ এ। দাম এক হাজার ছয়শ পঞ্চাশ টাকা। অর্ডার করুন এখনই।” No discount, previous price, delivery offer or scarcity claim is added.
+## Generated visuals only — latest user requirement
 
-## Finished video
+The current MP4 and scene-image ZIP display **AI-generated photographs only**, with editorial graphics/text added during compositing. No supplied original photograph or original photographic product cutout is loaded by the final renderer.
+
+The user's photographs were used only as image-generation references. This explicitly supersedes previous revisions that used original clasp, chain or color cutouts.
+
+The final renderer loads only a sixteen-image generated-scene directory. Its input list was audited for attachment paths, original watch/cutout loaders and the previous composite-scene directory. The generated-only preparation manifest records the generation output used for each scene.
+
+Generated product imagery is a reference-based interpretation, not a pixel-identical documentary capture; original fine print, proportions and metal finishing can have AI variation. Product appearance was compared visually with the references. No new bracelet colors, date window, gemstone variant, strap version or technical specification was intentionally introduced.
+
+## Finished MP4
 
 - File: `MIQA-Butterfly-Lock-Set-A-Reel.mp4`
 - Duration: 40.000 seconds
 - Video: H.264 High, 1080 × 1920, progressive, 30 FPS, yuv420p
-- Frames: 1,200, verified by complete decode/frame count
+- Complete frame count: 1,200
 - Audio: AAC-LC stereo, 48 kHz, approximately 192 kb/s
-- Size: 13,920,364 bytes
-- SHA-256: `b3bf91f97fa5eec815d85fcb1bb149e2f01d61c63576a9f276d8becb2bbe91de`
-- Fast-start MP4, with moov atom at beginning
+- File size: 14,947,950 bytes
+- SHA-256: `1f45d10bc686fb1a0a60df31c41194b309bbd6977c52c66986a4cba6d1f28ec5`
+- Fast-start MP4, moov atom at beginning
 
-## Separate scene images
+## Feature-to-visual synchronization
 
-`MIQA-Set-A-Cinematic-Scene-Images.zip` contains fourteen separate clean 1080 × 1920 scene photographs, plus the finished price/CTA card and a short identification note. The MP4 is complete and does not require the user to assemble these images.
+| Time | Spoken subject | Visual actually shown |
+|---|---|---|
+| 00:00–00:03 | Premium styling hook | Generated dial macro |
+| 00:03–00:07 | Patek Philippe / butterfly-lock watch | Generated complete-watch hero and product name |
+| 00:07–00:11 | Butterfly lock | Generated open-clasp macro |
+| 00:11–00:12.67 | Chain-color guarantee | Generated chain-finishing photograph and restrained shield graphic |
+| 00:12.67–00:14.33 | Waterproof feature | Generated watch with visible surface water droplets and droplet graphic |
+| 00:14.33–00:16 | One-year warranty | Generated watch/card scene with accurately typeset “১ বছর ওয়ারেন্টি” and calendar graphic |
+| 00:16–00:24 | Available color options | Five separately generated product photographs, sequentially presented |
+| 00:24–00:25.70 | Office styling | Generated office wrist photograph |
+| 00:25.70–00:27.30 | Formal styling | Generated suit/cuff photograph |
+| 00:27.30–00:29 | Gifting | Generated gift presentation |
+| 00:29–00:34 | 5% of net profit commitment | Generated emerald still life, seller identity and exact net-profit wording |
+| 00:34–00:40 | Patek Philippe, BDT 1,650, order from MIKA | Generated final product hero, price and seller/order CTA |
 
-- ZIP size: 6,789,015 bytes
-- ZIP SHA-256: `d31838f43dd85d35d1cc215944ca3c317c45f00f0aadb1e3e5348de3771d3067`
+The three benefit phrases and three lifestyle phrases were synthesized separately and positioned at their exact corresponding visual boundaries, rather than estimating word boundaries inside one long narration. Captions follow those same boundaries.
 
-Images:
+## Water/warranty/guarantee limitations
 
-1. Dial cinematic macro
-2. White-dial full-watch ivory/travertine hero
-3. Actual butterfly-lock macro on emerald velvet
-4. Actual chain-finishing macro on emerald textile
-5. Two-tone chain / black dial
-6. Two-tone chain / white dial
-7. Gold chain / black dial
-8. Gold chain / blue dial
-9. Gold chain / champagne dial
-10. Office wrist styling
-11. Formal suit/cuff styling
-12. Gifting presentation
-13. Social-commitment still life
-14. Gold-chain black-dial final hero
-15. Additional finished price/CTA card
+- Surface droplets are an illustrative product-feature visual, not evidence of testing, an underwater demonstration or a depth rating. No swimming, submersion or high-pressure resistance is depicted.
+- The generated water image was corrected to avoid screw/rivet-like bezel additions and to make droplets visibly translucent.
+- Chain-color guarantee, waterproof and one-year warranty remain seller-provided claims, not independently tested certifications.
+- Warranty card is a graphic presentation prop, not a manufacturer authorization certificate or additional included-item promise.
+- Gift packaging is illustrative and marked as such; no included packaging benefit is promised.
+- The social commitment refers to **net profit**, not gross sales. No beneficiary photos, testimonials or completed-project claims are added.
 
-## Production changes
+## Scene-image ZIP
 
-- Ten new scene-specific AI photographic/set plates were created from the supplied product references or the established emerald/champagne/ivory campaign direction.
-- The actual original clasp photograph was composited back into the new emerald velvet macro, preserving the real locking structure rather than inventing a mechanism.
-- The actual original chain crop was composited into the new textile macro, preserving its real link geometry and finishing.
-- Five color scene photographs use the supplied original complete-watch cutouts, without recoloring the bracelet or inventing additional colors.
-- The color sequence renders the actual product foreground independently of its studio background for 2.5D parallax and directional transitions.
-- Other scenes use their own reference-based product/lifestyle photographs, different camera push/pull and lateral moves, animated light accents, typography entrances and scene dissolves.
-- These are animated photographic/composited scenes, not newly filmed live action or fully reconstructed 3D product footage. Generated product photographs are reference-based interpretations, not pixel-identical documentary copies of the supplied photographs; visual comparisons were made and exact original crops retained for the detail-critical clasp, chain and color sequence.
-- Office, formal and gifting use distinct photographic assets rather than reusing one wrist picture in different crops. Product references were supplied to each image generation.
-- Illustrative gift packaging is marked on-screen; included packaging is not promised.
+- File: `MIQA-Set-A-Cinematic-Scene-Images.zip`
+- Sixteen generated-only scene photographs plus one finished price/order card; 17 JPEGs and one identification note.
+- All scene JPEGs: 1080 × 1920.
+- No original attachments or original cutouts are included in the ZIP.
+- Size: 8,011,290 bytes
+- SHA-256: `e74967339c4c0e99eb9d97ca0790ea5fd0e04a2c691f246b52efcff95d94af58`
+- Archive integrity tested successfully.
+- The complete MP4 is supplied separately; user assembly/editing is not needed.
 
-## Quality-control checks
+## Technical quality checks
 
 - Entire final video and audio decoded successfully with FFmpeg.
-- Full video frame count: 1,200.
-- Black-frame detector over the full video: no black intervals reported.
-- Visual contact sheets inspected at one-second intervals across the complete 40-second timeline, plus larger feature, price and final CTA samples.
-- Bengali typography rendered during compositing with the repository's licensed Noto Sans Bengali fonts, not generated inside the product photographs.
-- Price spelling and numerals checked: ৳১,৬৫০ / এক হাজার ছয়শ পঞ্চাশ টাকা.
-- Final price narration regenerated with the previously auditioned and user-selected Bengali voice.
-- Scene narration fitted individually to its time slot with pitch-preserving tempo adjustment only where needed.
-- Audio loudness: -15.2 LUFS integrated, 4.5 LU loudness range, -2.3 dBFS true peak; no clipping.
-- Original synthesized score and sound effects; no third-party music samples.
-- ZIP archive integrity checked before delivery.
-
-## Product/business controls
-
-- The ten supplied photographs were inspected in the initial production, including the two original shop photographs, and reused as references/cutouts for this revision.
-- Observed chain finishes remain gold and silver–gold two-tone. Different supplied dial appearances are not advertised as additional chain designs.
-- Chain version only. No belt/strap variant or belt price.
-- Waterproof, chain-color guarantee and one-year warranty are seller-provided claims, not independently tested certifications. No waterproof rating or exaggerated underwater demonstration is added.
-- Social commitment is 5% of **net profit**, not gross sales. No beneficiary photograph, testimonial or completed-project claim is introduced.
-- MIQA is explicitly identified as the watch retailer/supplier, not the manufacturer. No MIQA marking is applied to the product.
-- The website content was inspected previously. The user authorized the MIQA typographic wordmark instead of unavailable official logo artwork; that permission remains in use.
+- Complete frame count verified: 1,200, matching 40 seconds at 30 FPS.
+- Black-frame detection over the full video: no black intervals reported.
+- Visual contact sheets reviewed at one-second intervals over the complete timeline, plus larger feature, warranty and final-CTA samples.
+- Bengali text is rendered using licensed Noto Sans Bengali fonts during editing, not generated inside the photographs.
+- Price and brand-name wording checked in overlays and narration.
+- Audio: -15.7 LUFS integrated, 5.9 LU loudness range, -2.3 dBFS true peak; no clipping.
+- Music and effects are original synthesized audio, with narration ducking and synchronized feature accents.
+- This is a finished animated photographic advertisement using camera moves, light accents, typography and transitions, not newly filmed live action or a fully reconstructed 3D product simulation.
 
 ## Repository isolation
 
-Only media deliverables and this QA document are updated/added. Existing application, frontend, backend, dependencies and production configuration are unchanged. No deployment was initiated.
+Only the MP4, scene ZIP and this QA document are updated. Existing app/frontend/backend, dependencies and production configuration are unchanged. No deployment was initiated.
 
-Work remains on the session's fixed branch `arena/297d3995-video`.
+Work remains on the fixed session branch `arena/297d3995-video`.
