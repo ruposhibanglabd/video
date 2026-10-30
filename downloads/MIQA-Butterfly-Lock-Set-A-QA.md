@@ -9,8 +9,8 @@ Date: 2026-10-30
 - Video: H.264 High, 1080 × 1920, progressive, 30 FPS, yuv420p
 - Video frames: 1,200, confirmed by full frame count
 - Audio: AAC-LC stereo, 48 kHz, approximately 196 kb/s
-- File size: 10,633,386 bytes
-- SHA-256: `57adf74d6f0249b662f162a4e14faccca106b6d109f001323f5f5a41e4b72a4b`
+- File size: 11,745,347 bytes
+- SHA-256: `4af1fe0d28d303278ddf8dc673541f445db4135473940b7f881a9c55cfc11fcd`
 - Fast-start MP4: moov atom moved to beginning for streaming
 
 ## Checks performed
@@ -40,14 +40,16 @@ All ten attachments were inspected, including both original shop photographs:
 
 ## Product and creative controls
 
-- Product pixels are cutouts/crops of the supplied photographs, including the real lock and wrist photograph. AI backgrounds do not replace the watch.
+- Revision 2 uses the user-selected AI-edited premium product photograph for the hook, full-watch hero and final CTA. It was generated from the supplied black-dial two-tone watch references, and compared visually against them. As generated photography, it is a reference-based interpretation, not a claim of pixel-identical documentary capture. The real lock, chain macro, all five color appearances and wrist/gifting product shots retain the original supplied photographic cutouts/crops.
 - Observed chain finishes: gold and silver–gold two-tone. Supplied black, white/silver, blue and champagne/gold dial appearances are shown without inventing additional chain finishes.
 - Five supplied complete-watch photographic appearances are presented sequentially in the color section. Their original camera perspectives are retained rather than fabricating matching 3D angles.
 - No strap version, price, discount, review, scarcity, delivery offer, waterproof rating, warranty extension, beneficiary image or completed charitable-project claim was added.
 - Water resistance, chain-color guarantee, one-year warranty and future net-profit commitment are seller-provided claims; this production did not independently test/certify them.
 - MIQA is explicitly identified as the retailer/supplier. No MIQA marking was applied to the product.
 - The website content was inspected. Official logo artwork could not be retrieved; the user explicitly selected permission to use a typographic MIQA wordmark instead.
-- Three AI-generated environment plates: emerald product studio, office and gift display. These are composited photographic animation scenes, not generated 3D product footage or a simulated mechanical lock operation.
+- AI-generated environment plates include emerald product studios, office and gift display. The new visual direction follows the user-selected emerald stone plinth / ivory architectural light hero image. These are animated photographic scenes, not generated 3D product footage or a simulated mechanical lock operation.
+- Additional generated white- and blue-dial photographic candidates were not included in the final video; original product cutouts were retained for the color sequence.
+- Product framing, typographic entrances, photographic push/pull movements, scene dissolves and CTA styling were revised to match the new selected product image.
 - Lifestyle office/formal shots animate the actual supplied wrist photograph; they are not newly filmed/generated human-motion footage.
 - Gift presentation is illustrative, marked on-screen; no included packaging benefit is claimed.
 - Original electronic score and effects were synthesized specifically for this advertisement; no third-party music samples were used.
@@ -55,6 +57,14 @@ All ten attachments were inspected, including both original shop photographs:
 
 ## Repository isolation
 
-Only the final MP4 and this quality-control record are added. Existing website/frontend/backend, rendering app, dependencies and production configuration are unchanged. No deployment was requested or initiated.
+Only media deliverables (the final MP4, selected hero PNG) and this quality-control record are added/updated. Existing website/frontend/backend, rendering app, dependencies and production configuration are unchanged. No deployment was requested or initiated.
 
 This session's fixed working branch is `arena/297d3995-video`; no other branch was created or used.
+
+## Selected image deliverable
+
+- File: `miqa-images/MIQA-Set-A-Premium-Hero.png`
+- User selected option 2 of 2 for this product photograph.
+- Size: 2,930,144 bytes
+- SHA-256: `29dec3461db030d39a1bdc78a20924ae91ff6574af230654daad9ea2df45645d`
+- The same selected image is used in the revised MP4; no additional hero-image variation was substituted.
