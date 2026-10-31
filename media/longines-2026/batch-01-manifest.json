@@ -1,0 +1,62 @@
+[
+  {
+    "file": "01-leather-brown-cinematic.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "364a59d53e4ec276b0fb230ba72f6f9ab27a0939971e8856c4eb429f26c15dd8"
+  },
+  {
+    "file": "02-leather-black-champagne.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "48324b0635ae8d8216ad3f659896af6a185f9a24acbdeb3cf6bae87a6d62d60c"
+  },
+  {
+    "file": "03-leather-white-roman.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "81909f0e26e92c03026049ad5beeb0b2630c0a7cabd86b298d768485320ad47c"
+  },
+  {
+    "file": "04-leather-black-roman.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "71f764de70f0b3d59677f166c52792728b5d7c342c5fb2d56da3c04f28817191"
+  },
+  {
+    "file": "05-chain-gold-champagne.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "621909276ac4d666f3dada91890783beb2f45cbb92a64bc95fc18107f9a6f132"
+  },
+  {
+    "file": "06-chain-gold-black.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "04b8fc0e6d0dd55bd358367ca9d711a3a6f609b498e54e78ec49819c7a462cc1"
+  },
+  {
+    "file": "07-chain-two-tone-black.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "a64eef707f38585d37b4a7a43775456f7c229533a10b3afdea007e8d38bd14c3"
+  },
+  {
+    "file": "08-leather-texture-detail.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "71e2bdfc456161b6e914e1737e8a524af72b9fbfc28560245bd1e70ff2ba06e0"
+  },
+  {
+    "file": "09-chain-butterfly-clasp.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "19ccd3b9ded694b39d3733b49562c1e0d1cd0f46f273af0dbc153a41973207be"
+  },
+  {
+    "file": "10-leather-waterproof-concept.png",
+    "width": 768,
+    "height": 1376,
+    "sha256": "25c8a19b38a0dbde7e597060a08537a9bf5b4ebeee43201c4baf2bcdd3a219c0"
+  }
+]
