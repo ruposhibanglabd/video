@@ -1,0 +1,44 @@
+[
+  {
+    "file": "Tissot-Gold-Brown-Wrist-4K.webp",
+    "pixels": [
+      4096,
+      4096
+    ],
+    "bytes": 928592,
+    "quality": 85,
+    "source_pixels": [
+      2048,
+      2048
+    ],
+    "upscaled": true
+  },
+  {
+    "file": "Tissot-Gold-Brown-Detail-4K.webp",
+    "pixels": [
+      4096,
+      4096
+    ],
+    "bytes": 773298,
+    "quality": 85,
+    "source_pixels": [
+      2048,
+      2048
+    ],
+    "upscaled": true
+  },
+  {
+    "file": "Tissot-Gold-Brown-Primary-4K.webp",
+    "pixels": [
+      4096,
+      4096
+    ],
+    "bytes": 246818,
+    "quality": 88,
+    "source_pixels": [
+      1728,
+      2304
+    ],
+    "upscaled": true
+  }
+]
