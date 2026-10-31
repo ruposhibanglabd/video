@@ -1,0 +1,72 @@
+[
+  {
+    "file": "generated/11-chain-water.png",
+    "bytes": 1786566,
+    "sha256": "eb9ef86691b338c181b20f83f00d649a54b4c95db59f88204c365542370884da"
+  },
+  {
+    "file": "generated/12-gifts.png",
+    "bytes": 1643759,
+    "sha256": "4209b63119409e5a60120c90563d405714f50aba2a314631e1885359d64ef1a3"
+  },
+  {
+    "file": "generated/13-leather-lifestyle.png",
+    "bytes": 1733931,
+    "sha256": "99154577219d4b350661576bfaf3b98e50a6d898173546acf0e45e7f6ba1b633"
+  },
+  {
+    "file": "generated/14-chain-lifestyle.png",
+    "bytes": 1799440,
+    "sha256": "00061114dacdb54d6b23246d8d656a4266c48059533f484fde13bf46b784a199"
+  },
+  {
+    "file": "generated/15-chain-warranty.png",
+    "bytes": 1282839,
+    "sha256": "947c1af805d20b4b7cf8f8602b955e10a7555ba36e3672fed984a4e3b24e38f5"
+  },
+  {
+    "file": "audio/vo-chainprice.wav",
+    "bytes": 184398,
+    "sha256": "d1c2a37650857fbe754fa0882f9cdf616eed3a34a66a0929e6af71c62b71db18"
+  },
+  {
+    "file": "audio/vo-final.wav",
+    "bytes": 295758,
+    "sha256": "d6079443086ef4f70c93d7513836d6ffaa4fedd98f04d18a18db22ebc866291a"
+  },
+  {
+    "file": "audio/vo-guarantee.wav",
+    "bytes": 128718,
+    "sha256": "f54d4f1478f3e3998705a02de3516629d92a77633559a35603ef55fd2cb43628"
+  },
+  {
+    "file": "audio/vo-hook.wav",
+    "bytes": 142158,
+    "sha256": "6697b727f00a2a1206f8985fccfbdaaaa46e88bafc7317ef38093293694104e9"
+  },
+  {
+    "file": "audio/vo-leather.wav",
+    "bytes": 263118,
+    "sha256": "7134706e32619e4db8d608820b0a831c1a3a63d64439814eefaed4a721367a53"
+  },
+  {
+    "file": "audio/vo-leatherprice.wav",
+    "bytes": 124878,
+    "sha256": "9f4e6e649bc2b234258663346358dfd7cb2562da369e66779c6829d4be35b97e"
+  },
+  {
+    "file": "audio/vo-lock.wav",
+    "bytes": 153678,
+    "sha256": "3bd34f2c53c94fbe6cef8db0e6ec5719b2dabb95b95b57a9bec79487ad7a91c0"
+  },
+  {
+    "file": "audio/vo-warranty.wav",
+    "bytes": 140238,
+    "sha256": "282a12d77d95ecfeebd18cf8873b5f16ca8fcdbaf09024457834f8f1c7dd0599"
+  },
+  {
+    "file": "audio/vo-water.wav",
+    "bytes": 90318,
+    "sha256": "d9f0d5967bfb579fcb37b7f08d4e4737050e8a94a6514ccda54eca4f7295c35a"
+  }
+]

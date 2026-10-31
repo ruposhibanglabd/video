@@ -13,9 +13,9 @@ Updated 2026-10-31. **New product campaign, not another SEIKO revision.**
 - Latest selected Bengali narrator is `voice-01` in this conversation; verify registration if future tools require it.
 - Earlier resolution preference: 4K master + Facebook 1080×1920, honestly disclosing photographic upscale/native-resolution graphics.
 
-## Explicit current-turn boundary
+## Latest user confirmation
 
-User has MORE photos to send. They requested **10 new images first**, then notification so they can upload the remainder. Do not rush into a final video or call current photos the complete assortment. No narration audio or video has been produced for LONGINES yet.
+User confirmed **there are no more photographs**. Proceed with the complete advertisement using the current 17 references. The ten generated batch-01 images remain approved production assets; five additional feature/lifestyle/gift scenes and nine fresh Bengali narration clips have now been created. Rendering and complete-file QA are now complete; results are documented in `downloads/MIQA-LONGINES-QA.md`.
 
 ## Batch 01 — completed
 
@@ -38,6 +38,6 @@ Preview: `downloads/MIQA-LONGINES-Batch-01-Preview.jpg`. Archive: `downloads/MIQ
 
 `reference-map.json` maps reference numbers to the 17 uploaded PNG filenames under `/tmp/arena-coding-uploads/`. Temporary JPEG references and source-review sheets are under `.tmp/longines/references/` (scratch, not deliverables).
 
-## Next step
+## Current production
 
-Ask user to send remaining pictures. Review new appearances, plan batch 02/feature scenes, then create fresh premium Bengali narration and finished video. Do not regenerate this batch accidentally. No website/application/deployment changes.
+The 48-second two-variant film uses the nineteen-scene `storyboard.json`, new narration and original procedural underscore. Sources and reproduction steps are in `README.md`. Do not ask for more photos again. Retain product-specific price and warranty scoping; no website/application/deployment changes.

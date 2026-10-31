@@ -1,0 +1,212 @@
+[
+  {
+    "id": "hook",
+    "start": 0,
+    "end": 3.3,
+    "image": "downloads/longines-batch-01/01-leather-brown-cinematic.png",
+    "eyebrow": "LONGINES",
+    "title": "সময় বদলায়",
+    "line": "রুচি থেকে যায়",
+    "sub": "আপনার নিজস্ব স্টাইল",
+    "kind": "normal"
+  },
+  {
+    "id": "leather-detail",
+    "start": 3.3,
+    "end": 8.6,
+    "image": "downloads/longines-batch-01/08-leather-texture-detail.png",
+    "eyebrow": "LEATHER COLLECTION",
+    "title": "১০০% চামড়ার বেল্ট",
+    "line": "টেক্সচার ও ফিনিশ",
+    "sub": "লেদার ভ্যারিয়েন্ট",
+    "kind": "normal"
+  },
+  {
+    "id": "leather-water",
+    "start": 8.6,
+    "end": 10.4,
+    "image": "downloads/longines-batch-01/10-leather-waterproof-concept.png",
+    "eyebrow": "LEATHER COLLECTION",
+    "title": "ওয়াটারপ্রুফ সুবিধা",
+    "line": "লেদার ভ্যারিয়েন্ট",
+    "sub": "পানির ফোঁটায় ফিচারের উপস্থাপনা",
+    "kind": "normal"
+  },
+  {
+    "id": "leather-price",
+    "start": 10.4,
+    "end": 13.4,
+    "image": "downloads/longines-batch-01/01-leather-brown-cinematic.png",
+    "eyebrow": "LONGINES · LEATHER",
+    "title": "লেদার ভ্যারিয়েন্ট",
+    "line": "৳১,৫০০",
+    "sub": "১০০% চামড়ার বেল্ট • ওয়াটারপ্রুফ",
+    "kind": "price"
+  },
+  {
+    "id": "white-roman",
+    "start": 13.4,
+    "end": 15.1,
+    "image": "downloads/longines-batch-01/03-leather-white-roman.png",
+    "eyebrow": "CHOOSE YOUR LOOK",
+    "title": "সাদা ডায়াল",
+    "line": "রোমান ডিজাইন",
+    "sub": "কালো লেদার বেল্ট",
+    "kind": "normal"
+  },
+  {
+    "id": "black-roman",
+    "start": 15.1,
+    "end": 16.8,
+    "image": "downloads/longines-batch-01/04-leather-black-roman.png",
+    "eyebrow": "CHOOSE YOUR LOOK",
+    "title": "কালো ডায়াল",
+    "line": "রোমান ডিজাইন",
+    "sub": "কালো লেদার বেল্ট",
+    "kind": "normal"
+  },
+  {
+    "id": "black-champagne",
+    "start": 16.8,
+    "end": 18.2,
+    "image": "downloads/longines-batch-01/02-leather-black-champagne.png",
+    "eyebrow": "CHOOSE YOUR LOOK",
+    "title": "শ্যাম্পেন ডায়াল",
+    "line": "সিম্পল ডিজাইন",
+    "sub": "কালো লেদার বেল্ট",
+    "kind": "normal"
+  },
+  {
+    "id": "chain-hero",
+    "start": 18.2,
+    "end": 20,
+    "image": "downloads/longines-batch-01/05-chain-gold-champagne.png",
+    "eyebrow": "CHAIN COLLECTION",
+    "title": "পরিপাটি ফিনিশ",
+    "line": "নজরকাড়া উপস্থিতি",
+    "sub": "চেইন ভ্যারিয়েন্ট",
+    "kind": "normal"
+  },
+  {
+    "id": "butterfly",
+    "start": 20,
+    "end": 23.2,
+    "image": "downloads/longines-batch-01/09-chain-butterfly-clasp.png",
+    "eyebrow": "CHAIN COLLECTION",
+    "title": "বাটারফ্লাই লক",
+    "line": "পরিপাটি ডিজাইন",
+    "sub": "চেইন ভ্যারিয়েন্টের ক্ল্যাস্প",
+    "kind": "normal"
+  },
+  {
+    "id": "chain-guarantee",
+    "start": 23.2,
+    "end": 25.7,
+    "image": "downloads/longines-batch-01/07-chain-two-tone-black.png",
+    "eyebrow": "CHAIN COLLECTION",
+    "title": "চেইন কালার",
+    "line": "গ্যারান্টি",
+    "sub": "টু টোন চেইনের ফিনিশিং",
+    "kind": "normal"
+  },
+  {
+    "id": "chain-water",
+    "start": 25.7,
+    "end": 27.5,
+    "image": ".tmp/longines/generated/11-chain-water.png",
+    "eyebrow": "CHAIN COLLECTION",
+    "title": "ওয়াটারপ্রুফ সুবিধা",
+    "line": "চেইন ভ্যারিয়েন্ট",
+    "sub": "কোনো গভীরতা বা চাপের রেটিং দাবি নয়",
+    "kind": "normal"
+  },
+  {
+    "id": "chain-warranty",
+    "start": 27.5,
+    "end": 30.4,
+    "image": ".tmp/longines/generated/15-chain-warranty.png",
+    "eyebrow": "CHAIN COLLECTION",
+    "title": "এক বছরের ওয়ারেন্টি",
+    "line": "শুধু চেইন ভ্যারিয়েন্টে",
+    "sub": "পরিপাটি পছন্দের সঙ্গে নিশ্চয়তা",
+    "kind": "warranty"
+  },
+  {
+    "id": "chain-price",
+    "start": 30.4,
+    "end": 34.3,
+    "image": "downloads/longines-batch-01/05-chain-gold-champagne.png",
+    "eyebrow": "LONGINES · CHAIN",
+    "title": "চেইন ভ্যারিয়েন্ট",
+    "line": "৳১,৭৯৯",
+    "sub": "বাটারফ্লাই লক • এক বছরের ওয়ারেন্টি",
+    "kind": "price"
+  },
+  {
+    "id": "gold-black",
+    "start": 34.3,
+    "end": 35.9,
+    "image": "downloads/longines-batch-01/06-chain-gold-black.png",
+    "eyebrow": "CHOOSE YOUR LOOK",
+    "title": "গোল্ড চেইন",
+    "line": "কালো ডায়াল",
+    "sub": "আপনার পছন্দের ফিনিশ",
+    "kind": "normal"
+  },
+  {
+    "id": "two-tone",
+    "start": 35.9,
+    "end": 37.5,
+    "image": "downloads/longines-batch-01/07-chain-two-tone-black.png",
+    "eyebrow": "CHOOSE YOUR LOOK",
+    "title": "টু টোন চেইন",
+    "line": "কালো ডায়াল",
+    "sub": "আপনার পছন্দের ফিনিশ",
+    "kind": "normal"
+  },
+  {
+    "id": "leather-life",
+    "start": 37.5,
+    "end": 38.8,
+    "image": ".tmp/longines/generated/13-leather-lifestyle.png",
+    "eyebrow": "EVERYDAY STYLE",
+    "title": "লেদারে পরিপাটি",
+    "line": "LONGINES",
+    "sub": "অফিস কিংবা ফরমাল সাজে",
+    "kind": "normal"
+  },
+  {
+    "id": "chain-life",
+    "start": 38.8,
+    "end": 40.1,
+    "image": ".tmp/longines/generated/14-chain-lifestyle.png",
+    "eyebrow": "EVERYDAY STYLE",
+    "title": "চেইনে আকর্ষণীয়",
+    "line": "LONGINES",
+    "sub": "অফিস কিংবা ফরমাল সাজে",
+    "kind": "normal"
+  },
+  {
+    "id": "free-gifts",
+    "start": 40.1,
+    "end": 44.7,
+    "image": ".tmp/longines/generated/12-gifts.png",
+    "eyebrow": "COMPLIMENTARY GIFTS",
+    "title": "ব্যাটারি ও চেইন কাটার",
+    "line": "একদম ফ্রি",
+    "sub": "উভয় ভ্যারিয়েন্টের সঙ্গে",
+    "kind": "gifts"
+  },
+  {
+    "id": "final",
+    "start": 44.7,
+    "end": 48,
+    "image": "downloads/longines-batch-01/01-leather-brown-cinematic.png",
+    "eyebrow": "LONGINES · MIQA",
+    "title": "আপনার পছন্দ, আপনার স্টাইল",
+    "line": "অর্ডার করুন মিকায়",
+    "sub": "উভয়ের সঙ্গে ব্যাটারি ও চেইন কাটার ফ্রি",
+    "kind": "dual",
+    "image2": "downloads/longines-batch-01/05-chain-gold-champagne.png"
+  }
+]

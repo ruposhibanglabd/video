@@ -1,0 +1,5 @@
+import fs from 'node:fs';import ff from '@ffmpeg-installer/ffmpeg';import {execFileSync} from 'node:child_process';
+for(let i=0;i<19;i++)execFileSync(process.execPath,['--expose-gc','media/longines-2026/render.mjs',String(i)],{stdio:'inherit',env:{...process.env,MALLOC_ARENA_MAX:'2'}});
+fs.writeFileSync('.tmp/longines/render/concat.txt',Array.from({length:19},(_,i)=>`file '${String(i).padStart(2,'0')}.mp4'`).join('\n'));
+execFileSync(ff.path,['-y','-v','warning','-f','concat','-safe','0','-i','.tmp/longines/render/concat.txt','-i','.tmp/longines/render/mix.wav','-map','0:v','-map','1:a','-c:v','copy','-af','loudnorm=I=-15:TP=-2:LRA=7','-c:a','aac','-b:a','256k','-ar','48000','-t','48','-movflags','+faststart','downloads/MIQA-LONGINES-4K.mp4'],{stdio:'inherit'});
+execFileSync(ff.path,['-y','-v','warning','-i','downloads/MIQA-LONGINES-4K.mp4','-vf','scale=1080:1920:flags=lanczos','-c:v','libx264','-crf','18','-preset','fast','-threads','2','-profile:v','high','-level','4.2','-pix_fmt','yuv420p','-c:a','copy','-movflags','+faststart','downloads/MIQA-LONGINES-Facebook-1080p.mp4'],{stdio:'inherit'});console.log('EXPORTS COMPLETE');
