@@ -1,0 +1,55 @@
+{
+  "set": "Seiko VIP two-tone navy — wrist, full watch, macro",
+  "references": [
+    "image-21.png",
+    "image-22.png"
+  ],
+  "images": [
+    {
+      "file": "Seiko-VIP-Two-Tone-Navy-Full-Watch-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 433492,
+      "source_pixels": [
+        1024,
+        1024
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Two-Tone-Navy-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 867130,
+      "source_pixels": [
+        1024,
+        1024
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Two-Tone-Navy-Macro-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 824060,
+      "source_pixels": [
+        1254,
+        1254
+      ],
+      "upscaled": true
+    }
+  ],
+  "label": "বাটারফ্লাই লক",
+  "confirmed_by_seller": [
+    "premium quality",
+    "waterproof (rating unspecified)",
+    "bracelet color guarantee (terms unspecified)",
+    "butterfly clasp"
+  ]
+}
