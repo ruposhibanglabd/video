@@ -25,7 +25,20 @@
         2048
       ],
       "upscaled": true
+    },
+    {
+      "file": "Tissot-Silver-Brown-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 842368,
+      "source_pixels": [
+        2048,
+        2048
+      ],
+      "upscaled": true
     }
   ],
-  "wrist_status": "Not selected; no final wrist image available"
+  "wrist_status": "Selected option 2; delivered"
 }
