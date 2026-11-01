@@ -1,0 +1,92 @@
+[
+  {
+    "file": "generated/01-silver-white-black.png",
+    "bytes": 1254737,
+    "sha256": "b2e6b0f257df61c03da1f706789c13256866c0e3f7eb6f75932b95d5b0100a06"
+  },
+  {
+    "file": "generated/02-silver-dark-black.png",
+    "bytes": 1389264,
+    "sha256": "ffd651077045abce433f772b11ed000b264e0456472cf3f969ea9b005a9c5388"
+  },
+  {
+    "file": "generated/03-gold-black-black.png",
+    "bytes": 1690250,
+    "sha256": "7454ae9a0c79954faee7a241fc0722108f13ce4d5321e380fee31c1bcbf308c8"
+  },
+  {
+    "file": "generated/04-silver-white-brown.png",
+    "bytes": 1473357,
+    "sha256": "931d1acb458d9e68c5b852d1e5b8e5436c155f646d1e5893ee2a624bc65da4e3"
+  },
+  {
+    "file": "generated/05-gold-white-brown.png",
+    "bytes": 1393743,
+    "sha256": "211a14eb247b21d085354e698d729dfa61b282428040630ecc4b1bb6e10cb97c"
+  },
+  {
+    "file": "generated/06-black-black-black.png",
+    "bytes": 1621019,
+    "sha256": "9500ee899923ae114d083692b72b55ce2d9b791a77140ae4458ed32472c74414"
+  },
+  {
+    "file": "generated/07-silver-blue-black.png",
+    "bytes": 1558629,
+    "sha256": "79e06c388d7e7c98f89606ba34b9ba5197f5ddc460dfaabba71664254d636666"
+  },
+  {
+    "file": "generated/08-leather-detail.png",
+    "bytes": 1528892,
+    "sha256": "aa973e378e2d8e688936e3610b4ff23f73731ce48f47b5c9e7a8bbab84640564"
+  },
+  {
+    "file": "generated/09-water.png",
+    "bytes": 1295268,
+    "sha256": "c594fe18646baf490f79a5574a38a96517e324c9f6498d7b927da39cdbb3d514"
+  },
+  {
+    "file": "generated/10-box-battery.png",
+    "bytes": 1432639,
+    "sha256": "99d79a2d4614d6abfd504fb5e4426e0c9d01211c1aac74339d204b2fac74493b"
+  },
+  {
+    "file": "audio/vo-final.wav",
+    "bytes": 245838,
+    "sha256": "f88c9f13412857624df14f6523f9ddf5e27fecdc84b60a244363e0e9e16746a2"
+  },
+  {
+    "file": "audio/vo-hero.wav",
+    "bytes": 184398,
+    "sha256": "b8394371de82d1fdba5cffd550b4f353774acd146067b31ec9014ef62701086b"
+  },
+  {
+    "file": "audio/vo-hook.wav",
+    "bytes": 132558,
+    "sha256": "e9f29cf195d3341891155ed74befa991b6d724079854f38ea6e3446922808f24"
+  },
+  {
+    "file": "audio/vo-leather.wav",
+    "bytes": 193998,
+    "sha256": "3501feff58d3f6d11715c5b91cd8b3483a9d1b9e7f9c17403526e7a7d83a040d"
+  },
+  {
+    "file": "audio/vo-options.wav",
+    "bytes": 180558,
+    "sha256": "9124a64299e141cb24604e6f38f5940933ec680e1d22477b11498e5fbaef4a18"
+  },
+  {
+    "file": "audio/vo-price.wav",
+    "bytes": 213198,
+    "sha256": "c6adfbd859068cee7b1b5d54c226f102f0e06b616048b1c68a13c420162f9bb0"
+  },
+  {
+    "file": "audio/vo-warranty.wav",
+    "bytes": 115278,
+    "sha256": "fd960060cf9d6418a19ab6899f91f943eb6f1f7f18d320efc49e302b9b94418f"
+  },
+  {
+    "file": "audio/vo-water.wav",
+    "bytes": 80718,
+    "sha256": "fb2d2332e4a39b7815509acd11ff3c84f74786098c2a01303d8e72ee62d3c29b"
+  }
+]
