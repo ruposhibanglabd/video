@@ -1,0 +1,55 @@
+{
+  "set": "Seiko VIP navy — distinct wrist, full watch and macro compositions",
+  "references": [
+    "image-19.png",
+    "image-20.png"
+  ],
+  "images": [
+    {
+      "file": "Seiko-VIP-Navy-Full-Watch-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 441802,
+      "source_pixels": [
+        1600,
+        1600
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Navy-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 831988,
+      "source_pixels": [
+        1254,
+        1254
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Navy-Macro-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 473242,
+      "source_pixels": [
+        1024,
+        1024
+      ],
+      "upscaled": true
+    }
+  ],
+  "label": "বাটারফ্লাই লক",
+  "confirmed_by_seller": [
+    "premium quality",
+    "waterproof (rating unspecified)",
+    "bracelet color guarantee (terms unspecified)",
+    "butterfly clasp"
+  ]
+}
