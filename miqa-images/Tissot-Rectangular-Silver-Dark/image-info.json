@@ -1,0 +1,44 @@
+{
+  "images": [
+    {
+      "file": "Tissot-Silver-Dark-Primary-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 266010,
+      "source_pixels": [
+        1024,
+        1024
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Tissot-Silver-Dark-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 879428,
+      "source_pixels": [
+        1254,
+        1254
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Tissot-Silver-Dark-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 671492,
+      "source_pixels": [
+        1086,
+        1448
+      ],
+      "upscaled": true
+    }
+  ],
+  "status": "All three selected images delivered"
+}
