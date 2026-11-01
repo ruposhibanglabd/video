@@ -1,0 +1,19 @@
+{
+  "variant": "SEIKO VIP aqua/turquoise dial, golden bracelet",
+  "references": [
+    "image-23.png",
+    "image-24.png"
+  ],
+  "file": "Seiko-VIP-Aqua-Gold-Macro-Detail-4K.webp",
+  "pixels": [
+    4096,
+    4096
+  ],
+  "source_pixels": [
+    1600,
+    1600
+  ],
+  "bytes": 743446,
+  "upscaled": true,
+  "ai_generated": true
+}
