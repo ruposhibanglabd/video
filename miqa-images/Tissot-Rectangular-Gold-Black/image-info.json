@@ -1,0 +1,31 @@
+{
+  "images": [
+    {
+      "file": "Tissot-Gold-Black-Primary-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 391542,
+      "source_pixels": [
+        1086,
+        1448
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Tissot-Gold-Black-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 600692,
+      "source_pixels": [
+        1086,
+        1448
+      ],
+      "upscaled": true
+    }
+  ],
+  "detail_status": "Not selected; no final detail image available"
+}
