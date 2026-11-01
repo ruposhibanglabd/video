@@ -19,6 +19,32 @@
         1600
       ],
       "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Gold-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 825310,
+      "source_pixels": [
+        2048,
+        2048
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Gold-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 778182,
+      "source_pixels": [
+        1024,
+        1536
+      ],
+      "upscaled": true
     }
   ],
   "label": "বাটারফ্লাই লক",
@@ -27,5 +53,7 @@
     "waterproof (rating unspecified)",
     "bracelet color guarantee (terms unspecified)",
     "butterfly clasp"
-  ]
+  ],
+  "primary_sha256": "a3a04279332b5470e8d95260f4c6d52ecef0594b8840115dd9a623532ea7f2d8",
+  "delivery_status": "Complete three-image revised set; approved primary unchanged"
 }
