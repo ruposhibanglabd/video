@@ -1,0 +1,31 @@
+{
+  "set": "New set — Seiko VIP gold / silver dial",
+  "references": [
+    "image-15.png",
+    "image-16.png",
+    "image-17.png",
+    "image-18.png"
+  ],
+  "images": [
+    {
+      "file": "Seiko-VIP-Gold-Primary-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 443916,
+      "source_pixels": [
+        1600,
+        1600
+      ],
+      "upscaled": true
+    }
+  ],
+  "label": "বাটারফ্লাই লক",
+  "confirmed_by_seller": [
+    "premium quality",
+    "waterproof (rating unspecified)",
+    "bracelet color guarantee (terms unspecified)",
+    "butterfly clasp"
+  ]
+}
