@@ -25,7 +25,20 @@
         1448
       ],
       "upscaled": true
+    },
+    {
+      "file": "Tissot-Gold-Black-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 905862,
+      "source_pixels": [
+        1254,
+        1254
+      ],
+      "upscaled": true
     }
   ],
-  "detail_status": "Not selected; no final detail image available"
+  "detail_status": "Revised image selected option 2; delivered"
 }
