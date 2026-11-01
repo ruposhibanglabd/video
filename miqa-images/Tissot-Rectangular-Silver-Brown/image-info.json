@@ -1,0 +1,31 @@
+{
+  "images": [
+    {
+      "file": "Tissot-Silver-Brown-Primary-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 502052,
+      "source_pixels": [
+        1254,
+        1254
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Tissot-Silver-Brown-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 850260,
+      "source_pixels": [
+        2048,
+        2048
+      ],
+      "upscaled": true
+    }
+  ],
+  "wrist_status": "Not selected; no final wrist image available"
+}
