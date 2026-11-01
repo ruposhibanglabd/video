@@ -1,0 +1,45 @@
+{
+  "variant": "SEIKO VIP golden bracelet / navy-blue dial",
+  "references": [
+    "image-19.png",
+    "image-20.png"
+  ],
+  "images": [
+    {
+      "file": "Seiko-VIP-Navy-Primary-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 512246,
+      "upscaled": true,
+      "approved_primary_unchanged": true
+    },
+    {
+      "file": "Seiko-VIP-Navy-Wrist-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 712094,
+      "source_pixels": [
+        1024,
+        1024
+      ],
+      "upscaled": true
+    },
+    {
+      "file": "Seiko-VIP-Navy-Detail-4K.webp",
+      "pixels": [
+        4096,
+        4096
+      ],
+      "bytes": 604054,
+      "source_pixels": [
+        2048,
+        2048
+      ],
+      "upscaled": true
+    }
+  ]
+}
