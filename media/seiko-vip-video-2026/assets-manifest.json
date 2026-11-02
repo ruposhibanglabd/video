@@ -1,0 +1,102 @@
+[
+  {
+    "file": "generated/01-crystal-macro.png",
+    "bytes": 1713319,
+    "sha256": "c97677d6f020cdccac94c02bb9d0805167694b163b6a219e06c492e3b41247e6"
+  },
+  {
+    "file": "generated/02-angle-left.png",
+    "bytes": 2102842,
+    "sha256": "b00b20fc1290f9304d8caf03a09f27f8a5431fb2e1ee85550c27e9ec6559c7ad"
+  },
+  {
+    "file": "generated/03-angle-right.png",
+    "bytes": 1875087,
+    "sha256": "513d9262ea253a2fe5eef2632338ddf087f55082b52a79eeae8481608545dfa5"
+  },
+  {
+    "file": "generated/04-steel-macro.png",
+    "bytes": 2241848,
+    "sha256": "29b8970e3e61611ea469a91bf0ce71447a98484d2818a7aec5b426a3cb112afe"
+  },
+  {
+    "file": "generated/05-butterfly.png",
+    "bytes": 1488874,
+    "sha256": "5c17abdb99aa0331c40d2294752289538e425a373cc38e665eb69f9190eec60d"
+  },
+  {
+    "file": "generated/06-water.png",
+    "bytes": 2161345,
+    "sha256": "7035372c5664e5cb61a510db80689b61d1f498301594ffe1c40012cb884be7d8"
+  },
+  {
+    "file": "generated/07-white-gold.png",
+    "bytes": 2034351,
+    "sha256": "d4ea38078a9d81675916f3c0b2ad13ade753c2df54d847b7586fa905ffb02880"
+  },
+  {
+    "file": "generated/look-01-blue-gold.webp",
+    "bytes": 1072618,
+    "sha256": "b4a0fc9f0bbf27268cbbf270028057500686926402d27dce8ddbb623dcb8aae4"
+  },
+  {
+    "file": "generated/look-02-blue-twotone.webp",
+    "bytes": 1287652,
+    "sha256": "499d3049383d88410f85348406a85f6a52d5f4105763fb140a1dc60bdb7666d8"
+  },
+  {
+    "file": "generated/look-03-aqua-gold.webp",
+    "bytes": 2606504,
+    "sha256": "250bb3b646afac27c59b853eb5e8ea168725769f0fdfd95d98d51d8bd7d58f76"
+  },
+  {
+    "file": "generated/look-04-silver-twotone.webp",
+    "bytes": 1115296,
+    "sha256": "ff2bfbe84eedfde3173af40326139a66517f8e4d9dc340b0a8c1264b00f96f00"
+  },
+  {
+    "file": "audio/vo-charity.wav",
+    "bytes": 320718,
+    "sha256": "7c20f959cdc3d1183635ad80fd9e5f0db2e1402d615ca845a188020fb8d88dae"
+  },
+  {
+    "file": "audio/vo-final.wav",
+    "bytes": 193998,
+    "sha256": "d8ca15054d0a3b188e6d07d22bc760032e54563d631885b2c4e41fd3d42b266e"
+  },
+  {
+    "file": "audio/vo-lock.wav",
+    "bytes": 205518,
+    "sha256": "1db51272b84523b8fbeb92fae5c82d144df93adaaa1a95b5f296f700bfedaee3"
+  },
+  {
+    "file": "audio/vo-options.wav",
+    "bytes": 201678,
+    "sha256": "5d1906893d2480387a1f66f0dcfe12755a96908fdc3f5902a85616e25a8c9be5"
+  },
+  {
+    "file": "audio/vo-price.wav",
+    "bytes": 167118,
+    "sha256": "d60ac9015c4d9960c83d39ce6ab1819372e9e69da2cb3166f8622b1214698506"
+  },
+  {
+    "file": "audio/vo-replacement.wav",
+    "bytes": 132558,
+    "sha256": "5b458f8168329ecd6f9f4b760f4a86ce90bd8e51aca84354ae98e2b3a31547a2"
+  },
+  {
+    "file": "audio/vo-steel.wav",
+    "bytes": 195918,
+    "sha256": "d854c6d0671ce44617686d97f2a019ec4680de60e8d9e5fc37b6a8810d12841c"
+  },
+  {
+    "file": "audio/vo-warranty.wav",
+    "bytes": 122958,
+    "sha256": "b20adf9e5c61a32615cd601dcf561f52e8ff9f9a599b718b625e7dcef6ed685b"
+  },
+  {
+    "file": "audio/vo-water.wav",
+    "bytes": 92238,
+    "sha256": "1b9258c6816c9e34766942a6df35678138c1633a47cc9517847e4f8cc4871235"
+  }
+]
