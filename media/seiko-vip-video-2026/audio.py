@@ -5,7 +5,7 @@ import numpy as np
 from scipy.signal import resample_poly
 from math import gcd
 SR=48000; D=52; mix=np.zeros((D*SR,2),np.float64); activity=np.zeros(D*SR)
-cues=[('steel',7.55),('lock',11.65),('water',15.95),('warranty',18.25),('replacement',21.05),('options',24.20),('price',34.20),('charity',39.20),('final',46.70)]
+cues=[('hook',0.12),('steel',7.55),('lock',11.65),('water',15.95),('warranty',18.25),('replacement',21.05),('options',24.20),('price',34.20),('charity',39.20),('final',46.70)]
 report=[]
 for name,start in cues:
  p=Path('.tmp/seiko-vip/audio')/f'vo-{name}.wav';w=wave.open(str(p));rate=w.getframerate();a=np.frombuffer(w.readframes(w.getnframes()),np.int16).reshape(-1,w.getnchannels()).astype(float)/32768;a=a.mean(axis=1)

@@ -65,6 +65,11 @@
     "sha256": "d8ca15054d0a3b188e6d07d22bc760032e54563d631885b2c4e41fd3d42b266e"
   },
   {
+    "file": "audio/vo-hook.wav",
+    "bytes": 316878,
+    "sha256": "079747f4c1dc82b490697f0510f38bb8426d5a4031ef7d7098bf68ac66e7a2b6"
+  },
+  {
     "file": "audio/vo-lock.wav",
     "bytes": 205518,
     "sha256": "1db51272b84523b8fbeb92fae5c82d144df93adaaa1a95b5f296f700bfedaee3"
