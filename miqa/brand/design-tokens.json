@@ -189,5 +189,145 @@
     },
     "mobile1080": { "size": "1080x1920", "codec": "H.264 High, level 4.1", "rate": "CRF 18, maxrate 12M, bufsize 24M", "audio": "AAC-LC 48 kHz stereo 256 kbps" },
     "cover": { "sizes": ["2160x3840", "1080x1920"], "format": "JPG q92" }
+  },
+  "product_images": {
+    "guide": "miqa/creative/PRODUCT-IMAGES-GUIDE.md",
+    "canvas": {
+      "w": 2000,
+      "h": 2000,
+      "format": "jpg",
+      "quality": 92,
+      "colorspace": "sRGB",
+      "chroma": "4:4:4",
+      "maxFileMB": 1.5
+    },
+    "safeMarginPx": 120,
+    "keepClear": "top-left and top-right corners 420x220 px (the website may overlay a '% ছাড়' badge)",
+    "watchBox": {
+      "primary": [
+        260,
+        200,
+        1740,
+        1500
+      ],
+      "others": [
+        200,
+        200,
+        1800,
+        1800
+      ],
+      "note": "x0,y0,x1,y1 — fit the cutout inside, keep aspect, centre"
+    },
+    "label": {
+      "chip": {
+        "centerY": 1730,
+        "height": 220,
+        "radius": 110,
+        "padX": 40,
+        "gap": 36,
+        "borderPx": 2
+      },
+      "inset": {
+        "diameterPx": 200,
+        "ringPx": 6,
+        "source": "circular crop of the client's real lock/feature photo — never an icon"
+      },
+      "text": {
+        "sizePx": 88,
+        "minPx": 56,
+        "wording": "exactly as the client wrote",
+        "letterSpacing": 0
+      },
+      "multiple": "2–3 chips side by side, scaled equally; two rows if they don't fit"
+    },
+    "light": "from top-left (10–11 o'clock) on every image",
+    "shadow": {
+      "contact": {
+        "squash": [
+          0.1,
+          0.15
+        ],
+        "blurPx": [
+          12,
+          20
+        ],
+        "opacity": [
+          0.45,
+          0.6
+        ]
+      },
+      "drop": {
+        "offsetPx": [
+          24,
+          40
+        ],
+        "blurPx": [
+          70,
+          90
+        ],
+        "opacity": [
+          0.18,
+          0.28
+        ]
+      },
+      "reflection": {
+        "opacity": [
+          0.08,
+          0.15
+        ],
+        "fadeOfObjectHeight": 0.25,
+        "blurPx": 2,
+        "use": "upright / angle shots only"
+      }
+    },
+    "backgrounds": {
+      "women": {
+        "name": "Blush Mist",
+        "base": "#F6E1E7",
+        "lift": "#FCEFF2",
+        "edge": "#EFD0D9",
+        "shadowTint": "#5A1A2E",
+        "chipFill": "#FBF4F1",
+        "chipOpacity": 0.88,
+        "chipBorder": "#D9B779",
+        "ring": "#D9B779",
+        "text": "#5A1A2E",
+        "font": "HindSiliguri-SemiBold"
+      },
+      "men": {
+        "name": "Midnight",
+        "base": "#141E2B",
+        "lift": "#22303F",
+        "edge": "#0B0F15",
+        "shadowTint": "#000000",
+        "chipFill": "#2B3138",
+        "chipOpacity": 0.82,
+        "chipBorder": "#C9A45C",
+        "ring": "#C9A45C",
+        "text": "#F2F0EB",
+        "font": "AnekBangla-SemiBold"
+      },
+      "couple": {
+        "name": "Ivory Champagne",
+        "base": "#F2EADF",
+        "lift": "#FAF6EF",
+        "edge": "#E5D7C3",
+        "shadowTint": "#2A141C",
+        "chipFill": "#FFFDF8",
+        "chipOpacity": 0.9,
+        "chipBorder": "#D9B779",
+        "ring": "#D9B779",
+        "text": "#2A141C",
+        "font": "HindSiliguri-SemiBold"
+      }
+    },
+    "defaultSet": [
+      "01_primary",
+      "02_on-wrist",
+      "03_angle",
+      "04_closeup",
+      "05_box | 05_colors | 05_styled"
+    ],
+    "naming": "deliveries/<YYYY-MM-DD>_<slug>/website-images/<slug>_<NN>_<type>.jpg + deliveries/<YYYY-MM-DD>_<slug>/<slug>_website-images.zip"
   }
 }
