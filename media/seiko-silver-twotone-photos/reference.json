@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-02",
+  "ground_truth": [
+    {
+      "filename": "image-7.png",
+      "sha256": "c61e66b06db812d65b9a6ee364913f928320ba918ec8d3fce0af72ff16d03b5f"
+    },
+    {
+      "filename": "image-8.png",
+      "sha256": "8a0265a1ff37772ea002b3db26bd623a444f81f19c7781feab0465fd1ae2974b"
+    }
+  ],
+  "rejected_examples": [
+    "image-9.png",
+    "image-10.png",
+    "image-11.png",
+    "image-12.png"
+  ],
+  "appearance": "silver-grey sunburst dial, thin gold bezel, silver case/crown, silver-dominant bracelet with narrow gold center stripe, date 8",
+  "features": [
+    "premium quality",
+    "stainless steel chain",
+    "butterfly lock",
+    "color guarantee, duration unspecified",
+    "waterproof, rating unspecified"
+  ],
+  "source_dimensions": {
+    "main": [
+      896,
+      1195
+    ],
+    "wrist": [
+      1776,
+      2368
+    ],
+    "detail": [
+      1024,
+      1536
+    ]
+  }
+}

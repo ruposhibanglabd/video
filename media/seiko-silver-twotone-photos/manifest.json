@@ -1,0 +1,35 @@
+[
+  {
+    "file": "downloads/seiko-silver-twotone/01-main.webp",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 1130118,
+    "lossless_webp_bytes": 1130118,
+    "optimized_png_bytes": 1564309,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "ad7832cb43cf2f94390211d2c65b64973e9a3154066ead964577b9d9515cd540"
+  },
+  {
+    "file": "downloads/seiko-silver-twotone/02-wrist.webp",
+    "width": 1776,
+    "height": 2368,
+    "bytes": 6049744,
+    "lossless_webp_bytes": 6049744,
+    "optimized_png_bytes": 7390522,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "2d93cc1a9df1b455b01717be0fac39b56f70ed3ff7b4e0eefc15f744e5d7ddf2"
+  },
+  {
+    "file": "downloads/seiko-silver-twotone/03-detail.webp",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 1568286,
+    "lossless_webp_bytes": 1568286,
+    "optimized_png_bytes": 2359031,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "130a54f58635c2db81acbe2e6236a7336260f33c545b5a419406107f21409365"
+  }
+]
