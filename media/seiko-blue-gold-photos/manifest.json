@@ -1,0 +1,35 @@
+[
+  {
+    "file": "downloads/seiko-blue-gold/01-main.webp",
+    "width": 2048,
+    "height": 2048,
+    "bytes": 1285042,
+    "lossless_webp_bytes": 1285042,
+    "optimized_png_bytes": 1811504,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "a1ceb0bd3f6df463929b570c07842936c598ababb661242cd614d05d436cf1ef"
+  },
+  {
+    "file": "downloads/seiko-blue-gold/02-wrist.webp",
+    "width": 2048,
+    "height": 2048,
+    "bytes": 3114002,
+    "lossless_webp_bytes": 3114002,
+    "optimized_png_bytes": 4929744,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "7bc019350e8039aee36b1176dd7f3714cc1b89c7525ea4a1fc116483db5f137f"
+  },
+  {
+    "file": "downloads/seiko-blue-gold/03-detail.webp",
+    "width": 2048,
+    "height": 2048,
+    "bytes": 4479334,
+    "lossless_webp_bytes": 4479334,
+    "optimized_png_bytes": 6154843,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "4a75722493af4aa848d30c7aabf0ee898717cbe4c72b0aa909fa7051a6beec76"
+  }
+]
