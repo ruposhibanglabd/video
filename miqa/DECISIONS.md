@@ -24,5 +24,5 @@
 ## সেশন-নির্ভর তথ্য (গুরুত্বপূর্ণ)
 
 - `voice-00` / `voice-01` আইডি এই চ্যাট-সেশনের সাথে যুক্ত। নতুন সেশনে আইডি কাজ না করলে
-  [VOICE-AND-AUDIO.md](production/VOICE-AND-AUDIO.md)-এর **অডিশন স্ক্রিপ্ট** দিয়ে আবার `add_voice` চালিয়ে
+  [RUNBOOK.md §6](production/RUNBOOK.md)-এর **অডিশন স্ক্রিপ্ট** দিয়ে আবার `add_voice` চালিয়ে
   ক্লায়েন্টকে বেছে নিতে দিন (নারী: feminine/advertising/bn-BD, পুরুষ: masculine/advertising/bn-BD) এবং নতুন আইডি এখানে লিখুন।
