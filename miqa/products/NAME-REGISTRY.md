@@ -10,3 +10,11 @@
 | ২ নভেম্বর ২০২৬-এর আগে | FIYOTA Ivory Tank | FIYOTA Ivory Tank | মেয়েদের | — | সাইটে আছে | "Tank" Cartier-এর মডেলের নাম। নতুন নাম দেওয়ার কথা ভাবা যায় |
 | ২ নভেম্বর ২০২৬-এর আগে | Patek Philippe Geneve Ladies | Patek Philippe Geneve লেডিস | মেয়েদের | — | সাইটে আছে | ⚠️ বিখ্যাত ব্র্যান্ডের নাম, ট্রেডমার্কের ঝুঁকি |
 | ২ নভেম্বর ২০২৬-এর আগে | SEIKO VIP, TISSOT Le Locle | — | — | — | সাইটে আছে | ⚠️ বিখ্যাত ব্র্যান্ডের নাম, ট্রেডমার্কের ঝুঁকি |
+| ৩ নভেম্বর ২০২৬ | FIYOTA Ivelle (Silver) | ফিয়োটা আইভেল (সিলভার) | মেয়েদের | Silver | প্রস্তাবিত (⭐), ক্লায়েন্টের সিদ্ধান্ত বাকি | সেট A-০১। বিকল্প: Lunessa, Cygnelle (ওয়েব-চেক ✅), Albelle, Verelle, Solvane |
+
+**অন্য ঘড়িতে ব্যবহৃত পাওয়া গেছে, তাই দেওয়া যাবে না** (ওয়েব-চেক, ৩ নভেম্বর ২০২৬):
+- Odette: ভারতে ODETTE ঘড়ির ব্র্যান্ড
+- Linnea: Sonata/Titan-এর কালেকশন
+- Elara: Sveston, MÖNCH
+- Solenne: Peugeot-এর মডেল
+- Seraphine: VAINCI, Cacharel

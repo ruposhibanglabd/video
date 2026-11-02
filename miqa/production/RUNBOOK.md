@@ -268,3 +268,15 @@ npm install   # provides @napi-rs/canvas for text
    - ZIP, from the job's delivery folder: `python3 -m zipfile -c <slug>_website-images.zip website-images/*.jpg`.
 9. **QC** (guide §10), then commit and send the raw links.
 10. **Set → video** (guide §8): reuse the same cutouts and backgrounds, follow §3, and use the collection structure from the guide.
+
+### 9a. Lessons from job 01 (FIYOTA Silver, phone photos on a display card)
+- **Pick the sharper photo.** Use Laplacian variance on the dial and the bracelet (127 vs 228 decided it).
+- **GrabCut seeded with hand-placed preview polygons works well** on a white card held in the hand. Use probable-FG outer, definite-FG cores and definite-BG outside a 31 px dilation, at half resolution. Then refine edges with a guided filter (r=9, eps=2e-3) at full resolution.
+- **Dim phone light makes steel look grey on pink.** Apply levels ÷0.84, then gamma 0.8, then an S-curve on metal only (dial excluded). Lift the bracelet floor (0.24 + 0.76·x) so heavy dark reflections read as polished steel.
+- **Photographer and phone reflections on links:**
+  - Chroma → 12% inside the bracelet mask (case and crown excluded).
+  - Inpaint camera-lens dots: L<78, erode 7 px to split touching dots, keep round blobs (circularity >0.55, aspect <1.9), grow back geodesically, then Telea inpaint r=5.
+  - Black-hat detection over-inpaints and smears. Don't use it.
+- **Primary composition when the bracelet runs out of frame:** fade both bracelet ends (smoothstep over ~250 canvas px) so the bottom stays free for the chip.
+- **On-wrist:** see `tools/product-images/README.md`. The first plate framed the wrist too small; ask for a "close-up, wrist ≈ half frame height".
+- **Naming:** European women's names are mostly taken by watch brands (Odette, Linnea, Elara, Solenne, Seraphine). Try coined names first.
