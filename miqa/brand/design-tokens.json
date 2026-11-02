@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "name": "MIQA Reels Ad Design Tokens",
+    "version": "1.0.0",
+    "updated": "2026-11-02",
+    "note": "Machine-readable source of truth for colours, type, layout, motion, audio and export. Design guides (creative/*.md) explain how to use these values. Pixel values are given for the 1080x1920 design grid; multiply by 2 for the 2160x3840 (4K) master."
+  },
+
+  "brand": {
+    "name": "MIQA",
+    "pronunciationBn": "মিকা",
+    "possessiveBn": "মিকার",
+    "tagline": "Beyond Time, Beyond Style.",
+    "mandatory": {
+      "fivePercentOnScreen": "MIQA-এর মুনাফার ৫% পথশিশুদের কল্যাণে।",
+      "fivePercentVoTts": "মিকার মুনাফার পাঁচ শতাংশ পথশিশুদের কল্যাণে।",
+      "ctaVoiceover": "ক্যাশ অন ডেলিভারিতে অর্ডার করতে নিচে দেওয়া অর্ডার বাটনে ক্লিক করে এখনই অর্ডার করুন।",
+      "ctaOnScreen": ["ক্যাশ অন ডেলিভারি", "নিচে দেওয়া অর্ডার বাটনে ক্লিক করে এখনই অর্ডার করুন।"]
+    },
+    "forbiddenInVideo": ["miqawatch", "vercel", "http", "www.", ".app", "wa.me", "WhatsApp", "হোয়াটসঅ্যাপ", "01876892958", "+880", "ফ্রি ডেলিভারি", "free delivery"],
+    "constantAccent": {
+      "champagneGold": ["#B8925A", "#D9B779", "#F3E1B5"],
+      "note": "Champagne gold is the one accent shared by every line (wordmark rules, hairlines, price underline, 5% seal)."
+    }
+  },
+
+  "lines": {
+    "women": {
+      "codename": "Blush Couture",
+      "voiceId": "voice-00",
+      "palette": {
+        "pearl":        { "hex": "#FBF4F1", "role": "মূল হালকা ব্যাকগ্রাউন্ড / Soft White" },
+        "blush":        { "hex": "#F4C9D6", "role": "প্রধান পিংক আবহ (Primary Pink)" },
+        "dustyRose":    { "hex": "#D89AAE", "role": "মিড-টোন, সিল্ক শ্যাডো" },
+        "rosewood":     { "hex": "#9E4A63", "role": "গভীর অ্যাকসেন্ট, হেডলাইন হাইলাইট" },
+        "burgundy":     { "hex": "#5A1A2E", "role": "ডার্ক প্লেট, শ্যাডো, CTA ব্যাকগ্রাউন্ড" },
+        "champagne":    { "hex": "#D9B779", "role": "ব্র্যান্ড অ্যাকসেন্ট (মেটালিক টেক্সট/লাইন)" },
+        "roseGold":     { "hex": "#E2A99A", "role": "মেটালিক সেকেন্ডারি, গ্লো" },
+        "ink":          { "hex": "#2A141C", "role": "হালকা প্লেটে টেক্সট" }
+      },
+      "ratio": "60% pearl/blush neutrals · 25% pink tones · 10% champagne/rose-gold metallics · 5% burgundy depth",
+      "gradients": {
+        "heroPlate":    { "type": "radial", "stops": [["#FFF7F3", 0], ["#F4C9D6", 0.55], ["#C98299", 1]] },
+        "featurePlate": { "type": "linear", "angle": 180, "stops": [["#FBF4F1", 0], ["#F1D5DE", 1]] },
+        "ctaPlate":     { "type": "radial", "stops": [["#7A2840", 0], ["#5A1A2E", 0.6], ["#2A0E18", 1]] },
+        "metalText":    { "type": "linear", "angle": 90, "stops": [["#B8925A", 0], ["#F3E1B5", 0.5], ["#C9A061", 1]] }
+      },
+      "grade": {
+        "shadowsTint": "#3A1A24", "highlightsTint": "#FFF3EA", "contrast": "soft S (0.92)", "saturation": "-8% global, pinks +5%",
+        "bloom": "soft, threshold 0.82, radius 1.5% of width", "grain": "fine 1.5-2.5% (4K)", "vignette": "10-15%",
+        "rule": "Grade the environment, never hue-shift the product layer."
+      },
+      "type": {
+        "bnDisplay": "TiroBangla-Regular", "bnDisplayItalic": "TiroBangla-Italic",
+        "bnText": "HindSiliguri-Medium", "bnCta": "HindSiliguri-SemiBold", "bnSoft": "HindSiliguri-Light",
+        "enDisplay": "CormorantGaramond-Light", "enDisplayItalic": "CormorantGaramond-MediumItalic",
+        "enLabel": "Montserrat-SemiBold", "price": "TiroBangla-Regular", "wordmark": "Cinzel-Medium"
+      },
+      "motion": "silk",
+      "music": { "bpm": [80, 96], "keys": ["F major", "Db major", "Ab lydian"], "palette": "felt piano, warm strings/pads, soft pluck arp, glass bell sparkle, gentle pulse (no heavy drums)" }
+    },
+
+    "men": {
+      "codename": "Midnight Precision",
+      "voiceId": "voice-01",
+      "palette": {
+        "obsidian":     { "hex": "#0B0D10", "role": "মূল ডার্ক বেস" },
+        "midnight":     { "hex": "#0F1B2D", "role": "গভীর নেভি আবহ" },
+        "gunmetal":     { "hex": "#2B3138", "role": "সারফেস/প্যানেল" },
+        "graphite":     { "hex": "#5C6670", "role": "সেকেন্ডারি টেক্সট, লাইন" },
+        "steel":        { "hex": "#C9CED4", "role": "ব্রাশড সিলভার হাইলাইট" },
+        "cognac":       { "hex": "#8A4B24", "role": "উষ্ণ অ্যাকসেন্ট (লেদার)" },
+        "brass":        { "hex": "#C9A45C", "role": "ব্র্যান্ড গোল্ড অ্যাকসেন্ট (কম ব্যবহার)" },
+        "bone":         { "hex": "#F2F0EB", "role": "ডার্ক প্লেটে টেক্সট" }
+      },
+      "ratio": "70% dark neutrals · 15% steel/graphite · 10% warm accent (cognac/brass) · 5% product-derived accent (dial colour)",
+      "gradients": {
+        "heroPlate":    { "type": "radial", "stops": [["#22303F", 0], ["#0F1B2D", 0.5], ["#06080B", 1]] },
+        "featurePlate": { "type": "linear", "angle": 180, "stops": [["#14181D", 0], ["#0B0D10", 1]] },
+        "ctaPlate":     { "type": "radial", "stops": [["#1B2A3D", 0], ["#0B0D10", 0.75], ["#050608", 1]] },
+        "metalText":    { "type": "linear", "angle": 90, "stops": [["#8E979F", 0], ["#E6EAEE", 0.5], ["#9DA6AE", 1]] },
+        "brassText":    { "type": "linear", "angle": 90, "stops": [["#9C7A3C", 0], ["#E8CF95", 0.5], ["#B08A48", 1]] }
+      },
+      "grade": {
+        "shadowsTint": "#0A1418", "highlightsTint": "#F4F1EA", "contrast": "firm S (1.12)", "saturation": "-20% environment",
+        "bloom": "highlights only, threshold 0.9", "grain": "fine 2-3% (4K)", "vignette": "20-25%",
+        "variant": "Tungsten Night: amber practicals (#E0A458) against teal ambience (#123036), restrained",
+        "rule": "Grade the environment, never hue-shift the product layer."
+      },
+      "type": {
+        "bnDisplay": "AnekBanglaSemiCondensed-Bold", "bnDisplayHeavy": "AnekBangla-ExtraBold",
+        "bnText": "HindSiliguri-Medium", "bnCta": "HindSiliguri-Bold", "bnSoft": "HindSiliguri-Regular",
+        "enDisplay": "BodoniModa-Bold", "enDisplayItalic": "BodoniModa-MediumItalic",
+        "enLabel": "Montserrat-SemiBold", "price": "AnekBangla-ExtraBold", "wordmark": "Cinzel-Medium"
+      },
+      "motion": "precision",
+      "music": { "bpm": [100, 120], "keys": ["D minor", "A minor", "Eb major lift"], "palette": "deep pulse bass, low strings/brass pads, taut ticks & rim clicks, cinematic hits, piano ostinato" }
+    },
+
+    "couple": {
+      "codename": "Together in Time",
+      "voiceId": "voice-00 + voice-01 (alternating lines)",
+      "palette": {
+        "ivory":        { "hex": "#F6EDE3", "role": "মূল ব্যাকগ্রাউন্ড" },
+        "pearl":        { "hex": "#FBF4F1", "role": "হাইলাইট" },
+        "champagne":    { "hex": "#D9B779", "role": "শেয়ার্ড গোল্ড অ্যাকসেন্ট" },
+        "blush":        { "hex": "#F4C9D6", "role": "তাঁর (Her) অ্যাকসেন্ট" },
+        "midnight":     { "hex": "#0F1B2D", "role": "তাঁর (His) অ্যাকসেন্ট" },
+        "taupe":        { "hex": "#B7A08E", "role": "নিউট্রাল মিড-টোন" },
+        "espresso":     { "hex": "#3B2A24", "role": "টেক্সট/শ্যাডো" },
+        "rosewood":     { "hex": "#9E4A63", "role": "আবেগী হাইলাইট" }
+      },
+      "ratio": "65% ivory/pearl · 15% champagne · 10% blush · 10% midnight",
+      "gradients": {
+        "heroPlate":    { "type": "radial", "stops": [["#FFF8EF", 0], ["#EBD9C4", 0.6], ["#B79C80", 1]] },
+        "featurePlate": { "type": "linear", "angle": 180, "stops": [["#F6EDE3", 0], ["#E9DCCB", 1]] },
+        "ctaPlate":     { "type": "radial", "stops": [["#2A3446", 0], ["#141B28", 0.65], ["#0A0D14", 1]] },
+        "metalText":    { "type": "linear", "angle": 90, "stops": [["#B8925A", 0], ["#F3E1B5", 0.5], ["#C9A061", 1]] }
+      },
+      "grade": { "look": "warm golden hour, gentle contrast, creamy highlights, rose-tinted shadows", "grain": "fine 2%", "vignette": "12%" },
+      "type": {
+        "bnDisplay": "TiroBangla-Regular", "bnText": "HindSiliguri-Medium", "bnCta": "HindSiliguri-SemiBold",
+        "enDisplay": "CormorantGaramond-MediumItalic", "enLabel": "Montserrat-SemiBold", "price": "TiroBangla-Regular", "wordmark": "Cinzel-Medium"
+      },
+      "motion": "silk",
+      "music": { "bpm": [70, 84], "keys": ["Eb major", "Bb major"], "palette": "romantic piano duet, warm strings, soft harp glints" }
+    }
+  },
+
+  "typography": {
+    "fontDir": "miqa/brand/fonts",
+    "registerAs": "file name without .ttf (e.g. 'TiroBangla-Regular') — one alias per file, no weight matching",
+    "fallbackStack": "Put a Bengali font after every Latin font: '\"Montserrat-SemiBold\", \"HindSiliguri-SemiBold\"' so ৳ and Bengali glyphs never fall to tofu.",
+    "rules": [
+      "NEVER apply letterSpacing to Bengali text — Skia breaks vowel signs/conjuncts (verified 2026-11-02). Track Latin runs only.",
+      "Latin fonts (Montserrat, Cormorant, Bodoni, Cinzel) have no ৳ glyph — set the taka sign in a Bengali font.",
+      "Prices use Bengali digits (website convention): ৳৬৫০, ৳১,৭৫০.",
+      "Minimum on-screen text 36 px @1080 (72 px @4K); CTA instruction ≥ 44 px @1080."
+    ],
+    "scale1080": {
+      "hookBn": [84, 104], "hookEn": [92, 124], "featureBn": [64, 80], "labelEn": [28, 34],
+      "bodyBn": [40, 48], "ctaBadgeBn": [60, 72], "ctaLineBn": [44, 52], "price": [130, 170], "priceOld": [48, 56],
+      "labelTrackingEm": [0.22, 0.32], "lineHeight": 1.25
+    }
+  },
+
+  "layout": {
+    "aspect": "9:16",
+    "safeZone": { "top": 0.14, "bottom": 0.35, "sides": 0.06, "lowerRightCorner": { "w": 0.21, "h": 0.40 }, "source": "Meta Ads Guide (Reels/Stories), checked 2026-11-02" },
+    "px": {
+      "1080x1920": { "safeBox": [65, 269, 1015, 1248], "lowerRightCornerFrom": [853, 1152] },
+      "1440x2560": { "safeBox": [86, 358, 1354, 1664], "lowerRightCornerFrom": [1138, 1536] },
+      "2160x3840": { "safeBox": [130, 538, 2030, 2496], "lowerRightCornerFrom": [1706, 2304] }
+    },
+    "rules": [
+      "All text, prices, logo and CTA inside safeBox and outside the lower-right corner zone.",
+      "The product may extend into the bottom 35% (visual only, no text there).",
+      "CTA arrow/chevrons sit at the bottom of the safe box (y ≈ 1150-1240 @1080), pointing down to Meta's button."
+    ]
+  },
+
+  "motion": {
+    "silk": {
+      "easing": "easeInOutSine / easeInOutCubic", "textIn": 700, "textOut": 420, "minHold": 1200,
+      "cameraPush": "2-4% scale per 3 s", "parallax": "bg 0.35x, mid 0.6x, product 1x",
+      "transitions": ["soft dissolve 500-700 ms", "warm light-leak wipe 600 ms", "silk/curve mask wipe 700 ms", "match-cut on circles (dial → pearl → ring)"]
+    },
+    "precision": {
+      "easing": "easeOutExpo / easeOutQuart", "textIn": 450, "textOut": 300, "minHold": 1000,
+      "cameraPush": "3-6% scale per 3 s", "parallax": "bg 0.3x, mid 0.7x, product 1x",
+      "transitions": ["light-sweep wipe 300-400 ms", "hard cut on beat", "line-reveal mask 400 ms", "whip pan 250 ms (max once)"]
+    },
+    "readingTime": "on-screen ≥ 1.2 s + 0.25 s per Bengali word"
+  },
+
+  "audio": {
+    "master": { "integratedLufs": -14, "truePeakDbtp": -1.0, "lraMax": 9, "format": "AAC-LC 48 kHz stereo 320 kbps" },
+    "voice": { "hpfHz": 80, "presenceBoostDb": 2, "presenceHz": 3500, "compression": "3:1, -18 dB threshold", "leadOverMusicDb": [8, 12] },
+    "duck": { "amountDb": [8, 10], "attackMs": 20, "releaseMs": 300, "tool": "ffmpeg sidechaincompress" },
+    "sfx": { "peakDbfs": -10, "rule": "one tasteful accent per reveal; never on top of a key VO word" }
+  },
+
+  "export": {
+    "fps": 30,
+    "master4k": {
+      "size": "2160x3840", "codec": "H.264 High, level 5.1", "pixFmt": "yuv420p", "color": "bt709 (convert with scale=out_color_matrix=bt709:out_range=tv and tag bt709)",
+      "rate": "2-pass, target = min(40 Mbps, (95 MB × 8 − audio) / duration) — keeps the file < 100 MB for GitHub",
+      "gop": 30, "audio": "AAC-LC 48 kHz stereo 320 kbps", "container": "MP4, +faststart, -use_editlist 0"
+    },
+    "mobile1080": { "size": "1080x1920", "codec": "H.264 High, level 4.1", "rate": "CRF 18, maxrate 12M, bufsize 24M", "audio": "AAC-LC 48 kHz stereo 256 kbps" },
+    "cover": { "sizes": ["2160x3840", "1080x1920"], "format": "JPG q92" }
+  }
+}
