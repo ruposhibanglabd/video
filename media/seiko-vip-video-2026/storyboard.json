@@ -6,9 +6,9 @@
     "image": ".tmp/seiko-vip/generated/01-crystal-macro.png",
     "kind": "hook",
     "eyebrow": "SEIKO VIP",
-    "title": "স্টাইলের নতুন পরিচয়",
-    "line": "দেখুন নতুনভাবে",
-    "sub": "গ্লাস • ডায়াল • ফিনিশ"
+    "title": "SEIKO VIP",
+    "line": "স্টাইলের নতুন পরিচয়",
+    "sub": "৫টি লুক • আপনার পছন্দ"
   },
   {
     "id": "angle-left",
@@ -17,9 +17,9 @@
     "image": ".tmp/seiko-vip/generated/02-angle-left.png",
     "kind": "angle",
     "eyebrow": "SEIKO VIP",
-    "title": "প্রতিটি অ্যাঙ্গেলে",
-    "line": "পরিপাটি উপস্থিতি",
-    "sub": "গোল্ডেন ফিনিশ • ব্লু ডায়াল"
+    "title": "SEIKO VIP",
+    "line": "প্রতিটি অ্যাঙ্গেলে",
+    "sub": "ব্লু ডায়াল • গোল্ডেন ফিনিশ"
   },
   {
     "id": "angle-right",
@@ -28,9 +28,9 @@
     "image": ".tmp/seiko-vip/generated/03-angle-right.png",
     "kind": "angle",
     "eyebrow": "SEIKO VIP",
-    "title": "মিনিমাল ডায়াল",
-    "line": "প্রিমিয়াম লুক",
-    "sub": "আপনার স্টাইলের সঙ্গী"
+    "title": "আপনার স্টাইলের সঙ্গী",
+    "line": "৫টি আকর্ষণীয় লুক",
+    "sub": "ব্লু ডায়াল • গোল্ডেন ফিনিশ"
   },
   {
     "id": "steel",
@@ -153,10 +153,10 @@
     "id": "price",
     "start": 34,
     "end": 39,
-    "image": ".tmp/seiko-vip/generated/03-angle-right.png",
+    "image": ".tmp/seiko-vip/generated/08-blue-gold-wrist.webp",
     "kind": "price",
     "eyebrow": "SEIKO VIP · MIQA",
-    "title": "আপনার পছন্দের সিকো",
+    "title": "হাতে পরলে যেমন দেখায়",
     "line": "৳১,৭৫০",
     "sub": "নিজের স্টাইল বেছে নিন"
   },
@@ -175,11 +175,11 @@
     "id": "final",
     "start": 46.5,
     "end": 52,
-    "image": ".tmp/seiko-vip/generated/07-white-gold.png",
+    "image": null,
     "kind": "final",
     "eyebrow": "SEIKO VIP · MIQA",
-    "title": "নিজের স্টাইলে সিকো",
+    "title": "পছন্দের লুক বেছে নিন",
     "line": "৳১,৭৫০",
-    "sub": "অর্ডার করুন মিকায়"
+    "sub": "অর্ডার করতে ওয়েবসাইটে যান"
   }
 ]

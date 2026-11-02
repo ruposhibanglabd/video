@@ -1,17 +1,17 @@
 [
   {
     "file": "downloads/MIQA-SEIKO-VIP-4K.mp4",
-    "bytes": 23645031,
-    "sha256": "88b0cee18db5d09ebfa6547577fc16bf251f5348ad0256480363345cd3d6226c"
+    "bytes": 21849605,
+    "sha256": "e63db9246624f1c84522629dd4d773c6a231663f168d33f5c7759539eb2c48ce"
   },
   {
     "file": "downloads/MIQA-SEIKO-VIP-Facebook-1080p.mp4",
-    "bytes": 13352398,
-    "sha256": "df2eb38fe502d78313db2f1d363e43cd293b8fafc4c7be23013d32017a369e3d"
+    "bytes": 13182091,
+    "sha256": "f362b74bf4714cd334d2b0849153e44a9b20ba55f113f91474372489c7c3b9d5"
   },
   {
     "file": "downloads/MIQA-SEIKO-VIP-Production-Assets.zip",
-    "bytes": 21274091,
-    "sha256": "a08199df186d6ec1a5b071afa14c58f9913f19c003e390883e4a80a71bab59e0"
+    "bytes": 24390966,
+    "sha256": "56ea6a21b810a5b18d97f84dff695e7d0bacb1396d4e14b1a57223864614bd17"
   }
 ]
