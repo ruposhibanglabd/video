@@ -1,0 +1,96 @@
+{
+  "product": "fiyota-silver",
+  "revision": "redesign-v2",
+  "method": "Fully generated photographic scenes from product references; no cutout compositing",
+  "overlays": "none",
+  "addedShadowLayers": false,
+  "colorspace": "sRGB",
+  "images": [
+    {
+      "file": "website-images/fiyota-silver_01_primary.jpg",
+      "source": "01_primary.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 437914,
+      "sha256": "07bc623161b231ead916cbbcf32b033cab1bd494a9c5a39185cd707eb2726cdd"
+    },
+    {
+      "file": "website-images/fiyota-silver_02_on-wrist.jpg",
+      "source": "02_on-wrist.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 805720,
+      "sha256": "f139eb846eb2d6d782ad48a61bdb6d161afd3c0c98e100b5b6f8733e90f24436"
+    },
+    {
+      "file": "website-images/fiyota-silver_03_angle.jpg",
+      "source": "03_angle.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 556923,
+      "sha256": "2d233a629e3d261d3640f01c49c5dc296688283df8a35747d7131db82d5f6149"
+    },
+    {
+      "file": "website-images/fiyota-silver_04_butterfly-lock.jpg",
+      "source": "04_butterfly-lock.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 401814,
+      "sha256": "86c472c23886b63155c753c0b8535d7ebb063a79ae45590fd4be70f09661d825"
+    },
+    {
+      "file": "website-images/fiyota-silver_05_styled.jpg",
+      "source": "05_styled.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 786720,
+      "sha256": "e83cb3232eb602c2704562d89f6f38471e50b88767a21ecb2a0ffad2fe4b2076"
+    }
+  ],
+  "zip": {
+    "file": "fiyota-silver_website-images.zip",
+    "sha256": "717c0e255c72260a4b3922bef6ee786c8ff6ced9e178c0af26cc931b9a7c1e7d",
+    "bytes": 2985223
+  },
+  "limitation": "AI-generated reference-based visualization, not a pixel-exact original product photograph"
+}

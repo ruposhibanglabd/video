@@ -1,11 +1,11 @@
 # সেট A
 
-| # | প্রোডাক্ট | ছবি | নাম ও বিবরণ | তারিখ |
-|---|---|---|---|---|
-| ০১ | FIYOTA (সিলভার)। প্রস্তাবিত নাম: FIYOTA Ivelle | [৫টা ছবি](01_fiyota-silver/website-images/) · [সব ছবি একসাথে (ZIP)](01_fiyota-silver/fiyota-silver_website-images.zip) · [QC](01_fiyota-silver/QC-REPORT.md) | [LISTING](01_fiyota-silver/LISTING.md) | ৩ নভেম্বর ২০২৬ |
+| # | প্রোডাক্ট | বর্তমান ছবি | নাম ও বিবরণ |
+|---|---|---|---|
+| ০১ | FIYOTA (সিলভার)। প্রস্তাবিত নাম: FIYOTA Ivelle | [রিডিজাইন V2 — ৫টি নতুন জেনারেটেড ছবি ও ZIP](01_fiyota-silver/redesign-v2/README.md) · [QC](01_fiyota-silver/redesign-v2/QC-REPORT.md) | [LISTING](01_fiyota-silver/LISTING.md) |
 
-**ভিডিও:** এখনো বানানো হয়নি। ক্লায়েন্ট "এই সেট শেষ, ভিডিও বানাও" বলে দাম জানালে, সেটের সব প্রোডাক্ট দিয়ে একটা ভিডিও হবে ([সেটের তালিকা](../../products/SETS.md))।
+**সর্বশেষ সংশোধনী:** রেফারেন্স কেটে বসানো নয়; সম্পূর্ণ নতুন প্রিমিয়াম দৃশ্য। বাইরের লেখা, পিল, ইনসেট ও আরোপিত ছায়া নেই। ক্লায়েন্টের বাণিজ্যিক অনুমোদন এখনো বাকি।
 
-**সরাসরি ডাউনলোড লিংক** (main-এ মার্জের পর):
-- ZIP: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/01_fiyota-silver/fiyota-silver_website-images.zip`
-- আলাদা ছবি: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/01_fiyota-silver/website-images/<ফাইলের নাম>.jpg`
+**পুরোনো V1:** [আগের ছবি](01_fiyota-silver/website-images/) ও [আগের QC](01_fiyota-silver/QC-REPORT.md) শুধু ইতিহাস। নতুন ডেলিভারির জন্য V2 ব্যবহার করবেন।
+
+**ভিডিও:** তৈরি হয়নি। ক্লায়েন্ট “এই সেট শেষ, ভিডিও বানাও” বলে দাম দিলে তবেই হবে ([সেটের তালিকা](../../products/SETS.md))।

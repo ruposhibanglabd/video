@@ -1,0 +1,47 @@
+{
+  "product": "FIYOTA (Silver)",
+  "slug": "fiyota-silver",
+  "proposedListingName": "FIYOTA Ivelle (Silver)",
+  "category": "women",
+  "workflow": "website-image-redesign-v2",
+  "decisionReferences": ["D32", "D33", "D34", "D35"],
+  "referenceFiles": [
+    "../../deliveries/2026-11-03_set-a/01_fiyota-silver/website-images/fiyota-silver_03_dial-closeup.jpg",
+    "../../deliveries/2026-11-03_set-a/01_fiyota-silver/website-images/fiyota-silver_04_bracelet-closeup.jpg",
+    "../../brand/feature-insets/butterfly-lock.webp"
+  ],
+  "referenceNote": "Available checkout contains earlier reference-derived detail images, not the original camera RAW/IMG files. These are visual references only; no watch pixels were cut out for V2.",
+  "visibleDesignTargets": {
+    "case": "Silver, slim elongated bowed rectangle, rounded corners, narrow polished bezel",
+    "crown": "Small fluted crown on right at 3 o'clock",
+    "dial": "White with central rectangular herringbone texture and smooth outer chapter ring",
+    "indices": "Twelve slender silver batons; no numerals, date or subdials",
+    "hands": "Silver dauphine hour/minute hands and thin seconds hand",
+    "dialPrinting": ["FIYOTA", "QUARTZ"],
+    "bracelet": "Three staggered rows of compact rounded-rectangular polished silver links",
+    "lock": "Butterfly deployment clasp; all silver for this product"
+  },
+  "creativeDirection": {
+    "palette": "Soft dusty blush, neutral silver, white dial",
+    "lighting": "Large soft upper-left source, controlled material reflections",
+    "finish": "Restrained premium jewelry photography; distinct complete scenes",
+    "excluded": ["cutout composites", "added drop shadows", "added mirrored reflections", "advertising text", "feature pills", "circular insets", "borders", "watermarks", "extra product claims"]
+  },
+  "shots": [
+    {"file": "01_primary", "scene": "Complete upright watch with naturally closed bracelet on seamless blush"},
+    {"file": "02_on-wrist", "scene": "Adult South Asian woman's wrist and partial hand, modest blush silk sleeve; no face"},
+    {"file": "03_angle", "scene": "New three-quarter dial and crown macro"},
+    {"file": "04_butterfly-lock", "scene": "New macro reconstruction of open silver butterfly clasp and bracelet"},
+    {"file": "05_styled", "scene": "Complete watch resting on a sculptural blush silk fold"}
+  ],
+  "limitations": [
+    "AI-generated visualization, not a pixel-exact product photograph",
+    "Fine link proportions/counts and unseen clasp geometry may differ from the real item",
+    "Tiny dial lettering on the wrist shot can retain generative distortion",
+    "Native generation is 1024x1024; delivery is a disclosed Lanczos resize to 2000x2000",
+    "Commercial client approval pending"
+  ],
+  "workingDirectory": "work/redesign-v2/",
+  "deliveryDirectory": "../../deliveries/2026-11-03_set-a/01_fiyota-silver/redesign-v2/",
+  "videoAuthorized": false
+}
