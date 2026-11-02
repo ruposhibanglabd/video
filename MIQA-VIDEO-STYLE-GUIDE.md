@@ -128,3 +128,7 @@ Ask only for missing essentials:
 5. Desired duration/resolution/platform if different from this reference.
 
 If these are already supplied, proceed without making the user repeat them. Keep this theme and grading direction while making new scene compositions suited to the new watch.
+
+## Latest follow-up: photography and no-push preference (2026-11-02)
+
+Read `MIQA-PHOTO-WORKFLOW.md` for the new image task and preserved campaign index. User requests three images: one on a wrist, two at the assistant's discretion, with assistant-selected premium backgrounds. The longer parenthetical example is not a rigid shot/background mandate. If requested and confirmed, typeset butterfly-clasp label + matching inset after generation on the main image only. Provide copy-ready product naming/short/detailed description from confirmed facts. **For this image workflow, commit locally but do not push or deploy unless the user later explicitly authorizes it**; this overrides the earlier GitHub-push delivery advice for that work. Prior video assets and campaign-specific offers remain preserved, not defaults for new products.
