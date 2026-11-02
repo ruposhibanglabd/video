@@ -40,3 +40,35 @@ Prior completed source, media and QA are preserved in Git. See the video guide a
 - Earlier approved emerald/champagne reference: `downloads/MIQA-Butterfly-Lock-Set-A-Reel-4K.mp4`.
 
 Prices, offers, warranties and clasp facts are product-specific; never carry them to the next watch by default. Existing video direction includes immediate product opening, separate retailer/manufacturer identity, matched spoken-feature visuals, premium Bengali narration, mobile-safe typeset text, 4K/social exports and full technical/visual QA. Preserve honest disclosure that generated photo sources are upscaled, with native-UHD graphics.
+
+## Website delivery and research update — 2026-11-02
+
+User will use these images on the website: make files as small as possible **without any quality loss**. Do not start producing new watch photographs yet; user is gathering the workflow first. User says they have supplied a butterfly-clasp reference: prioritize their actual matching reference, not the generated gold LONGINES image. Identify/inspect the actual supplied file before using it; do not falsely claim an unidentified attachment was inspected.
+
+### Strict compression policy
+
+- Default to genuinely **lossless** delivery. A high lossy quality setting, even 100, is not proof of losslessness. Do not quietly reinterpret “no quality loss” as merely “looks similar.”
+- Preserve the finalized photographic master. Test lossless WebP against optimized full-color PNG at the same dimensions, then choose the smaller verified lossless file for the website. Do not palette-quantize, reduce colors, blur details, or resize simply to meet a byte cap.
+- Compare decoded pixels against the canonical master (RGBA where needed); require equality for a claimed pixel-lossless conversion. Preserve intended color management/ICC and correct orientation; do not strip color profiles indiscriminately. Normalize any necessary orientation/color conversion before defining the master used for equality checks.
+- Strip only unnecessary metadata. Inspect watch markings, dial hands/indices, metal edges, skin, strap texture, gradient banding and any Bengali typography at 100%/zoom and phone-sized display.
+- Record dimensions, exact bytes and actual savings. No guaranteed KB/MB cap before seeing the image: texture and dimensions determine attainable lossless size. Do not sacrifice quality to claim an arbitrary 100/200 KB target.
+- WebP/AVIF lossy or reduced-size responsive copies are optional only with user authorization and clear labeling; never substitute them for the strict full-quality deliverable. AVIF is a candidate, not an automatic winner or a guaranteed lossless encoder setting.
+- For Facebook, provide a separately suitable JPEG/PNG upload copy if needed, retaining the lossless website file/master. Do not promise that platform-side recompression preserves every pixel. Do not implement website image pipelines or modify/deploy the site as part of this media task.
+
+### Art direction distilled from online research
+
+- Use complementary coverage rather than three almost-identical angles: clear full-product hero, natural wrist context/scale, and a deliberate detail view are the current preferred plan, while respecting the user's freedom for the two non-wrist compositions.
+- Main listing image: product is immediately identifiable; dial readable; distracting props/background clutter kept away. Consistent crop, subject scale, color and lighting across the collection. A white background is not mandatory for this own-website brief.
+- Wrist image: plausible fit, natural anatomy/skin, honest proportions; no exaggerated apparent case size or invented millimeter specification. Watch remains the subject, not clothing or model identity.
+- Detail view: show a genuinely present feature such as crown, case edge, bracelet links, leather grain or confirmed clasp. Do not invent internal mechanisms or change the actual watch hands/indices just because a photography article recommends 10:10.
+- Broad soft light and controlled reflections reveal real metal and crystal while preserving dial legibility. Avoid both blown highlights and featureless dark cases, excessive HDR, plastic texture, heavy beautification and impossible highlights/contact shadows.
+- Plan restrained compositions that can crop cleanly for product cards and social feeds. Website square and Facebook feed portrait are possible export choices, not universal platform requirements; decide the final crop from the real watch/reference and requested placement. Keep conditional clasp annotation on the main image only and add it programmatically after generation.
+- Do not copy another seller's photo or promise that a particular composition will guarantee sales. Research informs original art direction; it does not establish new product claims.
+
+### Sources consulted
+
+1. Shopify, “Product Photography: A DIY Guide for Beginners” (2026): clean consistent product presentation, complementary product/lifestyle/detail coverage, multiple angles, true colors. https://www.shopify.com/blog/12206313-the-ultimate-diy-guide-to-beautiful-product-photography
+2. Watchonista, “A Crash Course in Taking Good Watch Photos with Your Phone” (2024): diffuse lighting, crystal reflections, angle and wrist placement. https://www.watchonista.com/articles/opinions/how-crash-course-taking-good-watch-photos-your-phone
+3. web.dev, “Image performance”: modern image formats, distinction between lossy and lossless compression, responsive image delivery. https://web.dev/learn/performance/image-performance
+
+Research completed; no new product images generated or website changes made. Local Git only; **no push** remains in force.
