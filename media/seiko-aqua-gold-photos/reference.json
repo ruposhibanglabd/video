@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-02",
+  "references": [
+    {
+      "filename": "image-5.png",
+      "sha256": "f60b571ef6d4070bff567fb5f7ecf567a5690037f72ae2cbf4f66f8468bc48a0"
+    },
+    {
+      "filename": "image-6.png",
+      "sha256": "dfba80f19d237da0dd7deb98511d591c578084d904ae02c447567f6522fb7461"
+    }
+  ],
+  "user_instruction": "Same method and same details",
+  "appearance": "turquoise/cyan sunburst dial; all gold-tone case, crown and bracelet; date 12",
+  "confirmed_features": [
+    "stainless steel chain",
+    "butterfly lock",
+    "color guarantee, duration unspecified",
+    "waterproof, rating unspecified",
+    "premium quality"
+  ],
+  "source_dimensions": {
+    "main": [
+      2048,
+      2048
+    ],
+    "wrist": [
+      1024,
+      1536
+    ],
+    "detail": [
+      2048,
+      2048
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "file": "downloads/seiko-aqua-gold/01-main.webp",
+    "width": 2560,
+    "height": 2560,
+    "bytes": 2651892,
+    "lossless_webp_bytes": 2651892,
+    "optimized_png_bytes": 3739228,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "0b9ab2c98eb95a0dd8b6e8343f70edbd00aa099d4bb16c0e0ae2b4ee54d8da9f"
+  },
+  {
+    "file": "downloads/seiko-aqua-gold/02-wrist.webp",
+    "width": 1024,
+    "height": 1536,
+    "bytes": 1655828,
+    "lossless_webp_bytes": 1655828,
+    "optimized_png_bytes": 2327995,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "da03d8ae03ea26a5a8b87aad498c9444215637de939f59271352426019712e91"
+  },
+  {
+    "file": "downloads/seiko-aqua-gold/03-detail.webp",
+    "width": 2048,
+    "height": 2048,
+    "bytes": 2634604,
+    "lossless_webp_bytes": 2634604,
+    "optimized_png_bytes": 3880958,
+    "pixel_equal_rgba": true,
+    "profile_equal": true,
+    "sha256": "f90b0414408e3f58edbcbff832e94d39156d8c1e60b37c130e3ebee7de9dddc4"
+  }
+]
