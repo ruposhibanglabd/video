@@ -9,3 +9,7 @@ output/qa/
 .DS_Store
 dist/
 output/qa*/
+
+# MIQA: job working files stay local; final deliverables in miqa/deliveries/ ARE committed
+miqa/products/*/work/
+miqa/**/*.part.mp4

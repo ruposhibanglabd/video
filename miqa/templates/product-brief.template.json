@@ -1,0 +1,22 @@
+{
+  "slug": "olive-m2-golden",
+  "date": "YYYY-MM-DD",
+  "category": "women | men | couple",
+  "name": { "onScreen": "", "tts": "" },
+  "price": { "sale": 0, "original": null, "currency": "BDT", "confirmedByClient": false },
+  "features": [
+    { "exactText": "Butterfly Lock", "onScreenBn": "বাটারফ্লাই লক", "onScreenEn": "BUTTERFLY LOCK", "hero": true, "photos": ["input/clasp-open.jpg", "input/clasp-closed.jpg"] }
+  ],
+  "colors": [
+    { "name": "Golden", "photos": ["input/golden-front.jpg"], "sameprice": true }
+  ],
+  "warranty": null,
+  "occasion": null,
+  "photos": { "front": [], "angle": [], "side": [], "clasp": [], "back": [], "wrist": [], "box": [] },
+  "logo": "miqa/brand/logo/<file>",
+  "voiceId": "voice-00",
+  "doNotSay": [],
+  "openQuestions": [],
+  "trademarkFlag": false,
+  "notes": ""
+}
