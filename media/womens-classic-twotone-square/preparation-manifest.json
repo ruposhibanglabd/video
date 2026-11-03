@@ -1,0 +1,83 @@
+[
+  {
+    "style": "main",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "finalSize": [
+      1254,
+      1254
+    ],
+    "letteringRegion": [
+      572,
+      525,
+      659,
+      554
+    ],
+    "referenceRasterBox": [
+      1460,
+      1842,
+      1755,
+      1920
+    ],
+    "brandSpellingVerified": false,
+    "wholeImageResampling": false,
+    "crop": false,
+    "canvasExpansion": false
+  },
+  {
+    "style": "wrist",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "finalSize": [
+      1254,
+      1254
+    ],
+    "letteringRegion": [
+      557,
+      536,
+      630,
+      565
+    ],
+    "referenceRasterBox": [
+      1460,
+      1842,
+      1755,
+      1920
+    ],
+    "brandSpellingVerified": false,
+    "wholeImageResampling": false,
+    "crop": false,
+    "canvasExpansion": false
+  },
+  {
+    "style": "detail",
+    "nativeSize": [
+      2048,
+      2048
+    ],
+    "finalSize": [
+      2048,
+      2048
+    ],
+    "letteringRegion": [
+      857,
+      942,
+      1026,
+      994
+    ],
+    "referenceRasterBox": [
+      1460,
+      1842,
+      1755,
+      1920
+    ],
+    "brandSpellingVerified": false,
+    "wholeImageResampling": false,
+    "crop": false,
+    "canvasExpansion": false
+  }
+]
