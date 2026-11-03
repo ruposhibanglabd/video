@@ -1,0 +1,67 @@
+[
+  {
+    "style": "main",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "finalSize": [
+      1254,
+      1254
+    ],
+    "backgroundCanvasExtension": null,
+    "repair": null,
+    "wholeSceneResampling": false,
+    "productCrop": false
+  },
+  {
+    "style": "wrist",
+    "nativeSize": [
+      1254,
+      1254
+    ],
+    "finalSize": [
+      1254,
+      1254
+    ],
+    "backgroundCanvasExtension": null,
+    "repair": null,
+    "wholeSceneResampling": false,
+    "productCrop": false
+  },
+  {
+    "style": "detail",
+    "nativeSize": [
+      864,
+      1184
+    ],
+    "finalSize": [
+      1184,
+      1184
+    ],
+    "backgroundCanvasExtension": [
+      160,
+      0,
+      160,
+      0
+    ],
+    "repair": {
+      "region": [
+        422,
+        394,
+        485,
+        436
+      ],
+      "referenceRasterBox": [
+        1555,
+        1315,
+        1775,
+        1387
+      ],
+      "primaryHandPolygonsProtected": true,
+      "brandSpellingVerified": false
+    },
+    "wholeSceneResampling": false,
+    "productCrop": false
+  }
+]

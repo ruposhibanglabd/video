@@ -1,0 +1,70 @@
+[
+  {
+    "style": "main hero; Bengali lock label only here",
+    "source": "media/womens-stone-gold/source-main.png",
+    "master": "downloads/womens-stone-gold/01-main.png",
+    "website": "downloads/womens-stone-gold/01-main.webp",
+    "width": 1254,
+    "height": 1254,
+    "upscaled": false,
+    "downscaled": false,
+    "masterBytes": 1879635,
+    "optimizedPngBytes": 1801751,
+    "losslessWebpBytes": 1168260,
+    "bytes": 1168260,
+    "savingsPercent": 37.85,
+    "pixelEqualityRGBA": true,
+    "iccPreserved": true,
+    "sha256": "96ac18eafa02164d2fc0d35ddd6555ca723fa7c84b1ec6f14fcd9516843d7915",
+    "masterSha256": "80576c82967c1cced9228551985de2d3fe38ac58a0062a88a4ed54bfb30017e6"
+  },
+  {
+    "style": "natural adult wrist; no added text",
+    "source": "media/womens-stone-gold/source-wrist.png",
+    "master": "downloads/womens-stone-gold/02-wrist.png",
+    "website": "downloads/womens-stone-gold/02-wrist.webp",
+    "width": 1254,
+    "height": 1254,
+    "upscaled": false,
+    "downscaled": false,
+    "masterBytes": 2404044,
+    "optimizedPngBytes": 2354370,
+    "losslessWebpBytes": 1633008,
+    "bytes": 1633008,
+    "savingsPercent": 32.07,
+    "pixelEqualityRGBA": true,
+    "iccPreserved": true,
+    "sha256": "72f877a8ab07f622e24a151798d2d6985c1b18615ea9b73cfd0b826b99f23f8d",
+    "masterSha256": "192762dac22180e977f4a430264bee8ce5d9ca782636ada241d0b120af85052e"
+  },
+  {
+    "style": "dial/crystal/crown/bracelet close-up; no added text",
+    "source": "media/womens-stone-gold/source-detail.png",
+    "master": "downloads/womens-stone-gold/03-detail.png",
+    "website": "downloads/womens-stone-gold/03-detail.webp",
+    "width": 1184,
+    "height": 1184,
+    "upscaled": false,
+    "downscaled": false,
+    "masterBytes": 1861372,
+    "optimizedPngBytes": 1786995,
+    "losslessWebpBytes": 1357876,
+    "bytes": 1357876,
+    "savingsPercent": 27.05,
+    "pixelEqualityRGBA": true,
+    "iccPreserved": true,
+    "sha256": "d5b72cf88872fc746e80cedec3322c055bd71672dbb72926103363e9a06726ba",
+    "masterSha256": "ea2bab98d7821ac215ee7c50b1eb62eaaf4246b88d498314dc458f46f5156d27",
+    "nativeSceneSize": [
+      864,
+      1184
+    ],
+    "backgroundCanvasExtension": [
+      160,
+      0,
+      160,
+      0
+    ],
+    "productCrop": false
+  }
+]
