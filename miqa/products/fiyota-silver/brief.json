@@ -4,7 +4,8 @@
   "proposedListingName": "FIYOTA Ivelle (Silver)",
   "category": "women",
   "workflow": "website-image-redesign-v2",
-  "decisionReferences": ["D32", "D33", "D34", "D35"],
+  "decisionReferences": ["D32", "D33", "D34", "D35", "D36"],
+  "workflowApproval": "Client confirmed this fully generated premium redesign workflow for all future product images; product-specific detail QC still required",
   "referenceFiles": [
     "../../deliveries/2026-11-03_set-a/01_fiyota-silver/website-images/fiyota-silver_03_dial-closeup.jpg",
     "../../deliveries/2026-11-03_set-a/01_fiyota-silver/website-images/fiyota-silver_04_bracelet-closeup.jpg",
@@ -39,7 +40,7 @@
     "Fine link proportions/counts and unseen clasp geometry may differ from the real item",
     "Tiny dial lettering on the wrist shot can retain generative distortion",
     "Native generation is 1024x1024; delivery is a disclosed Lanczos resize to 2000x2000",
-    "Commercial client approval pending"
+    "Redesign workflow approved for all future images (D36); product-specific visual review before publishing remains required"
   ],
   "workingDirectory": "work/redesign-v2/",
   "deliveryDirectory": "../../deliveries/2026-11-03_set-a/01_fiyota-silver/redesign-v2/",

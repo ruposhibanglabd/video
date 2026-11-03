@@ -256,6 +256,20 @@
     "naming": "deliveries/<set>/<product>/redesign-v2/website-images/<slug>_<NN>_<type>.jpg",
     "exportTool": "miqa/tools/product-images/export_redesign.py",
     "resolutionPolicy": "Record native generated dimensions and delivery resize separately; no claim of native 2K detail",
-    "deliveryPolicy": "Prepare all final files, links and QC; one final commit and at most one approved push for the completed revision, not repeated partial pushes"
+    "deliveryPolicy": "Prepare all final files, links and QC; one final commit and at most one approved push for the completed revision, not repeated partial pushes",
+    "scope": {
+      "appliesTo": "All future website product images",
+      "categories": ["women", "men", "couple"],
+      "sets": "all",
+      "shotTypes": "all requested and default shots",
+      "decision": "D36",
+      "workflowApproved": true,
+      "perProductDetailQCRequired": true,
+      "videoRulesChanged": false
+    },
+    "styleReference": {
+      "delivery": "miqa/deliveries/2026-11-03_set-a/01_fiyota-silver/redesign-v2/",
+      "meaning": "Reference for generation method and premium finish, not a template to overwrite each product identity or category palette"
+    }
   }
 }
