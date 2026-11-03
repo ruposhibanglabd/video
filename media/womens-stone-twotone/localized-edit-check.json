@@ -1,0 +1,17 @@
+[
+  {
+    "style": "main",
+    "changedPixels": 16760,
+    "outsideApprovedLetteringLabelRegions": 0
+  },
+  {
+    "style": "wrist",
+    "changedPixels": 1868,
+    "outsideApprovedLetteringLabelRegions": 0
+  },
+  {
+    "style": "detail",
+    "changedPixels": 2792,
+    "outsideApprovedLetteringLabelRegions": 0
+  }
+]

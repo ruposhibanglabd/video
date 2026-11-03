@@ -2,6 +2,14 @@
 
 Saved 2026-11-02 at the user's request. Read with `MIQA-VIDEO-STYLE-GUIDE.md` before the next media task. Durable repository notes, not a promise of automatic memory in unrelated chats.
 
+## Latest square / delivery requirements — 2026-11-03
+
+Read `MIQA-PHOTO-PREFERENCES.md` first. ALL THREE new website images must be **square, 1:1 (equal width and height)**: main, wrist and detail. Compose square from the start; safe native-pixel cropping is permissible only when all essential watch parts remain visible. Never stretch or silently resize to force a square. Preserve native square dimensions rather than upscale a smaller source merely to match nominal sizes. The new requirement does not retroactively convert earlier portrait deliveries.
+
+Keep website bytes as small as tested lossless PNG/WebP encoding permits, with decoded RGBA equality and intended ICC preserved against finalized square masters. No arbitrary byte cap or loss of stone/metal/dial detail. Main-only Bengali butterfly-lock label; other two clean.
+
+The user subsequently authorized pushes and requested separate immutable GitHub Raw download links. This **supersedes the historical NO PUSH paragraphs below**. Work/push only on the assigned session branch, verify remote bytes/SHA before linking, and do not open unrelated PRs or deploy/change the app.
+
 ## Latest instruction takes precedence
 
 The user's long parenthetical brief was explanatory, NOT a requirement to follow every example literally. Final clarification: make **three distinct photographs of the same supplied watch: one worn on a wrist, the other two composed at the assistant's discretion**. A complete-product hero and a detail/macro are sensible defaults for the other two, not rigid additional requirements. Background choice is the assistant's, suited to a believable premium presentation; solid color/contact shadows are an option, not mandatory.
@@ -102,3 +110,9 @@ After explicit “do it properly” correction request, generated a separate rep
 ## Women’s gold-frame / two-tone set — 2026-11-03
 
 New refs image-15.png / image-16.png: compact rectangular case with stepped horizontal bars, gold frame/crown matching the bracelet’s GOLD center; outer bracelet links SILVER. Not the earlier all-silver cushion-case women’s Set A. Same confirmed butterfly clasp, water resistance (not unrestricted waterproof), chain-color guarantee (no stated period), seven-day replacement, six-month warranty; no price/spec/offer inherited. All THREE styles completed and selected: main, wrist, detail; blush/pink theme, main-only coded Bengali lock label, strict same-pixel lossless website copies. Sources/scripts/wordmark review/QA in media/womens-gold-frame-twotone; deliverables/copy in downloads/womens-gold-frame-twotone. The generators produced inconsistent names: replace their lettering locally with the blurred actual reference raster rather than inventing a brand spelling. No native-4K or recovered-brand-detail claim. Prior women’s Set A files unchanged.
+
+## Women’s ornate stone / two-tone SQUARE set — 2026-11-03
+
+New refs IMG20261029125049.jpg / IMG20261029125050.jpg. Priority: stones must be clearly discernible while keeping the remaining product details. Silver outer rectangular case, gold stone-set rim/right crown, Roman dial, ornate silver/gold U/horseshoe/ring bracelet motifs. Do not inherit the previous plain-stud gold-frame model. User selected main 2/2, wrist 1/2, detail 2/2; all three completed in blush/pink with main-only coded Bengali lock label. Main/detail native 1024×1024; wrist native safe crop 889×889, complete watch retained, no stretch/upscale. All final images square. Earlier portrait sets unchanged.
+
+Actual blurred current-reference lettering raster replaces localized invented generated words; spelling remains unverified. Exactly three primary gold hands reviewed. Stone/photographic pixels outside approved lettering/label areas unchanged from selected sources after wrist crop (zero differences). Pixel-identical lossless website WebPs: 394,744 / 810,182 / 1,193,850 bytes, saving 48.46% / 30.3% / 35.96% against their PNG masters. No false diamond authenticity or price claims. Previous women's confirmed benefits retained only per same-details request. Sources, preparation/crop manifest, code, pixel QA and hashes: `media/womens-stone-twotone/`; final PNG/WebP/copy: `downloads/womens-stone-twotone/`; 10-entry CRC-checked bundle: `downloads/MIQA-Womens-Stone-Twotone-Square-Three-Styles.zip`. GitHub Raw delivery per authorization; no app/deployment/video changes.

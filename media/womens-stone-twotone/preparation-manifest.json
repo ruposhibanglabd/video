@@ -1,0 +1,85 @@
+[
+  {
+    "style": "main",
+    "source": "source-main.png",
+    "outputSize": [
+      1024,
+      1024
+    ],
+    "squareCrop": null,
+    "wholeImageResampled": false,
+    "referenceLetteringBoxes": {
+      "brand": [
+        1442,
+        1282,
+        1651,
+        1348
+      ],
+      "quartz": [
+        1444,
+        1534,
+        1613,
+        1576
+      ]
+    },
+    "referenceRasterUsed": true,
+    "brandSpellingVerified": false
+  },
+  {
+    "style": "wrist",
+    "source": "source-wrist.png",
+    "outputSize": [
+      889,
+      889
+    ],
+    "squareCrop": [
+      0,
+      145,
+      889,
+      1034
+    ],
+    "wholeImageResampled": false,
+    "referenceLetteringBoxes": {
+      "brand": [
+        1442,
+        1282,
+        1651,
+        1348
+      ],
+      "quartz": [
+        1444,
+        1534,
+        1613,
+        1576
+      ]
+    },
+    "referenceRasterUsed": true,
+    "brandSpellingVerified": false
+  },
+  {
+    "style": "detail",
+    "source": "source-detail.png",
+    "outputSize": [
+      1024,
+      1024
+    ],
+    "squareCrop": null,
+    "wholeImageResampled": false,
+    "referenceLetteringBoxes": {
+      "brand": [
+        1442,
+        1282,
+        1651,
+        1348
+      ],
+      "quartz": [
+        1444,
+        1534,
+        1613,
+        1576
+      ]
+    },
+    "referenceRasterUsed": true,
+    "brandSpellingVerified": false
+  }
+]
