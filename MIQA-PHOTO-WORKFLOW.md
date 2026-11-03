@@ -6,6 +6,12 @@ Saved 2026-11-02 at the user's request. Read with `MIQA-VIDEO-STYLE-GUIDE.md` be
 
 The user's long parenthetical brief was explanatory, NOT a requirement to follow every example literally. Final clarification: make **three distinct photographs of the same supplied watch: one worn on a wrist, the other two composed at the assistant's discretion**. A complete-product hero and a detail/macro are sensible defaults for the other two, not rigid additional requirements. Background choice is the assistant's, suited to a believable premium presentation; solid color/contact shadows are an option, not mandatory.
 
+## Three-style completion requirement — reconfirmed 2026-11-03
+
+User explicitly corrected the incomplete women's Set A delivery: **even one supplied watch reference requires three distinct finished images**, not one. Default complete set: **main product hero + natural wrist-worn view + detail close-up**. Do not interpret singular “ছবি তৈরি করো” as permission to silently reduce the established three-style set. Only an explicit change of scope overrides this rule; a follow-up edit to one existing image is not a new three-image commission.
+
+Before saying a new watch set is complete, verify all three styles exist, have been visually reviewed, and are included in delivery. Keep requested Bengali butterfly-lock annotation on the main image only; wrist and detail remain clean. Retain the existing zero-resizing / pixel-verified lossless website compression policy. Do not ask the user to repeat this standing count/style instruction.
+
 ## Image production
 
 - Wait for the new watch reference image(s); inspect the dial, hands, indices, proportions, crown, case, strap/bracelet links, clasp, colors, finish and markings before generation.
