@@ -1,0 +1,15 @@
+import {createCanvas,loadImage,GlobalFonts} from '@napi-rs/canvas';
+import fs from 'node:fs';
+GlobalFonts.registerFromPath('assets/fonts/NotoSansBengali-SemiBold.ttf','Bengali');
+const path='.tmp/womens-gold-frame-twotone/masters/main.png';
+const im=await loadImage(path),cv=createCanvas(im.width,im.height),c=cv.getContext('2d');
+c.drawImage(im,0,0);
+const label='বাটারফ্লাই লক',size=30;c.font=`600 ${size}px Bengali`;
+const x=42,y=im.height-78,w=Math.ceil(c.measureText(label).width)+42,h=56;
+c.fillStyle='rgba(255,250,247,.96)';c.beginPath();c.roundRect(x,y,w,h,12);c.fill();
+c.strokeStyle='#bf8e96';c.lineWidth=1.3;c.stroke();c.fillStyle='#653b4a';c.textAlign='center';c.fillText(label,x+w/2,y+39);
+const out='downloads/womens-gold-frame-twotone';fs.mkdirSync(out,{recursive:true});
+fs.writeFileSync(out+'/01-main.png',cv.toBuffer('image/png'));
+fs.copyFileSync('.tmp/womens-gold-frame-twotone/masters/wrist.png',out+'/02-wrist.png');
+fs.copyFileSync('.tmp/womens-gold-frame-twotone/masters/detail.png',out+'/03-detail.png');
+console.log('Three native-size PNG masters exported; Bengali lock label on main only.');

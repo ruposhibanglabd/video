@@ -1,0 +1,53 @@
+[
+  {
+    "style": "main",
+    "source": "media/womens-gold-frame-twotone/source-main.png",
+    "masterBeforeLabel": ".tmp/womens-gold-frame-twotone/masters/main.png",
+    "size": [
+      768,
+      1376
+    ],
+    "referenceCrop": [
+      502,
+      638,
+      606,
+      669
+    ],
+    "referenceLetteringTransferred": true,
+    "brandSpellingVerified": false
+  },
+  {
+    "style": "wrist",
+    "source": "media/womens-gold-frame-twotone/source-wrist.png",
+    "masterBeforeLabel": ".tmp/womens-gold-frame-twotone/masters/wrist.png",
+    "size": [
+      1792,
+      2400
+    ],
+    "referenceCrop": [
+      502,
+      638,
+      606,
+      669
+    ],
+    "referenceLetteringTransferred": true,
+    "brandSpellingVerified": false
+  },
+  {
+    "style": "detail",
+    "source": "media/womens-gold-frame-twotone/source-detail.png",
+    "masterBeforeLabel": ".tmp/womens-gold-frame-twotone/masters/detail.png",
+    "size": [
+      1792,
+      2400
+    ],
+    "referenceCrop": [
+      502,
+      638,
+      606,
+      669
+    ],
+    "referenceLetteringTransferred": true,
+    "brandSpellingVerified": false
+  }
+]
