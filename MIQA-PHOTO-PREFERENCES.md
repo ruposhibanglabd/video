@@ -10,3 +10,4 @@ User update: 2026-11-03. Apply alongside MIQA-PHOTO-WORKFLOW.md when available; 
 - Record square dimensions, actual bytes/savings and hashes; inspect product/skin/glass/metal/Bengali label at native and phone display sizes.
 - Confirmed Bengali butterfly-lock label belongs only on main; wrist/detail stay free of that extra writing. Do not invent hidden-clasp evidence.
 - This message sets the standing format/compression requirement; do not claim already-delivered portrait files have become square without actually creating and verifying revised files.
+- Latest copy-delivery instruction: include the product/display name, short description and detailed Bengali description directly in the chat alongside image links; a ZIP-only product-copy file is not sufficient.

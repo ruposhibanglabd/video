@@ -1,0 +1,92 @@
+{
+  "referenceRasterBoxes": {
+    "brand": [
+      1570,
+      1660,
+      1755,
+      1722
+    ]
+  },
+  "manufacturerSpellingVerified": false,
+  "detailLowerWord": "QUARTZ typeset from legible reference; no hand-containing raster copied",
+  "images": [
+    {
+      "style": "main",
+      "sourceSize": [
+        1600,
+        1600
+      ],
+      "finalSize": [
+        1600,
+        1600
+      ],
+      "crop": null,
+      "letteringRegions": [],
+      "wholeImageResampling": false
+    },
+    {
+      "style": "wrist",
+      "sourceSize": [
+        1773,
+        2364
+      ],
+      "finalSize": [
+        1773,
+        1773
+      ],
+      "crop": [
+        0,
+        296,
+        1773,
+        2069
+      ],
+      "letteringRegions": [],
+      "wholeImageResampling": false
+    },
+    {
+      "style": "detail",
+      "sourceSize": [
+        1024,
+        1024
+      ],
+      "finalSize": [
+        1024,
+        1024
+      ],
+      "crop": null,
+      "letteringRegions": [
+        [
+          "brand",
+          [
+            435,
+            392,
+            491,
+            416
+          ],
+          [
+            463,
+            405
+          ],
+          54,
+          -11
+        ],
+        [
+          "quartz",
+          [
+            428,
+            460,
+            472,
+            479
+          ],
+          [
+            450,
+            470
+          ],
+          42,
+          -11
+        ]
+      ],
+      "wholeImageResampling": false
+    }
+  ]
+}
