@@ -6,7 +6,7 @@
 
 | ফাইল | কাজ |
 |---|---|
-| `export_redesign.py` | সম্পূর্ণ জেনারেটেড পাঁচটি বর্গাকার দৃশ্যকে 2000×2000 sRGB JPG, ZIP ও hash manifest-এ রপ্তানি করে। কোনো ঘড়ি সেগমেন্টেশন, লেখা বা কম্পোজিটিং করে না। নেটিভ মাপ আলাদা রেকর্ড করে |
+| `export_redesign.py` | সম্পূর্ণ জেনারেটেড বর্গাকার দৃশ্যকে 2000×2000 sRGB JPG, ZIP ও hash manifest-এ রপ্তানি করে। কোনো ঘড়ি সেগমেন্টেশন, লেখা বা কম্পোজিটিং করে না। নেটিভ মাপ আলাদা রেকর্ড করে। ডিফল্ট পাঁচটি শট সিলভার ডেলিভারির; `--shots` দিয়ে অন্য প্রোডাক্টের শট-নাম দেওয়া যায় |
 
 ```bash
 python3 -m venv /tmp/miqa-image-tools
@@ -17,7 +17,17 @@ python3 -m venv /tmp/miqa-image-tools
   fiyota-silver
 ```
 
-অন্য প্রোডাক্টের ফিচার-শটের জন্য স্ক্রিপ্টের `SHOTS` ম্যাপ বদলাতে হবে। জেনারেট করা PNG ও QC ক্রপ `products/<slug>/work/`-এ থাকে, Git-এ যায় না।
+অন্য প্রোডাক্টের ফিচার-শটের জন্য স্ক্রিপ্ট এডিট করার দরকার নেই; `--shots`-এ সোর্স PNG-এর stem দিন (`.png` ছাড়া), ডেলিভারির ক্রমে। যেমন গোল্ডেন FIYOTA-র চতুর্থ শট ব্রেসলেট ক্লোজ-আপ:
+
+```bash
+/home/user/.image-tools/bin/python miqa/tools/product-images/export_redesign.py \
+  miqa/products/fiyota-golden/work/redesign-v2 \
+  miqa/deliveries/2026-11-03_set-a/02_fiyota-golden/redesign-v2 \
+  fiyota-golden \
+  --shots 01_primary 02_on-wrist 03_angle 04_bracelet-closeup 05_styled
+```
+
+জেনারেট করা PNG ও QC ক্রপ `products/<slug>/work/`-এ থাকে, Git-এ যায় না।
 
 ## ঐতিহাসিক V1 — নতুন কাজে ব্যবহার করবেন না
 

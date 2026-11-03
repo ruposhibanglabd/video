@@ -83,8 +83,9 @@
 
 ## ৯. ফাইল ও Git ডেলিভারি
 - সংশোধনী আলাদা রিভিশন ফোল্ডারে রাখুন, যাতে পুরোনো ফাইল কারেন্ট ডেলিভারি বলে ভুল না হয়।
-- বর্তমান উদাহরণ: `deliveries/2026-11-03_set-a/01_fiyota-silver/redesign-v2/website-images/`।
-- নাম: `<slug>_01_primary.jpg`, `_02_on-wrist.jpg`, `_03_angle.jpg`, `_04_<feature>.jpg`, `_05_styled.jpg`।
+- বর্তমান উদাহরণ: `deliveries/2026-11-03_set-a/01_fiyota-silver/redesign-v2/website-images/` এবং `deliveries/2026-11-03_set-a/02_fiyota-golden/redesign-v2/website-images/`।
+- নাম: `<slug>_01_primary.jpg`, `_02_on-wrist.jpg`, `_03_angle.jpg`, `_04_<feature>.jpg`, `_05_styled.jpg`। ফিচারের নাম পণ্যের রেফারেন্স অনুযায়ী হবে; অদৃশ্য লকের অভাবে গোল্ডেন উদাহরণে `_04_bracelet-closeup.jpg`।
+- এক্সপোর্টারে শট-নাম দিতে `--shots` ব্যবহার করুন; সিলভার ডিফল্ট অপরিবর্তিত।
 - JPG ছাড়াও রিভিশনের README, QC ও প্রয়োজন হলে manifest/ZIP দিন।
 - স্ক্র্যাচ ও জেনারেশনের কাঁচা ফাইল `products/<slug>/work/`-এ রাখুন; Git-এ চূড়ান্ত ডেলিভারি দিন।
 - একই কাজের জন্য বারবার অসম্পূর্ণ পুশ নয়। ফাইল, লিংক, ZIP ও QC প্রস্তুত হলে একবার চূড়ান্ত কমিট; অনুমোদিত কর্মপ্রবাহে একবার পুশ।

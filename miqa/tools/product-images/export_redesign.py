@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Export fully generated square scenes; never segment, overlay or composite a watch.
 
-Usage: python export_redesign.py SOURCE_DIR DELIVERY_DIR PRODUCT_SLUG
+Usage: python export_redesign.py SOURCE_DIR DELIVERY_DIR PRODUCT_SLUG [--shots SHOT ...]
 Requires Pillow. Source images retain their native resolution in the manifest;
 2000px delivery resizing is explicitly recorded, not claimed as native detail.
+Default shot names preserve the original FIYOTA silver delivery. Use --shots to
+select product-specific filenames, e.g. 04_bracelet-closeup instead of a clasp.
 """
 from __future__ import annotations
 
@@ -11,8 +13,10 @@ import argparse
 import hashlib
 import io
 import json
+import re
 import zipfile
 from pathlib import Path
+from typing import Sequence
 
 from PIL import Image, ImageCms
 
@@ -23,6 +27,9 @@ SHOTS = {
     "04_butterfly-lock": "04_butterfly-lock",
     "05_styled": "05_styled",
 }
+DEFAULT_SHOTS = tuple(SHOTS)
+SHOT_RE = re.compile(r"^[0-9]{2}_[a-z0-9]+(?:-[a-z0-9]+)*$")
+SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 SIZE = 2000
 MAX_BYTES = 1_500_000
 
@@ -31,9 +38,21 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def export(source: Path, delivery: Path, slug: str) -> None:
+def export(source: Path, delivery: Path, slug: str,
+           shots: Sequence[str] | None = None) -> None:
+    selected = tuple(DEFAULT_SHOTS if shots is None else shots)
+    if not SLUG_RE.fullmatch(slug):
+        raise ValueError(f"Invalid product slug: {slug!r}")
+    if not selected:
+        raise ValueError("At least one shot is required")
+    if len(set(selected)) != len(selected):
+        raise ValueError("Shot names must be unique")
+    for stem in selected:
+        if not SHOT_RE.fullmatch(stem):
+            raise ValueError(f"Invalid shot name: {stem!r}")
+
     # Validate the complete set before writing any final images.
-    for stem in SHOTS:
+    for stem in selected:
         path = source / f"{stem}.png"
         with Image.open(path) as im:
             if im.width != im.height:
@@ -44,7 +63,8 @@ def export(source: Path, delivery: Path, slug: str) -> None:
     profile = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
     records = []
     paths = []
-    for stem, shot in SHOTS.items():
+    for stem in selected:
+        shot = stem
         path = source / f"{stem}.png"
         with Image.open(path) as im:
             native = list(im.size)
@@ -82,7 +102,7 @@ def export(source: Path, delivery: Path, slug: str) -> None:
 
     manifest = {
         "product": slug,
-        "revision": "redesign-v2",
+        "revision": delivery.name,
         "method": "Fully generated photographic scenes from product references; no cutout compositing",
         "overlays": "none",
         "addedShadowLayers": False,
@@ -100,5 +120,10 @@ if __name__ == "__main__":
     parser.add_argument("source", type=Path)
     parser.add_argument("delivery", type=Path)
     parser.add_argument("slug")
+    parser.add_argument(
+        "--shots", nargs="+", default=None, metavar="SHOT",
+        help="Source PNG stems without .png, in delivery order. "
+             "Defaults to the original FIYOTA silver five-shot set.",
+    )
     args = parser.parse_args()
-    export(args.source, args.delivery, args.slug)
+    export(args.source, args.delivery, args.slug, args.shots)

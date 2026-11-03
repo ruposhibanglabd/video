@@ -1,0 +1,96 @@
+{
+  "product": "fiyota-golden",
+  "revision": "redesign-v2",
+  "method": "Fully generated photographic scenes from product references; no cutout compositing",
+  "overlays": "none",
+  "addedShadowLayers": false,
+  "colorspace": "sRGB",
+  "images": [
+    {
+      "file": "website-images/fiyota-golden_01_primary.jpg",
+      "source": "01_primary.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 513202,
+      "sha256": "325e1d20e0ef28e100f3817a8420a81eb5a9098597044ec3f500bceac109c67a"
+    },
+    {
+      "file": "website-images/fiyota-golden_02_on-wrist.jpg",
+      "source": "02_on-wrist.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 763528,
+      "sha256": "20e26d173b3f36b360f67072ebf010f97ee1e27188133198b2abec6aabaa6409"
+    },
+    {
+      "file": "website-images/fiyota-golden_03_angle.jpg",
+      "source": "03_angle.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 671663,
+      "sha256": "a383588ac2ac555c9d1c79b0725ca35e6242def66a80ea566e6ea52833de7a6b"
+    },
+    {
+      "file": "website-images/fiyota-golden_04_bracelet-closeup.jpg",
+      "source": "04_bracelet-closeup.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 573044,
+      "sha256": "5eb6b4cf9031ce5650dff128dee150cb258d5c65dd9a679bb8699410f0f2278e"
+    },
+    {
+      "file": "website-images/fiyota-golden_05_styled.jpg",
+      "source": "05_styled.png",
+      "nativeResolution": [
+        1024,
+        1024
+      ],
+      "deliveryResolution": [
+        2000,
+        2000
+      ],
+      "resize": "Lanczos; no generative upscaling",
+      "jpegQuality": 92,
+      "bytes": 742816,
+      "sha256": "5d3f0302434bc33c93dc4bbb3894d6859f1e703904d75403cc88b46599e7c952"
+    }
+  ],
+  "zip": {
+    "file": "fiyota-golden_website-images.zip",
+    "sha256": "3051c34677eab5c70b11b41482007ffd4f71ca303bd8d7757c382d8249b88c59",
+    "bytes": 3261827
+  },
+  "limitation": "AI-generated reference-based visualization, not a pixel-exact original product photograph"
+}

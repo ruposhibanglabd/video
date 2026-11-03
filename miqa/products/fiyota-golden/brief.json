@@ -1,0 +1,73 @@
+{
+  "product": "FIYOTA (Golden)",
+  "slug": "fiyota-golden",
+  "proposedListingName": "FIYOTA Ivelle (Golden)",
+  "proposedListingNameBn": "ফিয়োটা আইভেল (গোল্ডেন)",
+  "namingNote": "Same visible design family as the silver Set A item, so reuse the proposed model name Ivelle and change only the color suffix. Client must confirm this is the same model/color variant and approve the name; limited web search is not trademark clearance.",
+  "category": "women",
+  "workflow": "website-image-redesign-v2",
+  "decisionReferences": ["D32", "D33", "D34", "D35", "D36"],
+  "workflowApproval": "Client confirmed this fully generated premium redesign workflow for all future product images; product-specific detail QC still required",
+  "referenceFiles": [
+    {
+      "file": "work/references/image-1.png",
+      "originalUpload": "image-1.png",
+      "size": [1200, 1600],
+      "mode": "RGB",
+      "sha256": "8915358ea4d2ac6e0a66aba94021ff9aff5caac0af42a9614fd02114c5140252"
+    },
+    {
+      "file": "work/references/image-2.png",
+      "originalUpload": "image-2.png",
+      "size": [1200, 1600],
+      "mode": "RGB",
+      "sha256": "465367c2a5f5beb80b8488ce43ae23faba8e1c0b61c0811608b8ac29f1c1a219"
+    }
+  ],
+  "referenceNote": "Client-supplied photos are visual references only. No watch pixels were cut out or recomposited. Working copies are ignored by Git; hashes are recorded here for traceability.",
+  "visibleDesignTargets": {
+    "case": "Warm yellow gold-tone, slim elongated bowed rectangle, rounded corners, narrow polished bezel",
+    "crown": "Small fluted crown on right at 3 o'clock",
+    "dial": "Pale ivory/white with central rectangular herringbone texture and smooth outer chapter ring",
+    "indices": "Twelve slender gold-tone batons; no numerals, date or subdials",
+    "hands": "Gold-tone dauphine hour/minute hands and thin seconds hand",
+    "dialPrinting": ["FIYOTA", "QUARTZ"],
+    "bracelet": "Three staggered columns of compact rounded-rectangular polished gold-tone links",
+    "lock": "Not supplied for this golden item; do not infer a butterfly clasp from the silver item or generic brand reference"
+  },
+  "creativeDirection": {
+    "palette": "Soft dusty blush, warm yellow gold-tone, pale ivory dial",
+    "lighting": "Large soft upper-left source, controlled metallic reflections",
+    "finish": "Restrained premium jewelry photography; distinct complete scenes",
+    "excluded": ["cutout composites", "added drop shadows", "added mirrored reflections", "advertising text", "feature pills", "circular insets", "borders", "watermarks", "extra product claims"]
+  },
+  "shots": [
+    {"file": "01_primary", "scene": "Complete upright watch with naturally closed bracelet on seamless blush"},
+    {"file": "02_on-wrist", "scene": "Adult South Asian woman's wrist and partial hand, modest blush sleeve; no face"},
+    {"file": "03_angle", "scene": "New oblique dial, case-side and crown macro"},
+    {"file": "04_bracelet-closeup", "scene": "New macro of the visible three-column gold-tone bracelet; no unseen clasp claim"},
+    {"file": "05_styled", "scene": "Complete watch resting on a sculptural blush silk fold"}
+  ],
+  "unconfirmedSpecifications": [
+    "Case and bracelet base metal or alloy",
+    "Gold plating/coating type and durability",
+    "Clasp type and internal mechanism",
+    "Water resistance rating or splash tolerance",
+    "Warranty and replacement terms",
+    "Case dimensions, weight and wrist fit",
+    "Movement confirmation beyond the visible QUARTZ dial printing",
+    "Whether this is the same manufacturer model as the silver item"
+  ],
+  "limitations": [
+    "AI-generated visualization, not a pixel-exact product photograph",
+    "Fine link proportions/counts and unseen surfaces may differ from the real item",
+    "Tiny dial lettering on the wrist shot retains generative distortion, especially QUARTZ at zoom",
+    "Primary/angle/styled dial printing is readable but not certified as font-exact",
+    "Native generation is 1024x1024; delivery is a disclosed Lanczos resize to 2000x2000",
+    "No golden clasp interior was supplied, so the fourth shot is a bracelet close-up rather than a butterfly-lock shot",
+    "Redesign workflow approved for all future images (D36); product-specific visual review before publishing remains required"
+  ],
+  "workingDirectory": "work/redesign-v2/",
+  "deliveryDirectory": "../../deliveries/2026-11-03_set-a/02_fiyota-golden/redesign-v2/",
+  "videoAuthorized": false
+}

@@ -229,7 +229,7 @@ $FF -y -i work/mezz_4k.mp4 -i audio/mix.wav -map 0:v -map 1:a -vf "scale=1080:19
 
 ## 9. Website product images — full generative redesign (V2)
 
-Active rules: `creative/PRODUCT-IMAGES-GUIDE.md`. Decisions D32–D35 supersede the old cutout, feature-pill and added-shadow workflow for website images. The V1 steps are archived in `RUNBOOK-PRODUCT-IMAGES-V1.md` for history only.
+Active rules: `creative/PRODUCT-IMAGES-GUIDE.md`. Decisions D32–D36 supersede the old cutout, feature-pill and added-shadow workflow for website images and make the fully generated redesign the default for all future product images. The V1 steps are archived in `RUNBOOK-PRODUCT-IMAGES-V1.md` for history only.
 
 1. **Inspect references.** Read every available product photo and zoom into the dial, case, crown and bracelet. Record visible invariants and unknown surfaces in `products/<slug>/brief.json`. Do not invent a pixel-exactness claim.
 2. **Design five new scenes.** Primary, on-wrist, angle, feature close-up and styled; use the client's explicit shot list if supplied. The entire scene and product are generated together. No watch segmentation, hand plate plus watch composite, or repeated crops of one output.
@@ -244,7 +244,7 @@ Active rules: `creative/PRODUCT-IMAGES-GUIDE.md`. Decisions D32–D35 supersede 
      miqa/products/<slug>/work/redesign-v2 \
      miqa/deliveries/<set>/<product>/redesign-v2 <slug>
    ```
-   The FIYOTA exporter creates five 2000×2000 sRGB JPGs, one ZIP and a manifest with native/export dimensions and hashes. Adapt its SHOTS map for another product's requested feature. Resizing is not generative detail enhancement; disclose native resolution.
+   The exporter creates 2000×2000 sRGB JPGs, one ZIP and a manifest with native/export dimensions and hashes. Default shot names preserve the FIYOTA silver set. For another product's requested feature, pass `--shots` with the source PNG stems in delivery order, e.g. `--shots 01_primary 02_on-wrist 03_angle 04_bracelet-closeup 05_styled`. Resizing is not generative detail enhancement; disclose native resolution.
 7. **QC and package.** Verify dimensions, embedded sRGB profile, file size, ZIP integrity and manifest hashes. Check that the README points to the current revision, not V1. Include AI visualization limitations and obtain client approval before commercial use.
 8. **Git delivery once.** After the complete set and QC are ready, make one final commit on the session branch and, within the approved delivery workflow, one push. Do not push every intermediate image or correction. Do not merge or open a PR unless requested.
 9. **Video remains separate.** No video until the client declares the set complete and supplies prices. Website redesign approval does not waive the video fidelity checks.
