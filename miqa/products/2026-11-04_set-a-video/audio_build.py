@@ -7,7 +7,7 @@ from scipy.io import wavfile
 import subprocess, os, glob
 
 SR = 48000
-DUR = 56.0
+DUR = 61.5
 N = int(SR * DUR)
 BASE = 'miqa/products/2026-11-04_set-a-video/audio'
 rng = np.random.default_rng(7)
@@ -83,9 +83,9 @@ melody = [  # (t, midi, dur, amp) hook-reveal-price phrases
     (21.8, 72, 1.2, .4), (23.4, 70, 1.2, .38), (25.2, 69, 1.4, .38),
     (27.0, 65, 1.2, .36), (28.6, 67, 1.2, .36), (30.2, 69, 1.4, .38),
     (32.0, 72, 1.3, .42), (33.6, 71, 1.2, .4),
-    (36.0, 74, 1.2, .46), (37.3, 72, 1.2, .44), (38.5, 76, 1.4, .48),
-    (39.95, 77, 1.5, .55), (41.6, 74, 1.4, .5), (42.9, 72, 1.5, .5),
-    (48.0, 72, 1.6, .5), (49.8, 69, 1.6, .46), (51.6, 65, 2.6, .48),
+    (36.2, 74, 1.2, .46), (37.6, 72, 1.2, .44), (39.0, 76, 1.4, .48),
+    (41.75, 77, 1.5, .55), (43.4, 74, 1.4, .5), (44.6, 72, 1.5, .5),
+    (54.6, 72, 1.6, .5), (56.3, 69, 1.6, .46), (58.1, 65, 3.0, .48),
 ]
 for t0, m, d, a in melody:
     add(music, felt_piano(m, d, a), t0, 1.0, pan=-0.12)
@@ -103,7 +103,7 @@ for bar_i in range(int(DUR/BAR)+1):
 eighth = BAR/8
 for k in range(int(DUR/eighth)):
     t0 = k*eighth
-    if not (10.0 <= t0 < 39.6 or 47.6 <= t0 < 54.5): continue
+    if not (10.0 <= t0 < 41.4 or 54.3 <= t0 < 60.4): continue
     ms, _ = chords[int(t0/BAR) % 4]
     m = ms[k % 3] + 12
     add(music, pluck(m, 0.5, 0.16), t0, 1.0, pan=0.25 if k % 2 else -0.25)
@@ -111,14 +111,14 @@ for k in range(int(DUR/eighth)):
 # gentle pulse beats 1 & 3 from 10-44
 for k in range(int(DUR/(BAR/2))):
     t0 = k*(BAR/2)
-    if 10.0 <= t0 < 44.0 and k % 2 == 0:
+    if 10.0 <= t0 < 45.5 and k % 2 == 0:
         add(music, soft_kick(0.30), t0)
 
-for t0, m in [(0.02, 84), (5.2, 81), (39.7, 88), (47.7, 81), (53.5, 84)]:
+for t0, m in [(0.02, 84), (5.35, 81), (41.6, 88), (54.4, 81), (58.5, 84)]:
     add(music, bell(m, 2.6, 0.22), t0, 1.0, pan=0.3)
 
 # master arc envelope
-pts_t = [0, 4.8, 5.2, 9.8, 10.2, 35, 35.6, 39.4, 39.9, 43.5, 43.9, 47.4, 47.9, 55, 56]
+pts_t = [0, 4.8, 5.2, 9.8, 10.2, 35, 35.6, 41.2, 41.7, 45.0, 45.4, 53.9, 54.3, 60.4, 61.5]
 pts_g = [0.55, 0.62, 0.72, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 0.95, 0.62, 0.55, 0.85, 0.8, 0.2]
 arc = np.interp(np.arange(N)/SR, pts_t, pts_g)
 music *= arc[:, None]
@@ -166,11 +166,11 @@ def tick(amp=0.35):
     return np.sin(2*np.pi*2100*tt)*np.exp(-tt*90)*amp
 
 add(sfx, impact(0.85), 0.06, pan=0.0)
-for t0 in [4.8, 9.85, 15.85, 21.05, 26.25, 31.45, 35.6, 39.45, 43.45, 47.45]:
+for t0 in [5.0, 10.05, 15.85, 21.05, 26.05, 31.05, 35.05, 41.25, 45.05, 54.05]:
     add(sfx, whoosh(0.6, 0.42), t0-0.25, pan=0.1)
-for t0 in [5.45, 21.7, 39.9, 47.9]:
+for t0 in [5.7, 21.8, 41.8, 54.5]:
     add(sfx, shimmer(0.34), t0, pan=0.2)
-for t0 in [11.45, 12.6]:
+for t0 in [11.55, 12.75]:
     add(sfx, click(0.5), t0, pan=-0.15)
 for t0 in [16.9, 17.6, 18.3]:
     add(sfx, droplet(0.42), t0, pan=0.2)
@@ -181,9 +181,9 @@ sfx = sfx / (np.abs(sfx).max()+1e-9) * 0.32
 # ---------------- VO placement ----------------
 vo = np.zeros((N, 2), dtype=np.float64)
 FF = 'node_modules/@ffmpeg-installer/linux-x64/ffmpeg'
-slots = [('01_hook', 0.35), ('02_reveal', 5.35), ('03_lock', 10.35), ('04_water', 16.35),
-         ('05_color', 21.55), ('06_replace', 26.75), ('07_warranty', 31.95),
-         ('08_price', 39.95), ('09_cta', 43.95)]
+slots = [('01_hook', 0.4), ('02_reveal', 5.6), ('03_lock', 10.6), ('04_water', 16.4),
+         ('05_color', 21.6), ('06_replace', 26.6), ('07_warranty', 31.55),
+         ('08_price', 41.75), ('09a_five', 45.55), ('09b_cta', 54.35)]
 os.makedirs('/tmp/vowav', exist_ok=True)
 durs = {}
 for name, t0 in slots:
@@ -212,7 +212,7 @@ for name, t0 in slots:
     if peak > 0: d = d/peak*0.72
     add(vo, d, t0, pan=0.0)
 print('VO durations:', {k: round(v, 3) for k, v in durs.items()})
-print('VO last ends at:', round(43.95 + durs['09_cta'], 2))
+print('09a ends:', round(45.55 + durs['09a_five'], 2), ' 09b ends:', round(54.35 + durs['09b_cta'], 2))
 
 # duck music under VO (8-10 dB), release 300 ms
 env = np.abs(vo).max(axis=1)

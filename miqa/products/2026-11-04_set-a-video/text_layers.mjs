@@ -1,5 +1,5 @@
-// MIQA Set-A video: Bengali/English text layers (4K, transparent PNG).
-// Pango/HarfBuzz shaping via node-canvas. Run: node text_layers.mjs
+// MIQA Set-A video v2: Bengali/English text layers (4K, transparent PNG).
+// Pango/HarfBuzz shaping via @napi-rs/canvas. Run: node text_layers.mjs
 import { createCanvas, GlobalFonts } from '@napi-rs/canvas';
 import fs from 'fs';
 
@@ -30,8 +30,9 @@ function shadow(ctx, blur, color, dx = 0, dy = 6) {
 }
 function noShadow(ctx) { ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; }
 
-function centerText(ctx, text, x, y, font, fill, { shadowBlur = 0, shadowColor = 'rgba(42,20,28,0.55)', align = 'center' } = {}) {
-  ctx.font = font; ctx.textAlign = align; ctx.textBaseline = 'alphabetic';
+function centerText(ctx, text, x, y, font, fill, opts = {}) {
+  const { shadowBlur = 0, shadowColor = 'rgba(42,20,28,0.55)' } = opts;
+  ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   if (shadowBlur) shadow(ctx, shadowBlur, shadowColor);
   ctx.fillStyle = fill;
   ctx.fillText(text, x, y);
@@ -61,7 +62,8 @@ function wordmark(ctx, cx, y, size, tracking = 0.35) {
   noShadow(ctx);
 }
 
-function pill(ctx, cx, cy, text, fontPx, { bg = BURGUNDY, fg = PEARL, padX = 88, padY = 38 } = {}) {
+function pill(ctx, cx, cy, text, fontPx, opts = {}) {
+  const { bg = BURGUNDY, fg = PEARL, padX = 88, padY = 38 } = opts;
   ctx.font = `${fontPx}px HindSB`;
   const tw = ctx.measureText(text).width;
   const w = tw + padX * 2, h = fontPx + padY * 2;
@@ -82,7 +84,6 @@ function sealRings(ctx, cx, cy, r) {
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
   ctx.lineWidth = 2.5;
   ctx.beginPath(); ctx.arc(cx, cy, r * 0.86, 0, Math.PI * 2); ctx.stroke();
-  // small diamond accents at 4 points
   for (const a of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) {
     const x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r;
     ctx.save(); ctx.translate(x, y); ctx.rotate(Math.PI / 4); ctx.fillStyle = CHAMP;
@@ -95,11 +96,10 @@ function sealRings(ctx, cx, cy, r) {
 layer('t_hook', ctx => {
   centerText(ctx, 'ছোট্ট একটি ঘড়ি,', 1080, 2820, '132px HindSB', PEARL, { shadowBlur: 26 });
   centerText(ctx, 'পুরো লুক বদলে দেয়।', 1080, 3000, '132px HindSB', PEARL, { shadowBlur: 26 });
-  // thin champagne underline
   ctx.fillStyle = CHAMP; ctx.fillRect(1080 - 170, 3070, 340, 5);
 });
 
-// ---- s2 reveal wordmark + tagline ----
+// ---- s2 reveal wordmark + tagline (with soft scrim) ----
 layer('t_wordmark', ctx => {
   const rg = ctx.createRadialGradient(1080, 2740, 60, 1080, 2740, 980);
   rg.addColorStop(0, 'rgba(42,14,24,0.62)'); rg.addColorStop(0.55, 'rgba(42,14,24,0.38)'); rg.addColorStop(1, 'rgba(42,14,24,0)');
@@ -127,10 +127,10 @@ layer('t_color', ctx => {
   centerText(ctx, 'কালার ধরে রাখে দীর্ঘদিন', 1080, 2925, '78px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
 });
 
-// ---- s6 replace ----
+// ---- s6 replace (pearl text over lifestyle photo) ----
 layer('t_replace', ctx => {
-  centerText(ctx, '৭ দিনের রিপ্লেসমেন্ট সুবিধা', 1080, 2760, '122px HindSB', INK);
-  centerText(ctx, 'ক্রয়ের ৭ দিনের মধ্যে সমস্যা হলে রিপ্লেসমেন্ট', 1080, 2925, '74px HindM', 'rgba(90,26,46,0.82)');
+  centerText(ctx, '৭ দিনের রিপ্লেসমেন্ট সুবিধা', 1080, 2760, '122px HindSB', PEARL, { shadowBlur: 28 });
+  centerText(ctx, 'ক্রয়ের ৭ দিনের মধ্যে সমস্যা হলে রিপ্লেসমেন্ট', 1080, 2925, '74px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 22 });
   ctx.fillStyle = CHAMP; ctx.fillRect(1080 - 160, 3005, 320, 4);
 });
 
@@ -142,15 +142,14 @@ layer('t_warranty', ctx => {
   centerText(ctx, 'নিশ্চিন্তে পরুন', 1080, 2955, '80px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
 });
 
-// ---- s8 collection ----
+// ---- s8 collection glance (count + tagline) ----
 layer('t_collection', ctx => {
-  centerText(ctx, 'প্রতিটি স্টাইলে,', 1080, 2930, '124px HindSB', PEARL, { shadowBlur: 32 });
-  centerText(ctx, 'প্রতিটি মুহূর্তে', 1080, 3100, '124px HindSB', PEARL, { shadowBlur: 32 });
+  centerText(ctx, '১২টি কালার ও ডিজাইন', 1080, 2900, '128px HindSB', PEARL, { shadowBlur: 34 });
+  centerText(ctx, 'প্রতিটি স্টাইলে, প্রতিটি মুহূর্তে', 1080, 3080, '84px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 26 });
 });
 
 // ---- s9 price ----
 layer('t_price', ctx => {
-  // big price in metallic gold
   const font = '520px Tiro';
   ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
   shadow(ctx, 40, 'rgba(42,14,24,0.7)', 0, 14);
@@ -161,20 +160,20 @@ layer('t_price', ctx => {
   pill(ctx, 1080, 2310, 'ক্যাশ অন ডেলিভারি', 82);
 });
 
-// ---- s10 5% (verbatim) ----
+// ---- s10 5% (verbatim + employment line) ----
 layer('t_5', ctx => {
-  sealRings(ctx, 1080, 1220, 270);
-  centerText(ctx, '৫%', 1080, 1330, '210px Tiro', BURGUNDY);
-  centerText(ctx, 'MIQA-এর মুনাফার ৫% পথশিশুদের কল্যাণে।', 1080, 2620, '108px HindSB', INK);
-  wordmark(ctx, 1080, 3060, 96);
+  sealRings(ctx, 1080, 1180, 260);
+  centerText(ctx, '৫%', 1080, 1290, '210px Tiro', BURGUNDY);
+  centerText(ctx, 'MIQA-এর মুনাফার ৫% পথশিশুদের কল্যাণে।', 1080, 2560, '104px HindSB', INK);
+  centerText(ctx, 'লভ্যাংশের ৫% পথশিশুদের কর্মসংস্থানে ব্যয় হবে।', 1080, 2750, '76px HindM', 'rgba(90,26,46,0.85)');
+  wordmark(ctx, 1080, 3140, 96);
 });
 
-// ---- s11 cta line + end card ----
+// ---- s11 cta + end card ----
 layer('t_cta', ctx => {
   pill(ctx, 1080, 1210, 'ক্যাশ অন ডেলিভারি', 86);
   centerText(ctx, 'নিচে দেওয়া অর্ডার বাটনে ক্লিক করে', 1080, 1620, '116px HindSB', PEARL, { shadowBlur: 26 });
   centerText(ctx, 'এখনই অর্ডার করুন।', 1080, 1810, '116px HindSB', PEARL, { shadowBlur: 26 });
-  // down chevron
   ctx.strokeStyle = CHAMP; ctx.lineWidth = 18; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(980, 2110); ctx.lineTo(1080, 2210); ctx.lineTo(1180, 2110); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(980, 2270); ctx.lineTo(1080, 2370); ctx.lineTo(1180, 2270); ctx.stroke();
@@ -185,7 +184,7 @@ layer('t_endcard', ctx => {
   centerText(ctx, 'Beyond Time, Beyond Style.', 1080, 2040, 'italic 100px CormMI', 'rgba(251,244,241,0.92)', { shadowBlur: 18 });
 });
 
-// droplet sprite (white translucent) for water scene
+// droplet sprite for water scene
 layer('t_drop', ctx => {
   const c2 = createCanvas(256, 256); const x = c2.getContext('2d');
   const g = x.createRadialGradient(110, 100, 10, 128, 128, 120);
