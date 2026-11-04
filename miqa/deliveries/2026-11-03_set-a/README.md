@@ -8,6 +8,7 @@
 | ০৪ | FIYOTA (টু-টোন, কুশন)। প্রস্তাবিত নাম: FIYOTA Elowen (Two-Tone) — ০২-এর একই মডেলের রঙ ভ্যারিয়েন্ট | [৫টা ছবি](04_fiyota-cushion-two-tone/website-images/) · [সব ছবি একসাথে (ZIP)](04_fiyota-cushion-two-tone/fiyota-cushion-two-tone_website-images.zip) · [QC](04_fiyota-cushion-two-tone/QC-REPORT.md) | [LISTING](04_fiyota-cushion-two-tone/LISTING.md) | ৪ নভেম্বর ২০২৬ |
 | ০৫ | FIYOTA (টু-টোন, কাটা-কোণা কুশন — আলাদা কেস ডিজাইন)। প্রস্তাবিত নাম: FIYOTA Orienne (Two-Tone) | [৫টা ছবি](05_fiyota-cutcorner-two-tone/website-images/) · [সব ছবি একসাথে (ZIP)](05_fiyota-cutcorner-two-tone/fiyota-cutcorner-two-tone_website-images.zip) · [QC](05_fiyota-cutcorner-two-tone/QC-REPORT.md) | [LISTING](05_fiyota-cutcorner-two-tone/LISTING.md) | ৪ নভেম্বর ২০২৬ |
 | ০৬ | FIYOTA (গোল্ডেন, কাটা-কোণা কুশন)। প্রস্তাবিত নাম: FIYOTA Orienne (Golden) — ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট | [৫টা ছবি](06_fiyota-cutcorner-golden/website-images/) · [সব ছবি একসাথে (ZIP)](06_fiyota-cutcorner-golden/fiyota-cutcorner-golden_website-images.zip) · [QC](06_fiyota-cutcorner-golden/QC-REPORT.md) | [LISTING](06_fiyota-cutcorner-golden/LISTING.md) | ৪ নভেম্বর ২০২৬ |
+| ০৭ | FIYOTA (কালো ডায়াল, টু-টোন, কাটা-কোণা কুশন)। প্রস্তাবিত নাম: FIYOTA Orienne (Two-Tone Black) | [৫টা ছবি](07_fiyota-cutcorner-two-tone-black/website-images/) · [সব ছবি একসাথে (ZIP)](07_fiyota-cutcorner-two-tone-black/fiyota-cutcorner-two-tone-black_website-images.zip) · [QC](07_fiyota-cutcorner-two-tone-black/QC-REPORT.md) | [LISTING](07_fiyota-cutcorner-two-tone-black/LISTING.md) | ৪ নভেম্বর ২০২৬ |
 
 **ভিডিও:** এখনো বানানো হয়নি। ক্লায়েন্ট "এই সেট শেষ, ভিডিও বানাও" বলে দাম জানালে, সেটের সব প্রোডাক্ট দিয়ে একটা ভিডিও হবে ([সেটের তালিকা](../../products/SETS.md))। ভিডিওতে কোন কোন ছবি লাগবে সেটাও ক্লায়েন্ট বলবেন।
 
@@ -18,4 +19,5 @@
 - ০৪ ZIP: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/04_fiyota-cushion-two-tone/fiyota-cushion-two-tone_website-images.zip`
 - ০৫ ZIP: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/05_fiyota-cutcorner-two-tone/fiyota-cutcorner-two-tone_website-images.zip`
 - ০৬ ZIP: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/06_fiyota-cutcorner-golden/fiyota-cutcorner-golden_website-images.zip`
+- ০৭ ZIP: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/07_fiyota-cutcorner-two-tone-black/fiyota-cutcorner-two-tone-black_website-images.zip`
 - আলাদা ছবি: `https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-03_set-a/<প্রোডাক্ট-ফোল্ডার>/website-images/<ফাইলের নাম>.jpg`
