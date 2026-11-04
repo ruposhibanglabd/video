@@ -77,3 +77,12 @@ v2 রিভিশন: ক্লায়েন্টের ২য় নির�
 - Verbatim checks: 5% lines x2 (five + endcard), CTA 2 lines + COD pill, tagline, price ৳৫৯৯/মাত্র ৫৯৯ টাকা.
 - Forbidden checks: no URL/phone/WhatsApp/free-delivery/ATM ratings/diving/face/flashing. PASS.
 - Note: all watch imagery derives from client product photos (edit-based redesign) — real products guaranteed.
+
+---
+
+## v5 QC (2026-11-04, Lookbook Rail edition — research-based rebuild)
+
+- Duration 74.27 s (2226 frames @30fps). 4K 9536 kb/s (88.5 MB < 100 MB GitHub limit) + 1080 (58.6 MB). AAC 48 kHz verified.
+- Hook = continuous 'Lookbook Rail' glide: all 21 real designs, 1.0 s each, eased slide motion (velocity never zero), silk motion blur on fast glides, labels ০১-২১ rail-synced, hero settle at end. Hook line within first second (3-second-hook research).
+- Scene crossfades 0.7 s + gentle pan drift per feature scene. Verbatim texts/price/CTA unchanged and verified.
+- Forbidden checks: no URL/phone/ratings/diving/faces/flashing. PASS.
