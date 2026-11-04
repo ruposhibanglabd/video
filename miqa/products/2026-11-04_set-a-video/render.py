@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""MIQA Set-A video v4: slow beautiful showcase of 21 redesigned real products.
-Frames -> /tmp/vframes/f_%05d.jpg  (2160x3840 @30fps, 66.3s = 1989 frames)"""
+"""MIQA Set-A video v5: 'Lookbook Rail' — continuous smooth glide through 21 real designs.
+Frames -> /tmp/vframes/f_%05d.jpg  (2160x3840 @30fps, 74.2s = 2226 frames)"""
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import os, math, time
@@ -14,15 +14,15 @@ OUT = '/tmp/vframes'
 os.makedirs(OUT, exist_ok=True)
 
 SCENES = [
-    ('showcase', 0.0, 13.1), ('reveal', 13.1, 17.9), ('lock', 17.9, 23.9),
-    ('water', 23.9, 29.1), ('color', 29.1, 34.1), ('replace', 34.1, 39.1),
-    ('warranty', 39.1, 43.1), ('board', 43.1, 47.1), ('price', 47.1, 51.1),
-    ('five', 51.1, 60.1), ('cta', 60.1, 66.3),
+    ('showcase', 0.0, 21.0), ('reveal', 21.0, 25.8), ('lock', 25.8, 31.8),
+    ('water', 31.8, 37.0), ('color', 37.0, 42.0), ('replace', 42.0, 47.0),
+    ('warranty', 47.0, 51.0), ('board', 51.0, 55.0), ('price', 55.0, 59.0),
+    ('five', 59.0, 68.0), ('cta', 68.0, 74.2),
 ]
-TOTAL = 66.3
+TOTAL = 74.2
 FRAMES = int(TOTAL * FPS)
-XFADE = 0.5
-BEAT = 0.55
+XFADE = 0.7
+PER = 1.0  # seconds per design on the rail
 
 def smooth(x):
     x = min(1.0, max(0.0, x))
@@ -65,7 +65,6 @@ def warm_grade(im):
     a = np.clip(a * 0.97 + 8, 0, 255)
     return Image.fromarray(a.astype(np.uint8))
 
-# ---- 21 designs, family order (all client products, redesigned in plates4) ----
 SLIDES = [
     (f'{P4}/r01.jpg', None), (f'{P4}/r02.jpg', None), (f'{P4}/r03.jpg', None),
     (f'{P4}/r04.jpg', None), (f'{P4}/r11.jpg', None),
@@ -96,7 +95,6 @@ plates = {
     'replace': photo_cover(f'{P4}/r06.jpg'),
     'warranty': photo_smart(f'{P4}/r03.jpg', (0.18, 0.10, 0.85, 0.72)),
 }
-# lock scene: bracelet macro of U-link silver redesign
 lock_src = Image.open(f'{P4}/r07.jpg').convert('RGB')
 w, h = lock_src.size
 lock_src = lock_src.crop((int(0.12*w), int(0.30*h), int(0.92*w), int(0.95*h)))
@@ -154,6 +152,7 @@ LAYERS = {}
 for nm in ['t_hook', 't_wordmark', 't_lock', 't_water', 't_color', 't_replace',
            't_warranty', 't_collection', 't_price', 't_5', 't_cta', 't_endcard', 't_drop']:
     LAYERS[nm] = layer_np(nm)
+
 def layer_lbl(name):
     im = Image.open(f'{L}/{name}.png').convert('RGBA')
     a = np.asarray(im)[3100:3460]
@@ -167,7 +166,6 @@ r2 = np.sqrt(((xx[:H, :W] / W - 0.5) * 1.15) ** 2 + ((yy[:H, :W] / H - 0.5) * 1.
 VIG = (1.0 - 0.30 * np.clip(r2 - 0.42, 0, 1) ** 1.6).astype(np.float32)
 ybinv = np.clip((np.arange(H) - 2500) / 400.0, 0, 1) * 0.28
 
-# drifting bokeh sprite for the showcase
 sprite_r = 90
 sy, sx = np.mgrid[-sprite_r:sprite_r, -sprite_r:sprite_r].astype(np.float32)
 sprite = np.exp(-((sx**2 + sy**2) / (sprite_r*0.62)**2)).astype(np.float32) * 0.16
@@ -202,58 +200,76 @@ def comp_lbl(base_np, layer, alpha):
 def lalpha(t, tin0, tin1, tout0, tout1):
     return smooth((t - tin0) / (tin1 - tin0)) * (1 - smooth((t - tout0) / (tout1 - tout0)))
 
-def kb(i, lp):
-    """slow ken burns per beat: (z0, z1, panx, pany) varied by index"""
-    patterns = [
-        (1.00, 1.07, -60, 30), (1.07, 1.00, 50, -40), (1.02, 1.08, 40, 50),
-        (1.08, 1.02, -50, -30), (1.01, 1.06, -30, -50), (1.06, 1.01, 60, 40),
-    ]
-    z0, z1, px, py = patterns[i % 6]
-    s = smooth(lp)
-    return z0 + (z1 - z0) * s, px * s, py * s
+# ---------------- Lookbook Rail engine ----------------
+def rail_g(lp):
+    """eased rail progress within one slot; velocity never zero (0.12 drift)."""
+    return 0.12 * lp + 0.88 * smooth(lp)
+
+FRAMES_CACHE = {}
+def rail_frame(k):
+    """full-frame render of design k at fixed slight overscan zoom, memoized (keep 3)."""
+    if k not in FRAMES_CACHE:
+        if len(FRAMES_CACHE) > 2:
+            FRAMES_CACHE.pop(next(iter(FRAMES_CACHE)))
+        FRAMES_CACHE[k] = np.asarray(zoomcrop(slide_imgs[k], 1.035), np.float32)
+    return FRAMES_CACHE[k]
 
 def render_showcase(t):
-    nshow = 21 * BEAT  # 11.55
-    if t >= nshow:  # hero hold on r03 (index 2)
-        lp = (t - nshow) / (13.1 - nshow)
-        z, px, py = kb(2, 0.5 + 0.5 * smooth(lp))
-        base = np.asarray(zoomcrop(slide_imgs[2], z + 0.02 * smooth(lp), px, py), np.float32)
-        comp_lbl(base, SLIDE_LBL[2], 0.9 * (1 - smooth((lp - 0.6) / 0.4)))
+    if t < 20 * PER:
+        s = t / PER
+        idx = min(19, int(s))
+        lp = s - idx
+        cam = (idx + rail_g(lp)) * W
+        speed = 0.12 + 0.88 * 6 * lp * (1 - lp)  # relative velocity 0.12..1.44
     else:
-        idx = min(20, int(t / BEAT))
-        lp = (t - idx * BEAT) / BEAT
-        z, px, py = kb(idx, lp)
-        base = np.asarray(zoomcrop(slide_imgs[idx], z, px, py), np.float32)
-        if lp < 0.62:  # crossfade from previous slide
-            prev_lp = 1.0
-            zp, pxp, pyp = kb(idx - 1 if idx > 0 else 0, 1.0)
-            prev = np.asarray(zoomcrop(slide_imgs[idx - 1] if idx > 0 else slide_imgs[0], zp, pxp, pyp), np.float32)
-            wgt = smooth(lp / 0.62)
-            base = prev * (1 - wgt) + base * wgt
-            if idx > 0:
-                comp_lbl(base, SLIDE_LBL[idx - 1], 0.9 * (1 - wgt))
-        comp_lbl(base, SLIDE_LBL[idx], 0.9 * smooth((lp - 0.18) / 0.35) * (1 - smooth((lp - 0.82) / 0.18)))
-        # drifting bokeh
-        for k in range(6):
-            bxp = int(((k * 331 + t * (18 + 9 * k)) % (W + 400)) - 200)
-            byp = int(H * (0.12 + 0.13 * ((k * 7 + 3) % 6)) - t * (12 + 6 * k) % int(H * 0.8))
-            y0 = max(0, byp - sprite_r); y1 = min(H, byp + sprite_r)
-            x0 = max(0, bxp - sprite_r); x1 = min(W, bxp + sprite_r)
-            if y1 <= y0 or x1 <= x0: continue
-            sy0 = sprite_r - (byp - y0); sx0 = sprite_r - (bxp - x0)
-            base[y0:y1, x0:x1] += sprite[sy0:sy0+(y1-y0), sx0:sx0+(x1-x0), None] * 255
-    comp(base, LAYERS['t_hook'], lalpha(t, 0.55, 1.25, 5.5, 6.2))
+        idx = 20; lp = 1.0
+        cam = 20 * W + 0.02 * W * smooth((t - 20 * PER) / (21.0 - 20 * PER))
+        speed = 0.02
+    base = np.zeros((H, W, 3), np.float32)
+    for k in (idx, idx + 1):
+        if k > 20: continue
+        left = int(k * W - cam)
+        x_s = max(0, left); x_e = min(W, left + W)
+        if x_e <= x_s: continue
+        img = rail_frame(k)
+        base[:, x_s:x_e] = img[:, x_s - left:x_e - left]
+    # silk motion blur during the fast part of each glide
+    if 0.22 < lp < 0.78 and idx < 20 and speed > 0.6:
+        rad = 1.2 + 3.2 * min(1.0, (speed - 0.6) / 0.84)
+        blurred = np.asarray(Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).filter(
+            ImageFilter.GaussianBlur(rad)), np.float32)
+        wgt = smooth((lp - 0.22) / 0.2) * (1 - smooth((lp - 0.58) / 0.2))
+        base = base * (1 - wgt) + blurred * wgt
+    # labels synced to rail
+    if idx < 20:
+        comp_lbl(base, SLIDE_LBL[idx], 0.92 * (1 - smooth(lp)))
+        comp_lbl(base, SLIDE_LBL[idx + 1], 0.92 * smooth(lp))
+    else:
+        comp_lbl(base, SLIDE_LBL[20], 0.92)
+    # bokeh drift
+    for k2 in range(6):
+        bxp = int(((k2 * 331 + t * (18 + 9 * k2)) % (W + 400)) - 200)
+        byp = int(H * (0.12 + 0.13 * ((k2 * 7 + 3) % 6)) - t * (12 + 6 * k2) % int(H * 0.8))
+        y0 = max(0, byp - sprite_r); y1 = min(H, byp + sprite_r)
+        x0 = max(0, bxp - sprite_r); x1 = min(W, bxp + sprite_r)
+        if y1 <= y0 or x1 <= x0: continue
+        sy0 = sprite_r - (byp - y0); sx0 = sprite_r - (bxp - x0)
+        base[y0:y1, x0:x1] += sprite[sy0:sy0+(y1-y0), sx0:sx0+(x1-x0), None] * 255
+    comp(base, LAYERS['t_hook'], lalpha(t, 0.25, 0.95, 6.5, 7.6))
+    base *= smooth(t / 0.5)
     return base
 
 def render_reveal(t):
     z = 1.0 + 0.055 * smooth(t / 4.8)
-    base = np.asarray(zoomcrop(plates['reveal'], z), np.float32)
+    px = -70 * smooth(t / 4.8)
+    base = np.asarray(zoomcrop(plates['reveal'], z, px, 30 * smooth(t / 4.8)), np.float32)
     comp(base, LAYERS['t_wordmark'], lalpha(t, 0.8, 1.5, 3.6, 4.15))
     return base
 
 def render_lock(t):
     z = 1.06 + 0.05 * smooth(t / 6.0)
-    base = np.asarray(zoomcrop(plates['lock'], z), np.float32)
+    px = 80 * smooth(t / 6.0)
+    base = np.asarray(zoomcrop(plates['lock'], z, px, -50 * smooth(t / 6.0)), np.float32)
     base *= 0.88
     base *= (1 - ybinv[:, None, None])
     comp(base, LAYERS['t_lock'], lalpha(t, 0.6, 1.3, 5.3, 5.85))
@@ -261,7 +277,7 @@ def render_lock(t):
 
 def render_water(t):
     z = 1.0 + 0.05 * smooth(t / 5.2)
-    base = np.asarray(zoomcrop(plates['water'], z), np.float32)
+    base = np.asarray(zoomcrop(plates['water'], z, -60 * smooth(t / 5.2), 0), np.float32)
     base *= (1 - ybinv[:, None, None] * 1.1)
     drops = [(300, 0.2, 150), (1650, 0.7, 120), (760, 1.5, 180), (1350, 2.2, 130), (520, 3.0, 160), (1750, 3.6, 140)]
     d_rgb, d_am = LAYERS['t_drop']
@@ -285,21 +301,21 @@ def render_water(t):
 
 def render_color(t):
     z = 1.12 - 0.08 * smooth(t / 5.0)
-    base = np.asarray(zoomcrop(plates['color'], z), np.float32)
+    base = np.asarray(zoomcrop(plates['color'], z, 60 * smooth(t / 5.0), -40 * smooth(t / 5.0)), np.float32)
     base *= (1 - ybinv[:, None, None] * 1.1)
     comp(base, LAYERS['t_color'], lalpha(t, 0.5, 1.2, 4.35, 4.9))
     return base
 
 def render_replace(t):
     z = 1.0 + 0.05 * smooth(t / 5.0)
-    base = np.asarray(zoomcrop(plates['replace'], z), np.float32)
+    base = np.asarray(zoomcrop(plates['replace'], z, 60 * smooth(t / 5.0), 40 * smooth(t / 5.0)), np.float32)
     base *= (1 - ybinv[:, None, None] * 1.1)
     comp(base, LAYERS['t_replace'], lalpha(t, 0.5, 1.2, 4.35, 4.9))
     return base
 
 def render_warranty(t):
     z = 1.0 + 0.045 * smooth(t / 4.0)
-    base = np.asarray(zoomcrop(plates['warranty'], z), np.float32)
+    base = np.asarray(zoomcrop(plates['warranty'], z, -50 * smooth(t / 4.0), 0), np.float32)
     base *= 0.88
     base *= (1 - ybinv[:, None, None])
     comp(base, LAYERS['t_warranty'], lalpha(t, 0.3, 0.95, 3.25, 3.75))
@@ -344,15 +360,14 @@ def finish(base, t, scene):
             band = np.exp(-((diag - d) / 0.11) ** 2) * 0.18 * math.sin(math.pi * p) ** 0.8
             base += band[..., None] * 255
     base *= VIG[..., None]
-    g = GRAIN[int(t * FPS) % 3]
-    g2 = np.repeat(np.repeat(g, 2, axis=0), 2, axis=1)
+    g2 = np.repeat(np.repeat(GRAIN[int(t * FPS) % 3], 2, axis=0), 2, axis=1)
     base += g2[..., None] * 2.0
     return np.clip(base, 0, 255).astype(np.uint8)
 
 if os.environ.get('SMOKE'):
-    tests = [('showcase', 1.2), ('showcase', 6.0), ('showcase', 12.2), ('reveal', 2.4), ('lock', 3.0),
-             ('water', 2.6), ('color', 2.5), ('replace', 2.5), ('warranty', 2.0), ('board', 2.0),
-             ('price', 2.0), ('five', 4.5), ('cta', 2.0), ('cta', 5.5)]
+    tests = [('showcase', 0.4), ('showcase', 3.3), ('showcase', 6.7), ('showcase', 12.4), ('showcase', 20.5),
+             ('reveal', 2.4), ('lock', 3.0), ('water', 2.6), ('color', 2.5), ('replace', 2.5),
+             ('warranty', 2.0), ('board', 2.0), ('price', 2.0), ('five', 4.5), ('cta', 2.0), ('cta', 5.5)]
     for nm, lt in tests:
         fr = RENDER[nm](lt)
         Image.fromarray(finish(fr, lt, nm)).save(f'{OUT}/smoke_{nm}_{str(lt).replace(".","")}.jpg', quality=80)
