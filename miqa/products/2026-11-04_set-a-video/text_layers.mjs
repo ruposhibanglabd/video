@@ -202,3 +202,32 @@ layer('t_drop', ctx => {
   ctx.drawImage(c2, 0, 0);
 });
 console.log('ALL LAYERS DONE');
+
+// ---- v4: per-design slide labels for the slow showcase (21 designs) ----
+const SLIDES = [
+  'কাট-কর্নার সিলভার', 'কাট-কর্নার টু-টোন', 'কাট-কর্নার গোল্ড', 'কাট-কর্নার নেভি', 'কাট-কর্নার রোজ',
+  'ক্রিস্টাল গোল্ড', 'ক্রিস্টাল টু-টোন', 'সিলভার স্কয়ার', 'গোল্ড স্কয়ার', 'পার্ল স্কয়ার',
+  'কুইল্টেড টু-টোন',
+  'ট্যাংক সিলভার', 'ট্যাংক গোল্ড', 'ট্যাংক টু-টোন', 'গোল্ড ডায়াল টু-টোন',
+  'ইউ-লিংক গোল্ড', 'ইউ-লিংক সিলভার', 'ইউ-লিংক টু-টোন',
+  'কুশন সিলভার', 'কুশন গোল্ডেন', 'কুশন টু-টোন',
+];
+const BNUM = ['০১','০২','০৩','০৪','০৫','০৬','০৭','০৮','০৯','১০','১১','১২','১৩','১৪','১৫','১৬','১৭','১৮','১৯','২০','২১'];
+SLIDES.forEach((nm, i) => {
+  const id = String(i + 1).padStart(2, '0');
+  layer(`s_${id}`, ctx => {
+    const txt = `${BNUM[i]} · ${nm}`;
+    const font = '56px HindM';
+    ctx.font = font;
+    const tw = ctx.measureText(txt).width;
+    const pw = tw + 96, ph = 100;
+    const px = 1080 - pw / 2, py = 3262;
+    ctx.fillStyle = 'rgba(42,20,28,0.42)';
+    if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 50); ctx.fill(); }
+    else { ctx.fillRect(px, py, pw, ph); }
+    ctx.fillStyle = 'rgba(217,183,121,0.85)';
+    ctx.fillRect(1080 - 70, 3196, 140, 3);
+    centerText(ctx, txt, 1080, 3334, font, CHAMP, { shadowBlur: 14 });
+  });
+});
+console.log('ALL v4 LABELS DONE');
