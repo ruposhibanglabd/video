@@ -64,3 +64,16 @@ v2 রিভিশন: ক্লায়েন্টের ২য় নির�
 - "ওয়াটারপ্রুফ" শব্দের বদলে ক্লায়েন্টের অফিসিয়াল তালিকা অনুযায়ী "ওয়াটার রেজিস্ট্যান্ট" রাখা হয়েছে (দাবি-সীমা "পানিতে ডুবাবেন না" সহ) — পরিবর্তন চাইলে জানাবেন
 - "১২টি কালার ও ডিজাইন" = ভিডিওতে দেখানো ভ্যারিয়েন্ট সংখ্যা; আরও যোগ হলে সংখ্যা+মন্টাজ আপডেট করা যাবে
 - পণ্যের নাম (Elowen/Orienne ইত্যাদি) ভিডিওতে নেই — নিশ্চিত হলে পরবর্তী আপডেটে যোগ করা যাবে
+
+---
+
+## v4 QC (2026-11-04, product-faithful redesign edition)
+
+- Duration 66.37 s (frames 1989 @30fps, -t 66.3). 4K 2160x3840 + 1080x1920, AAC 48 kHz verified in stream.
+- Watch pixels: ALL 21 designs are the client's actual products (redesigned presentations only — case/dial/hands/bracelet unaltered; hands/wrists preserved).
+- Slow beautiful hook: 21 designs at 0.55 s each with crossfades, Ken Burns, per-design Bengali labels (০১-২১), hero hold.
+- Board: 21 tiles (7x3) + "২১টি কালার ও ডিজাইন".
+- Features ০১-০৫ editorial scenes on redesigns (lock=bracelet macro, water=droplets, color=two-tone bracelet, replace=wrist, warranty=dial macro).
+- Verbatim checks: 5% lines x2 (five + endcard), CTA 2 lines + COD pill, tagline, price ৳৫৯৯/মাত্র ৫৯৯ টাকা.
+- Forbidden checks: no URL/phone/WhatsApp/free-delivery/ATM ratings/diving/face/flashing. PASS.
+- Note: all watch imagery derives from client product photos (edit-based redesign) — real products guaranteed.

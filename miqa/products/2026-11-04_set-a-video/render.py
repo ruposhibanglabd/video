@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
-"""MIQA Set-A video v3: REAL-photo editorial renderer. 2160x3840 @30fps.
-- Hook = rapid showcase of ALL 21 real variants
-- Features = numbered editorial scenes on real product photos
-- Board = 21-variant collection grid ('এক নজর')
-Frames -> /tmp/vframes/f_%05d.jpg"""
+"""MIQA Set-A video v4: slow beautiful showcase of 21 redesigned real products.
+Frames -> /tmp/vframes/f_%05d.jpg  (2160x3840 @30fps, 66.3s = 1989 frames)"""
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import os, math, time
@@ -11,20 +8,21 @@ import os, math, time
 W, H, FPS = 2160, 3840, 30
 BASE = 'miqa/products/2026-11-04_set-a-video'
 L = f'{BASE}/plates/layers'
+P4 = f'{BASE}/plates4'
 CL = 'miqa/video/set-a/assets/client'
-SP = 'miqa/products/source-photos'
 OUT = '/tmp/vframes'
 os.makedirs(OUT, exist_ok=True)
 
 SCENES = [
-    ('showcase', 0.0, 7.2), ('reveal', 7.2, 12.0), ('lock', 12.0, 18.0),
-    ('water', 18.0, 23.2), ('color', 23.2, 28.2), ('replace', 28.2, 33.2),
-    ('warranty', 33.2, 37.2), ('board', 37.2, 41.2), ('price', 41.2, 45.2),
-    ('five', 45.2, 54.2), ('cta', 54.2, 60.4),
+    ('showcase', 0.0, 13.1), ('reveal', 13.1, 17.9), ('lock', 17.9, 23.9),
+    ('water', 23.9, 29.1), ('color', 29.1, 34.1), ('replace', 34.1, 39.1),
+    ('warranty', 39.1, 43.1), ('board', 43.1, 47.1), ('price', 47.1, 51.1),
+    ('five', 51.1, 60.1), ('cta', 60.1, 66.3),
 ]
-TOTAL = 60.4
+TOTAL = 66.3
 FRAMES = int(TOTAL * FPS)
 XFADE = 0.5
+BEAT = 0.55
 
 def smooth(x):
     x = min(1.0, max(0.0, x))
@@ -40,7 +38,6 @@ def crop_frac(im, fr):
     return im.crop((int(fr[0]*w), int(fr[1]*h), int(fr[2]*w), int(fr[3]*h)))
 
 def smart_bg(im, w, h, dim=0.78, contain=0.94):
-    """blurred self-fill background + contain-fit product. Real-photo safe."""
     bg = im.resize((int(w*1.06), int(h*1.06)), Image.LANCZOS).filter(ImageFilter.GaussianBlur(42))
     bg = bg.crop((int(w*0.03), int(h*0.03), int(w*0.03)+w, int(h*0.03)+h))
     bg = Image.eval(bg, lambda v: int(v*dim))
@@ -60,50 +57,51 @@ def photo_cover(path, fr=None):
 def photo_smart(path, fr=None):
     im = Image.open(path).convert('RGB')
     im = crop_frac(im, fr)
-    return smart_bg(im, BW, BH).crop((0,0,BW,BH))
+    return smart_bg(im, BW, BH).crop((0, 0, BW, BH))
 
-# ---- 21 real variants (path, crop) ----
-BEATS = [
-    (f'{CL}/image-1.png', None),
-    (f'{CL}/image-3.png', None),
-    (f'{CL}/image-4.png', None),
-    (f'{CL}/image-6.png', None),
-    (f'{CL}/image-7.png', None),
-    (f'{CL}/FIYOTA-CrystalGold-MAIN.png', None),
-    (f'{CL}/FIYOTA-CrystalTwoTone-MAIN.png', (0, 0, 1, 0.84)),
-    (f'{CL}/FIYOTA-SilverSquare-MAIN.png', (0, 0, 1, 0.80)),
-    (f'{CL}/download (1).jpeg', (0, 0, 1, 0.78)),
-    (f'{CL}/FIYOTA-PearlTank-MAIN.png', (0, 0, 1, 0.80)),
-    (f'{CL}/FIYOTA-PearlTwoTone-MAIN.png', (0, 0.07, 1, 0.84)),
-    (f'{CL}/fiyota-silver_03_angle.jpg', None),
-    (f'{CL}/FIYOTA-Gold-MAIN.png', (0, 0, 1, 0.86)),
-    (f'{CL}/FIYOTA-TwoTone-MAIN.png', (0, 0, 1, 0.86)),
-    (f'{CL}/fiyota-pearl-twotone-square-main.jpg', (0, 0, 1, 0.86)),
-    (f'{CL}/u-link-10.png', (0, 0, 1, 0.80)),
-    (f'{CL}/u-link-11.png', (0, 0, 1, 0.80)),
-    (f'{CL}/u-link-12.png', (0, 0, 1, 0.82)),
-    (f'{SP}/2026-11-04_fiyota-cushion/photo-1.png', None),
-    (f'{SP}/2026-11-04_fiyota-cushion-golden/photo-1.png', None),
-    (f'{SP}/2026-11-04_fiyota-cushion-two-tone/photo-1.png', None),
+def warm_grade(im):
+    a = np.asarray(im, np.float32)
+    a = a * np.array([1.07, 1.00, 0.92], np.float32)
+    a = np.clip(a * 0.97 + 8, 0, 255)
+    return Image.fromarray(a.astype(np.uint8))
+
+# ---- 21 designs, family order (all client products, redesigned in plates4) ----
+SLIDES = [
+    (f'{P4}/r01.jpg', None), (f'{P4}/r02.jpg', None), (f'{P4}/r03.jpg', None),
+    (f'{P4}/r04.jpg', None), (f'{P4}/r11.jpg', None),
+    (f'{P4}/r12.jpg', None), (f'{P4}/r05.jpg', None), (f'{P4}/r13.jpg', None),
+    (f'{P4}/r14.jpg', None), (f'{CL}/FIYOTA-PearlTank-MAIN.png', (0, 0, 1, 0.82)),
+    (f'{P4}/r15.jpg', None),
+    (f'{P4}/r08.jpg', None), (f'{P4}/r16.jpg', None), (f'{P4}/r17.jpg', None),
+    (f'{P4}/r18.jpg', None),
+    (f'{P4}/r06.jpg', None), (f'{P4}/r07.jpg', None), (f'{P4}/r19.jpg', None),
+    (f'{P4}/r09.jpg', None), (f'{P4}/r10.jpg', None), (f'{P4}/r20.jpg', None),
 ]
-beat_imgs = []
-beat_thumbs = []
-for p, fr in BEATS:
+slide_imgs = []
+slide_thumbs = []
+for p, fr in SLIDES:
     im = Image.open(p).convert('RGB')
     im = crop_frac(im, fr)
-    beat_imgs.append(smart_bg(im, BW, BH))
-    beat_thumbs.append(im)
-print('beats loaded:', len(beat_imgs), flush=True)
+    if 'PearlTank' in p:
+        im = warm_grade(im)
+    slide_imgs.append(smart_bg(im, BW, BH))
+    slide_thumbs.append(im)
+print('slides loaded:', len(slide_imgs), flush=True)
 
 plates = {
-    'lock': photo_smart('miqa/brand/feature-insets/butterfly-lock.webp'),
-    'water': photo_cover(f'{CL}/01-main.png'),
-    'color': photo_smart(f'{CL}/image-3.png', (0.04, 0.02, 0.96, 0.52)),
-    'replace': photo_cover(f'{CL}/02-wrist.png'),
-    'warranty': photo_cover(f'{CL}/03-detail.png'),
-    'reveal': photo_cover(f'{CL}/download (1).jpeg', (0, 0, 1, 0.78)),
+    'reveal': photo_cover(f'{P4}/r05.jpg'),
+    'lock': None,
+    'water': photo_cover(f'{P4}/r01.jpg'),
+    'color': photo_smart(f'{P4}/r19.jpg', (0.10, 0.18, 0.90, 0.82)),
+    'replace': photo_cover(f'{P4}/r06.jpg'),
+    'warranty': photo_smart(f'{P4}/r03.jpg', (0.18, 0.10, 0.85, 0.72)),
 }
-# pearl gradient plate
+# lock scene: bracelet macro of U-link silver redesign
+lock_src = Image.open(f'{P4}/r07.jpg').convert('RGB')
+w, h = lock_src.size
+lock_src = lock_src.crop((int(0.12*w), int(0.30*h), int(0.92*w), int(0.95*h)))
+plates['lock'] = smart_bg(lock_src, BW, BH).crop((0, 0, BW, BH))
+
 yy, xx = np.mgrid[0:BH, 0:BW].astype(np.float32)
 t = (yy / BH * 0.7 + xx / BW * 0.3)
 c0 = np.array([251, 244, 241], np.float32); c1 = np.array([241, 213, 222], np.float32)
@@ -127,7 +125,6 @@ def velvet(c_top, c_mid, c_bot, streak_pos=0.42, streak_str=0.55):
 plates['price'] = velvet((36, 12, 22), (94, 26, 48), (150, 70, 95), 0.40, 0.6)
 plates['cta'] = velvet((30, 10, 18), (88, 26, 46), (122, 42, 68), 0.55, 0.75)
 
-# board grid (21 tiles, 7x3)
 def build_board():
     cols, rows = 7, 3
     tw, thh, gap = 280, 470, 14
@@ -135,7 +132,7 @@ def build_board():
     bh = rows*thh + (rows+1)*gap
     board = Image.new('RGB', (bw, bh), (246, 236, 233))
     d = ImageDraw.Draw(board)
-    for i, im in enumerate(beat_thumbs):
+    for i, im in enumerate(slide_thumbs):
         th = im.copy(); th.thumbnail((tw, thh), Image.LANCZOS)
         x = gap + (i % cols)*(tw+gap) + (tw-th.width)//2
         y = gap + (i // cols)*(thh+gap) + (thh-th.height)//2
@@ -157,12 +154,23 @@ LAYERS = {}
 for nm in ['t_hook', 't_wordmark', 't_lock', 't_water', 't_color', 't_replace',
            't_warranty', 't_collection', 't_price', 't_5', 't_cta', 't_endcard', 't_drop']:
     LAYERS[nm] = layer_np(nm)
+def layer_lbl(name):
+    im = Image.open(f'{L}/{name}.png').convert('RGBA')
+    a = np.asarray(im)[3100:3460]
+    return a[..., :3].copy(), (a[..., 3].astype(np.float32) / 255.0)
+SLIDE_LBL = [layer_lbl(f's_{i+1:02d}') for i in range(21)]
+LBL_Y0 = 3100
 
 rng = np.random.default_rng(11)
 GRAIN = [rng.normal(0, 1, (H // 2, W // 2)).astype(np.float32) for _ in range(3)]
 r2 = np.sqrt(((xx[:H, :W] / W - 0.5) * 1.15) ** 2 + ((yy[:H, :W] / H - 0.5) * 1.0) ** 2)
 VIG = (1.0 - 0.30 * np.clip(r2 - 0.42, 0, 1) ** 1.6).astype(np.float32)
 ybinv = np.clip((np.arange(H) - 2500) / 400.0, 0, 1) * 0.28
+
+# drifting bokeh sprite for the showcase
+sprite_r = 90
+sy, sx = np.mgrid[-sprite_r:sprite_r, -sprite_r:sprite_r].astype(np.float32)
+sprite = np.exp(-((sx**2 + sy**2) / (sprite_r*0.62)**2)).astype(np.float32) * 0.16
 
 def zoomcrop(src, z, px=0.0, py=0.0):
     ww = int(BW / z); hh = int(BH / z)
@@ -182,36 +190,71 @@ def comp(base_np, layer, alpha, dy=0):
     base_np *= (1 - m3)
     base_np += rgb * m3
 
+def comp_lbl(base_np, layer, alpha):
+    if alpha <= 0.003:
+        return
+    rgb, am = layer
+    m3 = (am * alpha)[..., None]
+    reg = base_np[LBL_Y0:LBL_Y0 + am.shape[0]]
+    reg *= (1 - m3)
+    reg += rgb * m3
+
 def lalpha(t, tin0, tin1, tout0, tout1):
     return smooth((t - tin0) / (tin1 - tin0)) * (1 - smooth((t - tout0) / (tout1 - tout0)))
 
-# ---------- scenes ----------
+def kb(i, lp):
+    """slow ken burns per beat: (z0, z1, panx, pany) varied by index"""
+    patterns = [
+        (1.00, 1.07, -60, 30), (1.07, 1.00, 50, -40), (1.02, 1.08, 40, 50),
+        (1.08, 1.02, -50, -30), (1.01, 1.06, -30, -50), (1.06, 1.01, 60, 40),
+    ]
+    z0, z1, px, py = patterns[i % 6]
+    s = smooth(lp)
+    return z0 + (z1 - z0) * s, px * s, py * s
+
 def render_showcase(t):
-    seg = 6.4 / 21
-    if t >= 6.4:
-        idx, lp = 8, (t - 6.4) / 0.8  # hold on dramatic gold/black
-        base = np.asarray(zoomcrop(beat_imgs[idx], 1.02 + 0.04 * smooth(lp)), np.float32)
+    nshow = 21 * BEAT  # 11.55
+    if t >= nshow:  # hero hold on r03 (index 2)
+        lp = (t - nshow) / (13.1 - nshow)
+        z, px, py = kb(2, 0.5 + 0.5 * smooth(lp))
+        base = np.asarray(zoomcrop(slide_imgs[2], z + 0.02 * smooth(lp), px, py), np.float32)
+        comp_lbl(base, SLIDE_LBL[2], 0.9 * (1 - smooth((lp - 0.6) / 0.4)))
     else:
-        idx = min(20, int(t / seg))
-        lp = (t - idx * seg) / seg
-        base = np.asarray(zoomcrop(beat_imgs[idx], 1.0 + 0.06 * smooth(lp)), np.float32)
-        if idx > 0 and lp < 0.35:
-            prev = np.asarray(zoomcrop(beat_imgs[idx - 1], 1.05), np.float32)
-            wgt = smooth(lp / 0.35)
+        idx = min(20, int(t / BEAT))
+        lp = (t - idx * BEAT) / BEAT
+        z, px, py = kb(idx, lp)
+        base = np.asarray(zoomcrop(slide_imgs[idx], z, px, py), np.float32)
+        if lp < 0.62:  # crossfade from previous slide
+            prev_lp = 1.0
+            zp, pxp, pyp = kb(idx - 1 if idx > 0 else 0, 1.0)
+            prev = np.asarray(zoomcrop(slide_imgs[idx - 1] if idx > 0 else slide_imgs[0], zp, pxp, pyp), np.float32)
+            wgt = smooth(lp / 0.62)
             base = prev * (1 - wgt) + base * wgt
-    comp(base, LAYERS['t_hook'], lalpha(t, 0.45, 1.15, 5.75, 6.35))
+            if idx > 0:
+                comp_lbl(base, SLIDE_LBL[idx - 1], 0.9 * (1 - wgt))
+        comp_lbl(base, SLIDE_LBL[idx], 0.9 * smooth((lp - 0.18) / 0.35) * (1 - smooth((lp - 0.82) / 0.18)))
+        # drifting bokeh
+        for k in range(6):
+            bxp = int(((k * 331 + t * (18 + 9 * k)) % (W + 400)) - 200)
+            byp = int(H * (0.12 + 0.13 * ((k * 7 + 3) % 6)) - t * (12 + 6 * k) % int(H * 0.8))
+            y0 = max(0, byp - sprite_r); y1 = min(H, byp + sprite_r)
+            x0 = max(0, bxp - sprite_r); x1 = min(W, bxp + sprite_r)
+            if y1 <= y0 or x1 <= x0: continue
+            sy0 = sprite_r - (byp - y0); sx0 = sprite_r - (bxp - x0)
+            base[y0:y1, x0:x1] += sprite[sy0:sy0+(y1-y0), sx0:sx0+(x1-x0), None] * 255
+    comp(base, LAYERS['t_hook'], lalpha(t, 0.55, 1.25, 5.5, 6.2))
     return base
 
 def render_reveal(t):
     z = 1.0 + 0.055 * smooth(t / 4.8)
     base = np.asarray(zoomcrop(plates['reveal'], z), np.float32)
-    comp(base, LAYERS['t_wordmark'], lalpha(t, 1.0, 1.7, 3.7, 4.25))
+    comp(base, LAYERS['t_wordmark'], lalpha(t, 0.8, 1.5, 3.6, 4.15))
     return base
 
 def render_lock(t):
-    z = 1.0 + 0.06 * smooth(t / 6.0)
+    z = 1.06 + 0.05 * smooth(t / 6.0)
     base = np.asarray(zoomcrop(plates['lock'], z), np.float32)
-    base *= 0.80
+    base *= 0.88
     base *= (1 - ybinv[:, None, None])
     comp(base, LAYERS['t_lock'], lalpha(t, 0.6, 1.3, 5.3, 5.85))
     return base
@@ -241,7 +284,7 @@ def render_water(t):
     return base
 
 def render_color(t):
-    z = 1.10 - 0.08 * smooth(t / 5.0)
+    z = 1.12 - 0.08 * smooth(t / 5.0)
     base = np.asarray(zoomcrop(plates['color'], z), np.float32)
     base *= (1 - ybinv[:, None, None] * 1.1)
     comp(base, LAYERS['t_color'], lalpha(t, 0.5, 1.2, 4.35, 4.9))
@@ -290,7 +333,7 @@ RENDER = {'showcase': render_showcase, 'reveal': render_reveal, 'lock': render_l
           'color': render_color, 'replace': render_replace, 'warranty': render_warranty,
           'board': render_board, 'price': render_price, 'five': render_five, 'cta': render_cta}
 
-SWEEPS = [('reveal', 2.0, 3.1), ('color', 1.2, 2.5), ('price', 0.7, 1.8)]
+SWEEPS = [('reveal', 1.2, 2.3), ('color', 1.2, 2.5), ('price', 0.7, 1.8)]
 diag = ((np.mgrid[0:H, 0:W][0].astype(np.float32) / H + np.mgrid[0:H, 0:W][1].astype(np.float32) / W) / 2)
 
 def finish(base, t, scene):
@@ -307,10 +350,12 @@ def finish(base, t, scene):
     return np.clip(base, 0, 255).astype(np.uint8)
 
 if os.environ.get('SMOKE'):
-    for nm, t0, t1 in SCENES:
-        lt = (t1 - t0) / 2
+    tests = [('showcase', 1.2), ('showcase', 6.0), ('showcase', 12.2), ('reveal', 2.4), ('lock', 3.0),
+             ('water', 2.6), ('color', 2.5), ('replace', 2.5), ('warranty', 2.0), ('board', 2.0),
+             ('price', 2.0), ('five', 4.5), ('cta', 2.0), ('cta', 5.5)]
+    for nm, lt in tests:
         fr = RENDER[nm](lt)
-        Image.fromarray(finish(fr, lt, nm)).save(f'{OUT}/smoke_{nm}.jpg', quality=80)
+        Image.fromarray(finish(fr, lt, nm)).save(f'{OUT}/smoke_{nm}_{str(lt).replace(".","")}.jpg', quality=80)
     print('SMOKE DONE', flush=True)
     raise SystemExit
 
