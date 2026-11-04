@@ -110,41 +110,49 @@ layer('t_wordmark', ctx => {
 
 // ---- s3 lock ----
 layer('t_lock', ctx => {
-  centerText(ctx, 'বাটারফ্লাই লক', 1080, 2760, '136px HindSB', INK);
-  centerText(ctx, 'সহজে খোলা-বন্ধ হয়, হাতে পরে আরামদায়ক', 1080, 2930, '78px HindM', 'rgba(90,26,46,0.82)');
-  ctx.fillStyle = CHAMP; ctx.fillRect(1080 - 150, 3010, 300, 4);
+  centerText(ctx, '০১', 1080, 2540, '64px HindM', '#D9B779', { shadowBlur: 14 });
+  ctx.fillStyle = 'rgba(217,183,121,0.9)'; ctx.fillRect(1080 - 70, 2590, 140, 3);
+  centerText(ctx, 'বাটারফ্লাই লক', 1080, 2790, '136px HindSB', PEARL, { shadowBlur: 28 });
+  centerText(ctx, 'সহজে খোলা-বন্ধ হয়, হাতে পরে আরামদায়ক', 1080, 2955, '78px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 22 });
 });
 
 // ---- s4 water ----
 layer('t_water', ctx => {
-  centerText(ctx, 'ওয়াটার রেজিস্ট্যান্ট', 1080, 2740, '128px HindSB', PEARL, { shadowBlur: 26 });
-  centerText(ctx, 'হালকা পানির ছিটা সহনশীল — পানিতে ডুবাবেন না', 1080, 2910, '74px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
+  centerText(ctx, '০২', 1080, 2540, '64px HindM', '#D9B779', { shadowBlur: 14 });
+  ctx.fillStyle = 'rgba(217,183,121,0.9)'; ctx.fillRect(1080 - 70, 2590, 140, 3);
+  centerText(ctx, 'ওয়াটার রেজিস্ট্যান্ট', 1080, 2770, '128px HindSB', PEARL, { shadowBlur: 26 });
+  centerText(ctx, 'হালকা পানির ছিটা সহনশীল — পানিতে ডুবাবেন না', 1080, 2935, '74px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
 });
 
 // ---- s5 color ----
 layer('t_color', ctx => {
-  centerText(ctx, 'চেনের কালার গ্যারান্টি', 1080, 2760, '128px HindSB', PEARL, { shadowBlur: 26 });
-  centerText(ctx, 'কালার ধরে রাখে দীর্ঘদিন', 1080, 2925, '78px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
+  centerText(ctx, '০৩', 1080, 2540, '64px HindM', '#D9B779', { shadowBlur: 14 });
+  ctx.fillStyle = 'rgba(217,183,121,0.9)'; ctx.fillRect(1080 - 70, 2590, 140, 3);
+  centerText(ctx, 'চেনের কালার গ্যারান্টি', 1080, 2770, '128px HindSB', PEARL, { shadowBlur: 26 });
+  centerText(ctx, 'কালার ধরে রাখে দীর্ঘদিন', 1080, 2935, '78px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
 });
 
 // ---- s6 replace (pearl text over lifestyle photo) ----
 layer('t_replace', ctx => {
-  centerText(ctx, '৭ দিনের রিপ্লেসমেন্ট সুবিধা', 1080, 2760, '122px HindSB', PEARL, { shadowBlur: 28 });
-  centerText(ctx, 'ক্রয়ের ৭ দিনের মধ্যে সমস্যা হলে রিপ্লেসমেন্ট', 1080, 2925, '74px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 22 });
-  ctx.fillStyle = CHAMP; ctx.fillRect(1080 - 160, 3005, 320, 4);
+  centerText(ctx, '০৪', 1080, 2540, '64px HindM', '#D9B779', { shadowBlur: 14 });
+  ctx.fillStyle = 'rgba(217,183,121,0.9)'; ctx.fillRect(1080 - 70, 2590, 140, 3);
+  centerText(ctx, '৭ দিনের রিপ্লেসমেন্ট সুবিধা', 1080, 2770, '122px HindSB', PEARL, { shadowBlur: 28 });
+  centerText(ctx, 'ক্রয়ের ৭ দিনের মধ্যে সমস্যা হলে রিপ্লেসমেন্ট', 1080, 2935, '74px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 22 });
 });
 
 // ---- s7 warranty ----
 layer('t_warranty', ctx => {
-  sealRings(ctx, 1080, 2430, 160);
-  centerText(ctx, '৬ মাস', 1080, 2485, '100px Tiro', '#D9B779');
+  sealRings(ctx, 1080, 2380, 155);
+  centerText(ctx, '৬ মাস', 1080, 2435, '96px Tiro', '#D9B779');
+  centerText(ctx, '০৫', 1080, 2540, '64px HindM', '#D9B779', { shadowBlur: 14 });
+  ctx.fillStyle = 'rgba(217,183,121,0.9)'; ctx.fillRect(1080 - 70, 2590, 140, 3);
   centerText(ctx, '৬ মাসের ওয়ারেন্টি', 1080, 2790, '132px HindSB', PEARL, { shadowBlur: 26 });
   centerText(ctx, 'নিশ্চিন্তে পরুন', 1080, 2955, '80px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 20 });
 });
 
 // ---- s8 collection glance (count + tagline) ----
 layer('t_collection', ctx => {
-  centerText(ctx, '১২টি কালার ও ডিজাইন', 1080, 2900, '128px HindSB', PEARL, { shadowBlur: 34 });
+  centerText(ctx, '২১টি কালার ও ডিজাইন', 1080, 2900, '130px HindSB', PEARL, { shadowBlur: 34 });
   centerText(ctx, 'প্রতিটি স্টাইলে, প্রতিটি মুহূর্তে', 1080, 3080, '84px HindM', 'rgba(251,244,241,0.92)', { shadowBlur: 26 });
 });
 
