@@ -1,8 +1,19 @@
 # Set C — production notes
 
-Five watches, two client photos each, cut out and re-composed into website
-images (2000×2000, Blush Mist). No AI watch pixels anywhere: background, light
-and the on-wrist hand are built around the real cutouts.
+Five watches. **Every image is generated fresh** from the client photos as a
+design reference — nothing is cut out and pasted (client instruction, 5 Nov 2026:
+"আমার ছবি গুলো কে কেটে কটু বসাবে না সব তৈরি করবে তুমি"). Renders come back at
+1024², then `finish.py` does the 2000×2000 pass. Rules: `miqa/creative/IMAGE-RULES.md`.
+
+```
+gen/<slug>/01_primary.jpg … 05_styled.jpg     raw renders (10 per turn cap)
+   ↓ finish.py  (gentle corner WB → Lanczos 2000 + unsharp 0.40 + sat 1.05 → chips on primary)
+../deliveries/2026-11-05_set-c/<slug>/website-images/
+```
+
+The legacy files below (`segment.py`, `compose.py`, `build_all.py`, `cut/`,
+`plates/`) belong to the rejected cut-out approach — kept for history only,
+do not use for Set C.
 
 | File | What it does |
 |---|---|

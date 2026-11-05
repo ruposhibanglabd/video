@@ -24,8 +24,15 @@
 | ০১ | `01_fiyota-octagon-black` | কালো | FIYOTA | ✅ ৫টি |
 | ০২ | `02_fiyota-octagon-pink` | গোলাপি | FIYOTA | ✅ ৫টি |
 | ০৩ | `03_trueworth-heart-black` | কালো, গ্লিটার হার্ট | TRUE WORTH | ✅ ৫টি |
-| ০৪ | `04_fiyota-octagon-green` | সবুজ | FIYOTA | 🔸 ১টি (প্রাইমারি) |
-| ০৫ | `05_fiyota-octagon-white` | সাদা/সিলভার | FIYOTA | ⏳ বাকি |
+| ০৪ | `04_fiyota-octagon-green` | সবুজ | FIYOTA | ✅ ৫টি |
+| ০৫ | `05_fiyota-octagon-white` | সাদা/সিলভার | FIYOTA | ✅ ৫টি |
+
+**ছবি: ২৫টি / ২৫টি শেষ।** প্রতিটা প্রোডাক্টের সাথে `LISTING.md` (নাম + সাইটে কপি-পেস্ট করার বিবরণ) আছে।
+
+## নাম
+
+এই পাঁচটাই একই অষ্টকোণ কেস — তাই একই মডেল-নাম **Octavia** (ল্যাটিন *octavus* = আট), শুধু বন্ধনীর রঙ বদলায়:
+`FIYOTA Octavia (Black / Pink / Green / White)` আর `TRUE WORTH Octavia (Black)`।
 
 ## নিয়ম মেনে
 
@@ -33,5 +40,10 @@
 - প্রাইমারির ওপরের দুই কোণা ফাঁকা (ওয়েবসাইটের ব্যাজের জন্য)।
 - বাংলা লেখা শুধু চিপে, `chip.mjs` (Skia) দিয়ে — letterSpacing ছাড়া।
 - ২০০০×২০০০ sRGB JPG; ফোল্ডারে ৫টি ছবি + `<slug>_website-images.zip`।
+
+## নিয়ম
+
+ছবি বানানোর স্থায়ী নিয়ম: [miqa/creative/IMAGE-RULES.md](../../creative/IMAGE-RULES.md) — প্রতিটা ছবি নতুন করে তৈরি,
+ক্লায়েন্টের ছবি শুধু রেফারেন্স, মেয়েদের ক্ষেত্রে Blush Couture, আর **সবসময় নাম ও বিবরণ সহ ডেলিভারি**।
 
 রিবিল্ড: `/tmp/venv/bin/python miqa/products/2026-11-05_set-c/finish.py <slug>`
