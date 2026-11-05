@@ -5,6 +5,9 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 BASE = 'miqa/products/2026-11-05_set-b-video'
+import sys
+sys.path.insert(0, BASE)
+import render as RD   # whole_plate + full-watch framing, single source of truth
 ART = 'miqa/deliveries/2026-11-05_set-b'
 OUT = 'miqa/deliveries/2026-11-05_set-b-video'
 COLORS = ['01_fiyota-floral-black', '02_fiyota-floral-blue',
@@ -50,14 +53,19 @@ def smart(path, w, h, contain=0.80, valign=0.30, env=None, ramp=360):
     return bg
 
 
+def whole(ci, w, h, watch_h=0.62, valign=0.33):
+    """Whole-watch plate at cover resolution (render.py builds at 2160x3840)."""
+    plate = RD.whole_plate(ci, watch_h=watch_h, valign=valign)
+    return plate.resize((w, h), Image.LANCZOS) if (w, h) != plate.size else plate
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     txtA = Image.open('/tmp/cover_text_A.png').convert('RGBA')
     txtB = Image.open('/tmp/cover_text_B.png').convert('RGBA')
 
     # ---- Cover A: hero black dial, price block bottom
-    plate = smart(f'{ART}/{COLORS[0]}/website-images/{STEMS[0]}_03_dial-closeup.jpg',
-                  W, H, contain=0.98, valign=0.26, env=f'{BASE}/plates/env_vanity.jpg')
+    plate = whole(0, W, H, watch_h=0.60, valign=0.315)
     a = np.asarray(plate, np.float32)
     yy = np.linspace(0, 1, H, dtype=np.float32)[:, None, None]
     a *= (1.06 - 0.20 * yy ** 1.3)

@@ -156,6 +156,161 @@ def build_plate(ci, kind, path=None, contain=1.0, zoom=1.0, valign=0.5):
     return Image.fromarray(np.clip(e, 0, 255).astype(np.uint8))
 
 
+
+# ---------------------------------------------------------------- v3 plates
+def watch_bbox(im, tol=34):
+    """Bounding box of the product against its flat backdrop."""
+    a = np.asarray(im.convert('RGB'), np.float32)
+    h, w, _ = a.shape
+    c = np.concatenate([a[:60, :60].reshape(-1, 3), a[:60, -60:].reshape(-1, 3),
+                        a[-60:, :60].reshape(-1, 3), a[-60:, -60:].reshape(-1, 3)])
+    bg = np.median(c, 0)
+    m = np.abs(a - bg).max(2) > tol
+    cols = np.where(m.mean(0) > 0.004)[0]
+    rows = np.where(m.mean(1) > 0.004)[0]
+    return int(cols[0]), int(rows[0]), int(cols[-1]), int(rows[-1])
+
+
+def row_bg(im, pad=0.18):
+    """1-D row colour profile sampled from the photo's own margins."""
+    a = np.asarray(im.convert('RGB'), np.float32)
+    k = max(8, int(a.shape[1] * pad))
+    strip = np.concatenate([a[:, :k], a[:, -k:]], 1)
+    rows = np.median(strip, axis=1)
+    ker = np.ones(41, np.float32) / 41
+    padded = np.pad(rows, ((20, 20), (0, 0)), mode='edge')
+    return np.stack([np.convolve(padded[:, c], ker, 'valid') for c in range(3)], 1)
+
+
+def bg_field(prof, pool=9.0):
+    ys = np.clip((np.arange(PH) * (len(prof) - 1) / max(1, PH - 1)).astype(int), 0, len(prof) - 1)
+    a = prof[ys][:, None, :].repeat(PW, 1)
+    yy = np.linspace(0, 1, PH, dtype=np.float32)[:, None]
+    xx = np.linspace(0, 1, PW, dtype=np.float32)[None, :]
+    a += np.exp(-(((xx - 0.5) / 0.44) ** 2 + ((yy - 0.42) / 0.34) ** 2))[:, :, None] * pool
+    return a
+
+
+def whole_plate(ci, watch_h=0.855, valign=0.46, pool=9.0):
+    """THE whole watch (top bracelet link to the heart end-link), never cropped.
+
+    The 2000x2000 product photo is cut to the watch plus a small margin, scaled
+    to `watch_h` of the frame height, and placed on a field rebuilt from the
+    photo's own backdrop so nothing looks pasted on.
+    """
+    folder, stem = COLORS[ci]
+    im = load_rgb(f'{ART}/{folder}/website-images/{stem}_01_primary.jpg')
+    x0, y0, x1, y1 = watch_bbox(im)
+    mx, my = int((x1 - x0) * 0.055), int((y1 - y0) * 0.028)
+    fg = im.crop((max(0, x0 - mx), max(0, y0 - my),
+                  min(im.width, x1 + mx), min(im.height, y1 + my)))
+    th = int(PH * watch_h)
+    tw = max(1, int(fg.width * th / fg.height))
+    fg = fg.resize((tw, th), Image.LANCZOS)
+    out = Image.fromarray(np.clip(bg_field(row_bg(im), pool), 0, 255).astype(np.uint8))
+    out = out.filter(ImageFilter.GaussianBlur(3))
+    ry, rx = min(150, th // 3), int(tw * 0.09)
+    yy = np.arange(th, dtype=np.float32)[:, None]
+    xx = np.arange(tw, dtype=np.float32)[None, :]
+    m = np.minimum(np.clip(yy / ry, 0, 1), np.clip((th - 1 - yy) / ry, 0, 1))
+    m = np.minimum(m, np.minimum(np.clip(xx / rx, 0, 1), np.clip((tw - 1 - xx) / rx, 0, 1))) ** 0.75
+    mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(46))
+    py = int(max(0, min(PH - th, PH * valign - th / 2)))
+    out.paste(fg, ((PW - tw) // 2, py), mask)
+    return warm(out, 1.0)
+
+
+def styled_plate(ci, watch_h=0.80, valign=0.44, pool=6.0):
+    """Whole watch lying on rose satin (photo 05) — flat lay, nothing cropped."""
+    folder, stem = COLORS[ci]
+    im = load_rgb(f'{ART}/{folder}/website-images/{stem}_05_styled.jpg')
+    th = int(PH * watch_h)
+    tw = max(1, int(im.width * th / im.height))
+    fg = im.resize((tw, th), Image.LANCZOS)
+    # the photo is a full-bleed flat lay: extend it with its own blurred edges
+    base = cover(im, PW, PH).filter(ImageFilter.GaussianBlur(20))
+    r = 260
+    m = np.ones((th, tw), np.float32)
+    yy = np.arange(th, dtype=np.float32)[:, None]
+    xx = np.arange(tw, dtype=np.float32)[None, :]
+    m = np.minimum(np.clip(yy / r, 0, 1), np.clip((th - 1 - yy) / r, 0, 1))
+    m = np.minimum(m, np.minimum(np.clip(xx / r, 0, 1), np.clip((tw - 1 - xx) / r, 0, 1))) ** 0.8
+    mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(60))
+    py = int(max(0, min(PH - th, PH * valign - th / 2)))
+    out = base.copy()
+    out.paste(fg, ((PW - tw) // 2, py), mask)
+    return warm(out, 1.0)
+
+
+def crystal_case_plate(ci):
+    """The ENTIRE watch head (bezel ring complete) turning slowly — no dial-only crop."""
+    folder, stem = COLORS[ci]
+    im = load_rgb(f'{ART}/{folder}/website-images/{stem}_01_primary.jpg')
+    x0, y0, x1, y1 = watch_bbox(im)
+    cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
+    hw = int((x1 - x0) * 0.72)                     # case + lugs, both sides
+    hh = int((y1 - y0) * 0.42)
+    box = (max(0, cx - hw), max(0, cy - hh), min(im.width, cx + hw), min(im.height, cy + hh))
+    fg = im.crop(box)
+    th = int(PH * 0.70)
+    tw = int(fg.width * th / fg.height)
+    fg = fg.resize((tw, th), Image.LANCZOS)
+    out = Image.fromarray(np.clip(bg_field(row_bg(im), 12.0), 0, 255).astype(np.uint8))
+    out = out.filter(ImageFilter.GaussianBlur(6))
+    r = 220
+    yy = np.arange(th, dtype=np.float32)[:, None]
+    xx = np.arange(tw, dtype=np.float32)[None, :]
+    m = np.minimum(np.clip(yy / r, 0, 1), np.clip((th - 1 - yy) / r, 0, 1))
+    m = np.minimum(m, np.minimum(np.clip(xx / r, 0, 1), np.clip((tw - 1 - xx) / r, 0, 1))) ** 0.8
+    mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(70))
+    out.paste(fg, ((PW - tw) // 2, (PH - th) // 2), mask)
+    return warm(out, 1.0)
+
+
+def bracelet_band_plate(ci):
+    """Complete bracelet band (both heart end-links) laid diagonally, uncropped."""
+    folder, stem = COLORS[ci]
+    im = load_rgb(f'{ART}/{folder}/website-images/{stem}_05_styled.jpg')
+    fg = im.resize((int(PW * 1.0), PW), Image.LANCZOS)
+    th = int(PH * 0.82)
+    fg = fg.resize((int(fg.width * th / fg.height), th), Image.LANCZOS)
+    out = cover(im, PW, PH).filter(ImageFilter.GaussianBlur(26))
+    r = 240
+    yy = np.arange(th, dtype=np.float32)[:, None]
+    xx = np.arange(fg.width, dtype=np.float32)[None, :]
+    m = np.minimum(np.clip(yy / r, 0, 1), np.clip((th - 1 - yy) / r, 0, 1))
+    m = np.minimum(m, np.minimum(np.clip(xx / r, 0, 1), np.clip((fg.width - 1 - xx) / r, 0, 1))) ** 0.8
+    mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(70))
+    out.paste(fg, ((PW - fg.width) // 2, int((PH - th) * 0.44)), mask)
+    return warm(out, 1.0)
+
+
+def wrist_plate(ci, valign=0.42):
+    """On-wrist shot, whole hand in frame (no dial crop)."""
+    folder, stem = COLORS[ci]
+    im = load_rgb(f'{ART}/{folder}/website-images/{stem}_02_on-wrist.jpg')
+    return smart_plate_path(im, contain=0.98, valign=valign, env=ENVS[1])
+
+
+def smart_plate_path(im, contain=0.98, valign=0.5, env=None, ramp=380, blur_bg=28):
+    """Same idea as smart_plate but takes an image and an explicit env plate."""
+    bg = cover(load_rgb(env or ENVS[0]), PW, PH).filter(ImageFilter.GaussianBlur(blur_bg))
+    s = contain * (PW / im.width)
+    fg = im.resize((max(1, int(im.width * s + .5)), max(1, int(im.height * s + .5))), Image.LANCZOS)
+    if fg.height > PH:
+        k = PH / fg.height
+        fg = fg.resize((max(1, int(fg.width * k)), PH), Image.LANCZOS)
+    mh, mw = fg.size
+    m = np.ones((mh, mw), np.float32)
+    r = min(ramp, mh // 2)
+    yy = np.arange(mh, dtype=np.float32)
+    m *= np.minimum(np.clip(yy / r, 0, 1), np.clip((mh - 1 - yy) / r, 0, 1))[:, None] ** 1.3
+    mask = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(48))
+    y0 = max(0, min(PH - mh, int((PH - mh) * valign)))
+    bg.paste(fg, (0, y0), mask)
+    return warm(bg, 1.0)
+
+
 def build_gradient(c0, c1, c2=None):
     yy = np.linspace(0, 1, PH, dtype=np.float32)[:, None]
     a = np.array(c0, np.float32)[None, :] * (1 - yy) + np.array(c1, np.float32)[None, :] * yy
@@ -167,19 +322,16 @@ def build_gradient(c0, c1, c2=None):
 
 
 def hero_plate_bw():
-    """Black dial on a deep burgundy duotone field, for the end card."""
-    folder, stem = COLORS[0]
-    path = f'{ART}/{folder}/website-images/{stem}_03_dial-closeup.jpg'
-    p = smart_plate(path, contain=0.84, valign=0.28, kind='dial', ramp=620)
+    """THE WHOLE black watch, duotoned into deep burgundy, for the end card."""
+    p = whole_plate(0, watch_h=0.62, valign=0.30)
     a = np.asarray(p, np.float32) / 255.0
     lum = np.clip(a @ np.array([0.30, 0.59, 0.11], np.float32), 0, 1)
-    lum = np.clip((lum - 0.06) * 1.06, 0, 1) ** 1.25          # deepen shadows
-    sh = np.array([0.086, 0.020, 0.035], np.float32)           # shadow: near-black plum
-    hi = np.array([0.62, 0.30, 0.38], np.float32)              # highlight: dusty rose
+    lum = np.clip((lum - 0.05) * 1.05, 0, 1) ** 1.2
+    sh = np.array([0.098, 0.030, 0.045], np.float32)
+    hi = np.array([0.72, 0.40, 0.47], np.float32)
     out = (sh[None, None, :] + lum[..., None] * (hi - sh)[None, None, :]) * 255
     yy = np.linspace(0, 1, PH, dtype=np.float32)[:, None, None]
-    out *= (1.08 - 0.30 * np.clip((yy - 0.42) / 0.58, 0, 1) ** 1.15)
-    out[..., 2] *= 1.06
+    out *= (1.06 - 0.34 * np.clip((yy - 0.42) / 0.58, 0, 1) ** 1.15)
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
 
 
@@ -283,12 +435,14 @@ def main():
 
     print('building plates...', flush=True)
     plates = {}
-    FRAME = {'dial': dict(contain=0.72, valign=0.24),
-             'wrist': dict(contain=0.96, valign=0.44),
-             'bracelet': dict(contain=0.82, valign=0.42)}
     for ci in range(4):
-        for kind in ('dial', 'wrist', 'bracelet'):
-            plates[(ci, kind)] = build_plate(ci, kind, **FRAME[kind])
+        plates[(ci, 'whole')] = whole_plate(ci, watch_h=0.685, valign=0.425)  # whole watch
+        plates[(ci, 'styled')] = styled_plate(ci)        # whole watch on satin
+        plates[(ci, 'wrist')] = wrist_plate(ci)          # whole hand, no dial crop
+    plates[(2, 'price')] = whole_plate(2, watch_h=0.60, valign=0.335)
+    plates[(1, 'guarantee')] = whole_plate(1, watch_h=0.52, valign=0.30)
+    # hook plate is smaller so the price block never overlaps the watch
+    plates[(0, 'hook')] = whole_plate(0, watch_h=0.50, valign=0.30)
     endplate = hero_plate_bw()
     cards = {
         'five': build_gradient((251, 244, 241), (250, 240, 236), (246, 226, 227)),
@@ -308,15 +462,16 @@ def main():
         return len(scenes) - 1, scenes[-1]
 
     def colour_scene(s, t, ci):
+        """3 beats, every one showing the ENTIRE watch."""
         p = (t - s['t0']) / s['dur']
-        # 3 beats: dial -> wrist -> bracelet
-        if p < 0.42:
-            k, q, d, z = 'dial', p / 0.42, 0, (1.0, 1.09)
-        elif p < 0.74:
-            k, q, d, z = 'wrist', (p - 0.42) / 0.32, 1, (1.02, 1.10)
-        else:
-            k, q, d, z = 'bracelet', (p - 0.74) / 0.26, -1, (1.03, 1.11)
-        img = crop_zoom(plates[(ci, k)], q, z[0], z[1], dx=0.10 * d * (0.4 + 0.6 * q))
+        if p < 0.40:                                  # beat 1: whole watch, blush
+            img = crop_zoom(plates[(ci, 'whole')], p / 0.40, 1.00, 1.045, dy=-0.02)
+        elif p < 0.72:                                # beat 2: whole watch, satin flat lay
+            q = (p - 0.40) / 0.32
+            img = crop_zoom(plates[(ci, 'styled')], q, 1.05, 1.00, dx=0.02 * (1 - q))
+        else:                                         # beat 3: on the wrist
+            q = (p - 0.72) / 0.28
+            img = crop_zoom(plates[(ci, 'wrist')], q, 1.00, 1.05, dy=-0.02)
         return img
 
     def render(i):
@@ -327,34 +482,31 @@ def main():
 
         # ---- base composite
         if sid in ('hook',):
-            # fast macro pull-back into the hero dial
+            # whole watch drifts in slowly; the price lands on top of it
             tt0 = t - s['t0']
-            if tt0 < 2.0:                        # fast macro pull-back (settles at 2.0s)
-                q = ease_io(tt0 / 2.0)
-                img = crop_zoom(plates[(0, 'dial')], q, 1.60, 1.02, dy=-0.05)
-            else:                                # gentle continued push-in under the price
-                q = (tt0 - 2.0) / max(0.1, s['dur'] - 2.0)
-                img = crop_zoom(plates[(0, 'dial')], q, 1.02, 1.09, dy=-0.03)
+            if tt0 < 1.6:
+                q = ease_io(tt0 / 1.6)
+                img = crop_zoom(plates[(0, 'hook')], q, 1.10, 1.005, dy=-0.02)
+            else:
+                q = (tt0 - 1.6) / max(0.1, s['dur'] - 1.6)
+                img = crop_zoom(plates[(0, 'hook')], q, 1.005, 1.05, dy=-0.015)
         elif sid in ('black', 'blue', 'white', 'green'):
             ci = {'black': 0, 'blue': 1, 'white': 2, 'green': 3}[sid]
             img = colour_scene(s, t, ci)
         elif sid == 'crystal':
-            # slow push from the dial edge into the crystal halo, then across it
-            img = crop_zoom(plates[(0, 'dial')], p, 1.02, 1.20,
-                            dx=0.08 * ease_io(p), dy=-0.10 * ease_io(p))
+            # whole watch; the light gathers on the bezel ring (no crop, no ghost)
+            img = crop_zoom(plates[(0, 'whole')], p, 1.05, 1.01, dx=0.016 * math.sin(p * math.pi))
         elif sid == 'bracelet':
-            # track along the floral links toward the heart end-link
-            img = crop_zoom(plates[(3, 'bracelet')], p, 1.20, 1.05,
-                            dx=-0.09 * (1 - ease_io(p)), dy=0.10 * ease_io(p))
+            img = crop_zoom(plates[(3, 'whole')], p, 1.05, 1.01, dx=-0.016 * math.sin(p * math.pi))
         elif sid == 'guarantee':
-            img = crop_zoom(plates[(1, 'bracelet')], p, 1.14, 1.02)
+            img = crop_zoom(plates[(1, 'guarantee')], p, 1.05, 1.01)
             # warm pearl wash over the left/bottom for text contrast
             ov = Image.new('RGBA', (W, H), (0, 0, 0, 0))
             d = ImageDraw.Draw(ov)
             d.rectangle([0, 0, W, H], fill=(251, 242, 238, 84))
             img = Image.alpha_composite(img.convert('RGBA'), ov).convert('RGB')
         elif sid == 'price':
-            img = crop_zoom(plates[(2, 'wrist')], p, 1.06, 1.14, dy=0.03)
+            img = crop_zoom(plates[(2, 'price')], p, 1.03, 1.005, dy=0.01)
             ov = Image.new('RGBA', (W, H), (0, 0, 0, 0))
             d = ImageDraw.Draw(ov)
             d.rectangle([0, 0, W, H], fill=(42, 14, 24, 104))
@@ -481,17 +633,17 @@ def main():
         sid = s['id']
         if sid in ('black', 'blue', 'white', 'green'):
             ci = {'black': 0, 'blue': 1, 'white': 2, 'green': 3}[sid]
-            img = crop_zoom(plates[(ci, 'bracelet')], min(1, p), 1.03, 1.11)
+            img = crop_zoom(plates[(ci, 'wrist')], min(1, p), 1.02, 1.05)
         elif sid == 'hook':
-            img = crop_zoom(plates[(0, 'dial')], 1.0, 1.03, 1.03)
+            img = crop_zoom(plates[(0, 'hook')], 1.0, 1.02, 1.05)
         elif sid == 'crystal':
-            img = crop_zoom(plates[(0, 'dial')], 1.0, 1.10, 1.16)
+            img = crop_zoom(plates[(0, 'whole')], 1.0, 1.03, 1.05)
         elif sid == 'bracelet':
-            img = crop_zoom(plates[(3, 'bracelet')], 1.0, 1.12, 1.20)
+            img = crop_zoom(plates[(3, 'whole')], 1.0, 1.03, 1.05)
         elif sid == 'guarantee':
-            img = crop_zoom(plates[(1, 'bracelet')], 1.0, 1.10, 1.02)
+            img = crop_zoom(plates[(1, 'guarantee')], 1.0, 1.03, 1.01)
         elif sid == 'price':
-            img = crop_zoom(plates[(2, 'wrist')], 1.0, 1.10, 1.14)
+            img = crop_zoom(plates[(2, 'price')], 1.0, 1.03, 1.005)
         elif sid in ('five', 'cta'):
             c = cards[sid]
             img = c.crop((int((PW - W) / 2), int((PH - H) / 2),
