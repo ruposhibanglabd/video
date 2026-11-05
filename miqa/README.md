@@ -25,6 +25,7 @@
 | [PROCESS.md](PROCESS.md) | **পুরো কাজের প্রসেস:** ছবি/ভিডিও বানানো থেকে গিটে এক ক্লিক ডাউনলোড ডেলিভারি পর্যন্ত |
 | [DECISIONS.md](DECISIONS.md) | সিদ্ধান্তের তালিকা: কোন কণ্ঠ, শুধু হাত দেখানো, "মিকা" উচ্চারণ, 4K, GitHub ডেলিভারি |
 | [brand/BRAND-BIBLE.md](brand/BRAND-BIBLE.md) | ব্র্যান্ডের নিয়ম, বাধ্যতামূলক লেখা (৫% ও CTA), যা নিষেধ |
+| [**creative/IMAGE-RULES.md**](creative/IMAGE-RULES.md) | **ছবি বানানোর স্থায়ী নিয়ম** — প্রতিটা ছবি নতুন করে তৈরি, কেটে বসানো নয়; মেয়েদের ঘড়িতে Blush Couture; ছবির সাথে নাম ও বিবরণ বাধ্যতামূলক (D38–D40) |
 | [brand/design-tokens.json](brand/design-tokens.json) | রঙ, ফন্ট, Safe Zone, মোশন, অডিও আর এক্সপোর্টের মাপ |
 | [brand/style-boards/](brand/style-boards/) | মেয়েদের / ছেলেদের / কাপল ডিজাইন বোর্ড (ছবি) |
 | [brand/mood/](brand/mood/) | পরিবেশ কেমন হবে, তার নমুনা ছবি (ঘড়ি ছাড়া) |
