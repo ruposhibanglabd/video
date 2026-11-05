@@ -200,33 +200,32 @@ layer('t_feat_bracelet', (ctx) => {
 
 // ---------- 08 7-day replacement guarantee ----------
 layer('t_gauge', (ctx) => {
-  gaugeFrame(ctx, 1080, 1180, 212);
-  centerText(ctx, '৭ দিন', 1080, 1230, '118px Tiro', BURGUNDY);
-  centerText(ctx, 'রিপ্লেসমেন্ট', 1080, 1330, '46px HindM', ROSEWOOD);
+  gaugeFrame(ctx, 1080, 2320, 200);
+  centerText(ctx, '৭ দিন', 1080, 2364, '112px Tiro', BURGUNDY);
+  centerText(ctx, 'রিপ্লেসমেন্ট', 1080, 2456, '44px HindM', ROSEWOOD);
 });
 
 layer('t_guarantee', (ctx) => {
-  centerText(ctx, '৭ দিনের মধ্যে', 1080, 2500, '108px HindSB', INK);
-  centerText(ctx, 'রিপ্লেসমেন্ট গ্যারান্টি', 1080, 2640, '112px HindSB', INK);
+  centerText(ctx, '৭ দিনের মধ্যে', 1080, 2660, '108px HindSB', INK);
+  centerText(ctx, 'রিপ্লেসমেন্ট গ্যারান্টি', 1080, 2800, '112px HindSB', INK);
   ctx.fillStyle = 'rgba(158,74,99,0.85)'; ctx.fillRect(1080 - 130, 2708, 260, 3);
-  centerText(ctx, 'ক্রয়ের তারিখ থেকে ৭ দিন', 1080, 2822, '66px HindM', 'rgba(90,26,46,0.86)');
+  centerText(ctx, 'ক্রয়ের তারিখ থেকে ৭ দিন', 1080, 2960, '66px HindM', 'rgba(90,26,46,0.86)');
 });
 
 // ---------- 09 price recap ----------
 layer('t_price_big', (ctx) => {
-  const f = '430px Tiro';
+  const f = '400px Tiro';
   ctx.font = f; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  shadow(ctx, 44, 'rgba(30,8,18,0.62)', 0, 14);
-  ctx.fillStyle = goldGradient(ctx, 1080 - 400, 1440, 1080 + 400, 1840);
-  ctx.fillText('৳৩৫০', 1080, 1800);
+  shadow(ctx, 40, 'rgba(30,8,18,0.66)', 0, 12);
+  ctx.fillStyle = goldGradient(ctx, 1080 - 400, 2620, 1080 + 400, 3000);
+  ctx.fillText('৳৩৫০', 1080, 2952);
   noShadow(ctx);
 });
 
 layer('t_price', (ctx) => {
-  softScrim(ctx, 1300, 1250, 0.30);
-  centerText(ctx, 'মাত্র ৩৫০ টাকা · ৪টি রঙ', 1080, 1992, '94px HindSB', PEARL, { shadowBlur: 28 });
-  pill(ctx, 1080, 2186, 'ক্যাশ অন ডেলিভারি', 78);
-  centerText(ctx, 'কালো · নীল · সাদা · সবুজ', 1080, 1186, '50px HindM', 'rgba(251,244,241,0.94)', { shadowBlur: 20 });
+  softScrim(ctx, 2380, 1060, 0.34);
+  centerText(ctx, 'মাত্র ৩৫০ টাকা · ৪টি রঙ', 1080, 3100, '88px HindSB', PEARL, { shadowBlur: 26 });
+  centerText(ctx, 'কালো · নীল · সাদা · সবুজ', 1080, 3210, '54px HindM', CHAMP, { shadowBlur: 18 });
 });
 
 // ---------- 10 five percent (verbatim) ----------

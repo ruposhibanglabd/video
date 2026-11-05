@@ -1,12 +1,14 @@
 # QC REPORT — Set B · FIYOTA Sylvelle কালেকশন রিল
 
 জব: `2026-11-05_set-b-video` · তৈরি: ৫ নভেম্বর ২০২৬ · ফরম্যাট: 2160×3840 @30fps + 1080×1920 কপি
+**সংস্করণ: v3 (৮২.২৭ সে.)** — ফ্রেমিং সংশোধনের পর। বর্তমান ফাইল: `…_v3_4K_2160x3840.mp4` / `…_v3_1080x1920.mp4`
 ডেলিভারি: `miqa/deliveries/2026-11-05_set-b-video/`
 
 ## ক. ক্লায়েন্টের ১২-পয়েন্ট চেক
 
 | # | চেক | ফল | প্রমাণ |
 |---|---|---|---|
+| ০ | **পুরো ঘড়ি দৃশ্যমান** | ✅ | v3: প্রতিটি শটে ব্রেসলেটের উপরপ্রান্ত থেকে হার্ট এন্ড-লিংক পর্যন্ত পুরো ঘড়ি; কোনো ডায়াল-ওনলি ক্রপ নেই (`whole_plate()` / `styled_plate()`) |
 | ১ | ঘড়ির আসল ডিজাইন ঠিক আছে | ✅ | প্রতিটি প্লেট আসল ক্লায়েন্ট/Deliverable ছবি থেকে — কোনো AI-জেনারেটেড ঘড়ি নেই। `plates/`-এ কোনো ঘড়ির পিক্সেল রিটাচ হয়নি, শুধু ক্রপ/জুম/গ্রেড। ডায়াল, ১২টি ক্রিস্টাল মার্কার, বেজেল পাথর, ফ্লোরাল ব্রেসলেট, হার্ট লিংক অপরিবর্তিত |
 | ২ | সব ফিচার দেখানো হয়েছে | ✅ | ক্রিস্টাল হ্যালো বেজেল (দৃশ্য ০৬) · ১২ ক্রিস্টাল মার্কার (০৬) · ফ্লোরাল মার্কিজ ব্রেসলেট + হার্ট লিংক + ফোল্ড-ওভার লক (০৭) · ৭ দিনের রিপ্লেসমেন্ট গ্যারান্টি (০৮) · ৪ রঙ (০২–০৫, ০৯) |
 | ৩ | দাম হুবহু | ✅ | অন-স্ক্রিন `৳৩৫০` (হুক ও দাম দৃশ্য) + `মাত্র ৩৫০ টাকা` · VO: "তিনশো পঞ্চাশ টাকা" — হুকের ০.৩ সে.-এ পর্দায় |
@@ -36,7 +38,8 @@ URL, ফোন/WhatsApp, QR · ওয়াটারপ্রুফ/ATM/পা�
 ```bash
 FP=./node_modules/@ffprobe-installer/linux-x64/ffprobe
 FF=./node_modules/@ffmpeg-installer/linux-x64/ffmpeg
-$FP -v error -show_entries format=duration,size,bit_rate:stream=codec_name,profile,width,height,r_frame_rate,pix_fmt,color_space,channels,sample_rate -of json OUT_4K.mp4
+$FP -v error -show_entries format=duration,size,bit_rate:stream=codec_name,profile,width,height,r_frame_rate,pix_fmt,color_space,channels,sample_rate -of json miqa-set-b-sylvelle-v3_4K_2160x3840.mp4
+# প্রত্যাশিত: duration ≈ 82.27, 2160x3840, 30/1, bt709, 84–86 MB
 $FF -i OUT_4K.mp4 -vf cropdetect=24:16:0 -frames:v 300 -f null - 2>&1 | tail -3
 $FF -i OUT_4K.mp4 -af ebur128=peak=true -f null - 2>&1 | tail -12
 grep -rniE "http|vercel|miqawatch|whatsapp|ফ্রি ডেলিভারি|ওয়াটারপ্রুফ|ওয়াটার রেজিস্ট্যান্ট|ওয়ারেন্টি|ATM|১০০%|ডিসকাউন্ট|ছাড়" \

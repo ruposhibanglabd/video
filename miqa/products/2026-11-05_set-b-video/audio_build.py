@@ -90,10 +90,17 @@ def prep_vo():
     return vo
 
 
+# v3: extra screen time per scene (full-watch framing needs a beat more)
+EXTRA = {'hook': 1.00, 'black': 1.45, 'blue': 1.40, 'white': 1.40, 'green': 1.40,
+         'crystal': 1.60, 'bracelet': 1.60, 'guarantee': 0.60, 'price': 0.55,
+         'five': 0.50, 'cta': 0.30}
+
+
 def build_timeline(vo):
     scenes, t = [], 0.0
     for cid, _, _a, _b, pad, lead in CLIPS:
-        d = vo[cid]['dur'] + pad
+        d = vo[cid]['dur'] + pad + EXTRA.get(cid, 0.0)
+        d = round(d * 30) / 30
         scenes.append(dict(
             id=cid, t0=round(t, 3), t1=round(t + d, 3), dur=round(d, 3),
             vo_at=round(t + lead, 3), vo_dur=round(vo[cid]['dur'], 3)))
@@ -223,6 +230,8 @@ RNG = np.random.default_rng(11)
 def main():
     vo = prep_vo()
     scenes, total = build_timeline(vo)
+    # keep the score a hair shorter than the picture so the tail fade lands inside
+    total = round((total - 0.02) * 30) / 30
     tmap = {s['id']: s for s in scenes}
     N = int(total * SR)
     print(f'\nTOTAL {total:.2f}s  ({int(total*30)} frames @30fps)')

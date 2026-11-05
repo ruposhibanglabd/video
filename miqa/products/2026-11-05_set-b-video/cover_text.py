@@ -19,7 +19,7 @@ const COLS = ['01_fiyota-floral-black', '02_fiyota-floral-blue', '03_fiyota-flor
 const STEMS = ['fiyota-floral-black', 'fiyota-floral-blue', 'fiyota-floral-white', 'fiyota-floral-green'];
 const IMGS = [];
 for (let i = 0; i < 4; i++) {
-  try { IMGS.push(await loadImage(`${ART}/${COLS[i]}/website-images/${STEMS[i]}_03_dial-closeup.jpg`)); }
+  try { IMGS.push(await loadImage(`/tmp/cover_thumbs/${STEMS[i]}.jpg`)); }
   catch (e) { IMGS.push(null); }
 }
 const PEARL = '#FBF4F1', CHAMP = '#D9B779', BURGUNDY = '#5A1A2E';
