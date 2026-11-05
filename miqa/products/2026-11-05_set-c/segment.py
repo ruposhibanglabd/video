@@ -1,9 +1,10 @@
-"""Set C cutouts, take 4 — classify then connect.
+"""Set C cutouts, take 5 — matte edges.
 
-A pixel is "watch" unless it is flat, near-neutral pillow white/shadow or a
-bright desaturated highlight.  The watch is then simply the connected blob that
-contains the dark dial and the rose-gold bezel; antialiased collar pixels get a
-soft alpha.
+Same region logic as take 4 (classify, connect to the dial, per-row strap
+model), but the hard morphological outline is only a seed: a guided filter
+snaps it onto the real image edge at full resolution, so the outline is smooth
+and AA'd instead of a 15-px sawtooth, and the fringe is decontaminated with the
+inpainted local background.
 """
 import sys
 import numpy as np, cv2
@@ -19,14 +20,13 @@ WIN = {                       # x0, x1, y0, y1 (rect the watch must live in)
     'image-11': (340, 840, 195, 1500),
 }
 PILLOW = np.array([246.0, 128.0, 132.0])
-# clean band of the strap per photo: alpha ramps in/out over 26 px here
-BAND = {
+BAND = {                      # clean run of the strap (alpha must die outside)
     'image-3': (356, 1420),
     'image-5': (470, 1418),
     'image-7': (232, 1360),
     'image-9': (206, 1380),
     'image-11': (212, 1400),
-}     # Lab of the white pillow
+}
 
 
 def masks(bgr):
@@ -42,6 +42,16 @@ def masks(bgr):
     pillow = (dist < 19) & (S < 0.22) & (V > 0.60)
     flat = (tex < 0.032) & (chroma < 19) & (V > 0.28)
     return ~(pillow | flat), dist, chroma, tex
+
+
+def guided(I, p, r, eps):
+    """guided filter: p is refined so its edges follow I"""
+    k = (2 * r + 1, 2 * r + 1)
+    mI = cv2.boxFilter(I, -1, k); mp = cv2.boxFilter(p, -1, k)
+    cov = cv2.boxFilter(I * p, -1, k) - mI * mp
+    var = cv2.boxFilter(I * I, -1, k) - mI * mI
+    a = cov / (var + eps); b = mp - a * mI
+    return cv2.boxFilter(a, -1, k) * I + cv2.boxFilter(b, -1, k)
 
 
 def cut(name, win=None):
@@ -75,7 +85,7 @@ def cut(name, win=None):
         if s > score:
             best, score = j, s
     m = (lab == best).astype(np.uint8)
-    if score <= 0:                      # fall back to the whole thing
+    if score <= 0:
         m = (fg & keep).astype(np.uint8)
 
     # kill hair-thin tendrils (bracelet links are >=20 px wide)
@@ -95,8 +105,7 @@ def cut(name, win=None):
     # every fully enclosed hole is watch (bright dial facets, crystal flats);
     # the open link gaps touch the outline and stay transparent
     ff = m.copy()
-    hh, ww = ff.shape
-    mask2 = np.zeros((hh + 2, ww + 2), np.uint8)
+    mask2 = np.zeros((h + 2, w + 2), np.uint8)
     cv2.floodFill(ff, mask2, (0, 0), 1)
     holes = (ff == 0).astype(np.uint8)
     ncc, lab, stats, _ = cv2.connectedComponentsWithStats(holes, 8)
@@ -106,7 +115,6 @@ def cut(name, win=None):
 
     # keep only the strap that runs through the case: per row, the run nearest
     # the dial centre that is not wider than a case (fingers/shadow are wider)
-    d = cv2.connectedComponentsWithStats(anchor.astype(np.uint8), 8)
     dys, dxs = np.where(anchor > 0)
     cx = float(np.median(dxs))
     dw = float(np.percentile(dxs, 95) - np.percentile(dxs, 5))
@@ -125,15 +133,14 @@ def cut(name, win=None):
         q = min(cand, key=lambda q: abs(q.mean() - cx))
         band[y, q[0]:q[-1] + 1] = 1
     m = band
-    # the strap never wanders far from the case centreline: hard window outside
-    # the case rows (this removes nails, wires, box edges for good)
     cys, cxs = np.where(dial_core > 0)
     cy0, cy1 = int(np.percentile(cys, 2)), int(np.percentile(cys, 98))
-    dxs2 = cxs; cw = float(np.percentile(dxs2, 98) - np.percentile(dxs2, 2))
+    cw = float(np.percentile(cxs, 98) - np.percentile(cxs, 2))
     half = int(cw * 0.46)
     x0w, x1w = int(cx - half), int(cx + half)
     m[:cy0, :max(0, x0w)] = 0; m[:cy0, x1w:] = 0
-    m[cy1:, :max(0, x0w)] = 0; m[cy1:, x1w:] = 0
+    m[cy1:, :max(0, x0w)] = 0
+    m[cy1:, x1w:] = 0
     # outside the case, a row can never be wider than the bracelet really is
     strap_rows = [y for y in rows if y < cy0 - 6 or y > cy1 + 6]
     if strap_rows:
@@ -143,11 +150,10 @@ def cut(name, win=None):
             r = np.where(m[y])[0]
             if r.size > lim:
                 c0 = int(np.median(r))
-                lo2 = max(0, c0 - lim // 2); hi2 = min(m.shape[1], lo2 + lim)
+                lo2 = max(0, c0 - lim // 2); hi2 = min(w, lo2 + lim)
                 m[y, :] = 0
                 m[y, lo2:hi2] = 1
-    # the case itself is solid: fill each case row edge to edge (only when the
-    # row is not wider than the case, so neighbours never get bridged in)
+    # the case itself is solid: fill each case row edge to edge
     case_w = float(np.percentile(np.where(dial_core.any(0))[0], 98) -
                    np.percentile(np.where(dial_core.any(0))[0], 2))
     for y in range(max(0, cy0 - 8), min(h, cy1 + 9)):
@@ -163,22 +169,21 @@ def cut(name, win=None):
         weak = zone & (chroma < 17) & (tex < 0.038) & (m > 0)
         m[weak] = 0
 
-    # ---- local background estimate: inpaint the watch away, keep the pillow ----
-    hole = cv2.dilate(m, np.ones((11, 11), np.uint8))
+    # ---- matte: seed from the mask, then let the image decide the edge ----
+    seed = cv2.erode(m, np.ones((3, 3), np.uint8)).astype(np.float32)
+    seed = cv2.GaussianBlur(seed, (0, 0), 1.2)
+    guide = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY).astype(np.float32) / 255
+    guide = cv2.GaussianBlur(guide, (0, 0), 0.8)
+    a = guided(guide, seed, 9, 1.2e-3)
+    # the matte may only live inside the dilated mask, never out in the pillow
+    a = a * cv2.dilate(m, np.ones((9, 9), np.uint8)).astype(np.float32)
+    a = np.clip((a - 0.28) / 0.44, 0, 1)
+    a = a * a * (3 - 2 * a)
+
+    # local background estimate: inpaint the watch away, keep the pillow
+    hole = cv2.dilate((a > 0.35).astype(np.uint8), np.ones((13, 13), np.uint8))
     bg_est = cv2.inpaint(bgr, hole, 7, cv2.INPAINT_TELEA)
     bg_est = cv2.GaussianBlur(bg_est, (0, 0), 5)
-    lab_src = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB).astype(np.float32)
-    lab_bg = cv2.cvtColor(bg_est, cv2.COLOR_BGR2LAB).astype(np.float32)
-    d = np.linalg.norm(lab_src - lab_bg, axis=2)
-    soft = np.clip((d - 24.0) / 16.0, 0, 1)
-    soft = soft * soft * (3 - 2 * soft)
-
-    # only the deep interior is forced opaque; the rim is decided by colour so
-    # no pillow-white halo can survive on the outline
-    deep = cv2.erode(m, np.ones((13, 13), np.uint8))
-    rim = cv2.dilate(m, np.ones((5, 5), np.uint8))
-    a = np.where(deep > 0, 1.0, np.where(rim > 0, soft, 0.0)).astype(np.float32)
-    a = np.minimum(a, 1.0)
 
     # decontaminate the fringe with the real local background colour
     aa = a[..., None]
@@ -195,17 +200,18 @@ def cut(name, win=None):
     # drop stray slivers (hairs, wires, needle-thin highlights)
     hard = (a > 0.30).astype(np.uint8)
     ncc, lab, stats, _ = cv2.connectedComponentsWithStats(hard, 8)
-    keep = np.zeros_like(hard)
+    keep2 = np.zeros_like(hard)
     for j in range(1, ncc):
         if stats[j, 4] >= 700:
-            keep[lab == j] = 1
-    a = a * cv2.dilate(keep, np.ones((3, 3), np.uint8))
-    aa = a[..., None]
-    rgba = (np.dstack([rgb * 255, aa[..., 0] * 255])).astype(np.uint8)
+            keep2[lab == j] = 1
+    a = a * cv2.dilate(keep2, np.ones((3, 3), np.uint8))
+
+    rgba = np.dstack([rgb * 255, a * 255]).astype(np.uint8)
     Image.fromarray(rgba, 'RGBA').save(f'{OUT}/{name}.png')
     a8 = rgba[..., 3]
     ys, xs = np.where(a8 > 90)
-    print(name, 'bbox', xs.min(), ys.min(), xs.max(), ys.max(), 'px', int((a8 > 128).sum()))
+    print(name, 'bbox', xs.min(), ys.min(), xs.max(), ys.max(),
+          'soft px', int(((a8 > 20) & (a8 < 235)).sum()))
 
 
 if __name__ == '__main__':
