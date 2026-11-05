@@ -9,7 +9,7 @@ SLUG=miqa-set-c-octavia
 mkdir -p "$D"
 
 echo "== 1080 master"
-$FF -y -v error -framerate 30 -i /tmp/cframes2/f_%05d.jpg -i "$W/work/audio2/mix_raw.wav" \
+$FF -y -v error -framerate 30 -i /tmp/cframes4/f_%05d.jpg -i "$W/work/audio2/mix_raw.wav" \
   -c:v libx264 -profile:v high -level 4.1 -pix_fmt yuv420p -preset slow -crf 18 \
   -x264-params "keyint=60:min-keyint=30:scenecut=0" -tune film \
   -color_primaries bt709 -color_trc bt709 -colorspace bt709 \
