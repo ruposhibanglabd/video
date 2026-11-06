@@ -37,3 +37,7 @@
 - Miravelle: Miravelle ফ্যাশন/অ্যাক্সেসরিজ ব্র্যান্ড
 - Fleurine / Florelle: Parmigiani Fleurier / Rado Florence-এর খুব কাছাকাছি
 - Lirelle: Lireille জুয়েলারি ব্র্যান্ড
+| ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (Ivory) | মাইকেলকর্স লুনেলে (আইভরি) | মেয়েদের | Rose-Gold + Ivory Ceramic | প্রস্তাবিত (⭐), ক্লায়েন্টের সিদ্ধান্ত বাকি | সেট D v2-০৫ (ক্রিস্টাল বেজেল, সিরামিক টু-টোন, ডায়ালে বড় ১২)। বিকল্প: Orcelia, Aurienne, Serenna, Velouine, Tessaline; বাদ: Aurelle (Aurelle Watches ব্র্যান্ড), Auriella, Lunelle (Walter Bach-এর মডেল — তাই বিকল্প রাখা), Sylvenne (ফার্নিচার/ফ্যাশন ব্র্যান্ড), Sevarra, Norvelle, Vezelle। ওয়েব-চেক: ৬ নভেম্বর ২০২৬ |
+| ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (Pink) | মাইকেলকর্স লুনেলে (গোলাপি) | মেয়েদের | Rose-Gold + Blush Pink Ceramic | প্রস্তাবিত (⭐) | সেট D v2-০৬। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
+| ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (White) | মাইকেলকর্স লুনেলে (সাদা) | মেয়েদের | Rose-Gold + Black Ceramic, Silver Dial | প্রস্তাবিত (⭐) | সেট D v2-০৭। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
+| ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (Blue) | মাইকেলকর্স লুনেলে (নীল) | মেয়েদের | Rose-Gold + Navy Ceramic, Navy Dial | প্রস্তাবিত (⭐) | সেট D v2-০৮। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
