@@ -20,6 +20,11 @@ pearl #FBF4F1, champagne #D9B779, rose-gold #E2A99A)। পুরো ঘড়�
 | `website-images/set-d_06.jpg` | নতুন রেন্ডার ০৬ |
 | `website-images/set-d_07.jpg` | নতুন রেন্ডার ০৭ |
 | `website-images/set-d_08.jpg` | নতুন রেন্ডার ০৮ |
+| `boxes/01_closed.jpg` | বন্ধ বকস — ivory + champagne, MIQA wordmark |
+| `boxes/02_open.jpg` | খোলা বকস — ভেতরে ঘড়ি, champagne silk |
+| `boxes/03_gift.jpg` | গিফট বকস — champagne ribbon + MIQA card |
+| `boxes/04_stack.jpg` | দুটি বকস স্ট্যাক — বড় + ছোট |
+| `boxes/set-d_boxes.zip` | ৪টি বকসের ZIP |
 | `set-d_website-images.zip` | ৮টি ছবির ZIP |
 
 ## ফিচার (হুবহু)
