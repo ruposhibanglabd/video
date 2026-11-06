@@ -32,6 +32,9 @@
 ZIP: `set-d-product-01_website-images.zip`
 
 
+**নোট:** ০১-এর ৫টিース্টানдар্ড ছবি এখন ২০ ও ২১ — উভয় ছবি রেফারেনס ধরে তৈরি।
+
+
 ## থিম ও নিয়ম
 
 - Blush Couture: pearl #FBF4F1, blush #F4C9D6, dusty rose #D89AAE, rosewood #9E4A63,
