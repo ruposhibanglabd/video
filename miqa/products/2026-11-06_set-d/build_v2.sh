@@ -15,6 +15,8 @@ build() { # slug raw kind inset
   case "$kind" in
     primary) n=01_primary ;;
     wrist)   n=02_on-wrist ;;
+    angle)   n=03_angle ;;
+    closeup) n=04_dial-closeup ;;
   esac
   node "$B/compose_v2.mjs" "$raw" \
     "$B/work/insets/$inset.png" "$B/work/insets/$inset.png" \
@@ -27,7 +29,14 @@ build() { # slug raw kind inset
 build set-d-product-05 "$B/work/raw/p05_hero_b.png"  primary p05
 build set-d-product-05 "$B/work/raw/p05_wrist_b.png" wrist p05
 build set-d-product-06 "$B/work/raw/p06_hero_a.png"  primary p06
-build set-d-product-06 "$B/work/raw/p06_wrist.png"   wrist p06
 build set-d-product-07 "$B/work/raw/p07_hero_a.png"  primary p07
-build set-d-product-07 "$B/work/raw/p07_wrist.png"   wrist p07
 build set-d-product-08 "$B/work/raw/p08_hero_a.png"  primary p08
+
+build set-d-product-05 "$B/work/raw/p05_wrist_c.png"   wrist p05
+build set-d-product-05 "$B/work/raw/p05_angle.png"     angle p05
+build set-d-product-05 "$B/work/raw/p05_closeup.png"   closeup p05
+build set-d-product-06 "$B/work/raw/p06_angle.png"     angle p06
+build set-d-product-07 "$B/work/raw/p07_angle.png"     angle p07
+build set-d-product-08 "$B/work/raw/p08_wrist.png"     wrist p08
+build set-d-product-08 "$B/work/raw/p08_angle.png"     angle p08
+build set-d-product-08 "$B/work/raw/p08_closeup.png"   closeup p08

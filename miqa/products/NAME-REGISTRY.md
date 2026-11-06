@@ -41,3 +41,8 @@
 | ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (Pink) | মাইকেলকর্স লুনেলে (গোলাপি) | মেয়েদের | Rose-Gold + Blush Pink Ceramic | প্রস্তাবিত (⭐) | সেট D v2-০৬। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
 | ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (White) | মাইকেলকর্স লুনেলে (সাদা) | মেয়েদের | Rose-Gold + Black Ceramic, Silver Dial | প্রস্তাবিত (⭐) | সেট D v2-০৭। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
 | ৬ নভেম্বর ২০২৬ | MICHAELKORS Lunelle (Blue) | মাইকেলকর্স লুনেলে (নীল) | মেয়েদের | Rose-Gold + Navy Ceramic, Navy Dial | প্রস্তাবিত (⭐) | সেট D v2-০৮। ০৫-এর একই মডেলের রঙ ভ্যারিয়েন্ট — একই মডেল-নাম |
+
+| ৬ নভেম্বর ২০২৬ | MICHAEL KORS Novella (Black) | মাইকেল কর্স নোভেলা (কালো) | মেয়েদের | Rose-Gold + Black Ceramic, Black Dial | প্রস্তাবিত (⭐), ক্লায়েন্টের সিদ্ধান্ত বাকি | সেট D ফ্যামিলি ১-০১ (ক্রোনোগ্রাফ, ৩ সাবডায়াল + ডেট)। বিকল্প: Cassine, Bellrose, Norvela |
+| ৬ নভেম্বর ২০২৬ | MICHAEL KORS Novella (Pink) | মাইকেল কর্স নোভেলা (গোলাপি) | মেয়েদের | Rose-Gold + Blush Pink Ceramic, Pink Dial | প্রস্তাবিত (⭐) | সেট D ফ্যামিলি ১-০২ — একই মডেলের রঙ ভ্যারিয়েন্ট |
+| ৬ নভেম্বর ২০২৬ | MICHAEL KORS Novella (White) | মাইকেল কর্স নোভেলা (সাদা) | মেয়েদের | Rose-Gold + Black Ceramic, White Dial | প্রস্তাবিত (⭐) | সেট D ফ্যামিলি ১-০৩ — একই মডেলের রঙ ভ্যারিয়েন্ট |
+| ৬ নভেম্বর ২০২৬ | MICHAEL KORS Novella (Pink Crystal) | মাইকেল কর্স নোভেলা (গোলাপি ক্রিস্টাল) | মেয়েদের | Rose-Gold + Pink Bracelet, Stone-set Markers | প্রস্তাবিত (⭐) | সেট D ফ্যামিলি ১-০৪ — পাথর-বসানো মার্কার; একই মডেলের আলাদা রূপ |
