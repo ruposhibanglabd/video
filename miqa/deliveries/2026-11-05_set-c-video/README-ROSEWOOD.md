@@ -16,7 +16,8 @@
 | `facebook/set-c-octavia_post_1080x1350.jpg` | ফিড পোস্ট (৪:৫) — ৪টি রঙের দেয়াল + ৳৩৫০ |
 | `facebook/set-c-octavia_post_1080x1080.jpg` | স্কোয়ার সংস্করণ |
 | `facebook/set-c-octavia_story_1080x1920.jpg` | স্টোরি |
-| `CAPTION.md` | প্রাইমারি/সংক্ষিপ্ত ক্যাপশন + হ্যাশট্যাগ |
+| `CAPTION.md` | পোস্ট ছবির ক্যাপশন + হ্যাশট্যাগ |
+| `CAPTION-VIDEO.md` | **ভিডিওর ক্যাপশন** — প্রাইমারি/সংক্ষিপ্ত/স্টোরি + পিনড কমেন্ট + হেডলাইন |
 | `MIQA-SetC-Facebook-Post.zip` | তিনটি ছবি + ক্যাপশন একসাথে |
 
 ## নতুন থিম
