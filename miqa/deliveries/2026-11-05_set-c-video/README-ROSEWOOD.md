@@ -8,6 +8,17 @@
 | `VO-SCRIPT-ROSEWOOD.md` | ভয়েস স্ক্রিপ্ট — ১০টি লাইন, সব রেকর্ড ✅ |
 | `miqa-set-c-octavia_1080x1920.mp4` | পুরোনো ভিডিও (Blush Couture v4) — রেখে দেওয়া |
 
+
+## ফেসবুক পোস্ট
+
+| ফাইল | কী |
+|---|---|
+| `facebook/set-c-octavia_post_1080x1350.jpg` | ফিড পোস্ট (৪:৫) — ৪টি রঙের দেয়াল + ৳৩৫০ |
+| `facebook/set-c-octavia_post_1080x1080.jpg` | স্কোয়ার সংস্করণ |
+| `facebook/set-c-octavia_story_1080x1920.jpg` | স্টোরি |
+| `CAPTION.md` | প্রাইমারি/সংক্ষিপ্ত ক্যাপশন + হ্যাশট্যাগ |
+| `MIQA-SetC-Facebook-Post.zip` | তিনটি ছবি + ক্যাপশন একসাথে |
+
 ## নতুন থিম
 
 ওয়েবসাইটের ছবি হালকা **Blush Mist**; ভিডিওর জন্য আলাদা লুক —
