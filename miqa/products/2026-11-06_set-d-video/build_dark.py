@@ -25,7 +25,7 @@ from scipy.signal import butter, lfilter, fftconvolve
 
 FF = 'node_modules/@ffmpeg-installer/linux-x64/ffmpeg'
 BASE = 'miqa/products/2026-11-06_set-d-video'
-VO = f'{BASE}/audio/vo2'
+VO = f'{BASE}/audio/vo3'
 WORK = f'{BASE}/work'
 OUT = f'{WORK}/dark'
 SR = 48000
@@ -170,20 +170,17 @@ def timeline(vo):
         dur = len(vo[name]) / SR
         seg = max(4.3, dur + 1.05)
         sc = dict(id=name, kind='watch', n=f'{i:02d}', t0=round(t, 3), t1=round(t + seg, 3),
-                  look_in=round(t + 0.05, 3), name_in=round(t + 0.22, 3),
+                  look_in=round(t + 0.05, 3), name_in=round(t + 0.42, 3),
                   name_out=round(t + seg - 0.40, 3),
-                  vo=[(name, round(t + 0.55, 3))])
-        if i < 12:              # looks 11/12 also carry the wrist + macro plates
-            sc['extras'] = [dict(t=round(t + seg - 1.55, 3), plate='wrist', dur=1.45)]
-        if i == 12:
-            sc['extras'] = [dict(t=round(t + seg - 1.55, 3), plate='macro', dur=1.45)]
+                  vo=[(name, round(t + 0.62, 3))])
         scenes.append(sc)
         t += seg
     # ---- features + cta
-    for sid, plate, tail in [('water', 'p11', 0.70), ('replace', 'p05', 0.70), ('cta', 'p14', 1.30)]:
+    for sid, plate, prevp, tail in [('water', 'p11', 'p14', 0.70), ('replace', 'p05', 'p11', 0.70),
+                                    ('cta', 'p14', 'p05', 1.30)]:
         dur = len(vo[sid]) / SR
         scenes.append(dict(id=sid, kind=sid, t0=round(t, 3), t1=round(t + dur + tail, 3),
-                           plate=plate, vo=[(sid, round(t + 0.35, 3))]))
+                           plate=plate, prev=prevp, vo=[(sid, round(t + 0.45, 3))]))
         t += dur + tail
     total = round(t + 0.35, 3)
     return dict(fps=FPS, total=total, frames=int(round(total * FPS)), bpm=BPM,

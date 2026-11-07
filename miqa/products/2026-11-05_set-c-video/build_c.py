@@ -165,20 +165,17 @@ def timeline(vo):
         dur = vlen(vo, name)
         seg = max(4.3, dur + 1.35)
         sc = dict(id=name, kind='watch', n=f'{i:02d}', t0=round(t, 3), t1=round(t + seg, 3),
-                  look_in=round(t + 0.05, 3), name_in=round(t + 0.22, 3),
+                  look_in=round(t + 0.05, 3), name_in=round(t + 0.42, 3),
                   name_out=round(t + seg - 0.42, 3),
-                  vo=[(name, round(t + 0.45, 3))])
+                  vo=[(name, round(t + 0.58, 3))])
         scenes.append(sc)
         t += seg
-    # ---- extras: one wrist plate inside watch 02, one macro inside 03
-    for sc, plate in ((scenes[2], 'wrist'), (scenes[3], 'macro')):
-        sc['extras'] = [dict(t=round(sc['t1'] - 1.75, 3), plate=plate, dur=1.55)]
     # ---- features + the 5 % pledge + cta
-    for sid, plate, tail in [('water', 'p01', 0.60), ('replace', 'p05', 0.60),
-                             ('five', 'p03', 0.75), ('cta', 'p02', 1.15)]:
+    for sid, plate, prevp, tail in [('water', 'p01', 'p05', 0.60), ('replace', 'p05', 'p01', 0.60),
+                                    ('five', 'p03', 'p05', 0.75), ('cta', 'p02', 'p03', 1.15)]:
         dur = vlen(vo, sid)
         scenes.append(dict(id=sid, kind=sid, t0=round(t, 3), t1=round(t + dur + tail, 3),
-                           plate=plate, vo=[(sid, round(t + 0.30, 3))]))
+                           plate=plate, prev=prevp, vo=[(sid, round(t + 0.45, 3))]))
         t += dur + tail
     total = round(t + 0.30, 3)
     # wall highlight changes: every 0.9 s for the whole run

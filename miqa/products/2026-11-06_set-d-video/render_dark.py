@@ -25,6 +25,7 @@ from PIL import Image
 W, H, FPS = 1080, 1920, 30
 BASE = 'miqa/products/2026-11-06_set-d-video'
 WORK = f'{BASE}/work'
+SLIDE = 0.62            # one clean slide, keep in step with the build scripts
 PLATES = f'{BASE}/plates'
 DTEXT = f'{WORK}/dtext'
 DARK = f'{WORK}/dark'
@@ -294,6 +295,40 @@ class Renderer:
         self._scene_cache.put(q, canvas)
         return canvas
 
+    def blit_frame(self, dst, src, dx):
+        """Place a full-frame image at column dx (positive = to the right)."""
+        if dx >= W or dx <= -W:
+            return
+        if dx > 0:
+            w = W - dx
+            if w <= 0:
+                return
+            dst[:, dx:] = src[:, :w]
+        else:
+            w = W + dx
+            if w <= 0:
+                return
+            dst[:, :w] = src[:, -dx:]
+
+    def edge_shade(self, canvas, x, strength=0.55, width=110):
+        """Soft shadow just left of the seam: the push reads as a card sliding."""
+        a0 = max(0, int(x - width))
+        a1 = min(W, int(x))
+        if a1 <= a0:
+            return
+        ramp = np.linspace(0.0, 1.0, a1 - a0, dtype=np.float32)[None, :, None] ** 1.5
+        canvas[:, a0:a1] *= (1.0 - ramp * strength)
+
+    def push(self, prev, cur, e):
+        """Hard-edge slide: the new card arrives from the right and pushes the old
+        one out to the left. No alpha blending at any moment, so nothing flashes."""
+        canvas = self.stage.copy()
+        off = e * (W + 26)
+        self.blit_frame(canvas, prev, int(round(-off)))
+        self.blit_frame(canvas, cur, int(round(W - off)))
+        self.edge_shade(canvas, W - off + 1, 0.6, 120)
+        return canvas
+
     def scene_at(self, t):
         for sc in self.tl['scenes']:
             if sc['t0'] <= t < sc['t1']:
@@ -323,65 +358,42 @@ class Renderer:
 
     def watch(self, sc, t):
         n = int(sc['n'])
-        dur = sc['t1'] - sc['t0']
-        # the previous watch leaves to the left while this one settles
-        k = (t - sc['t0']) / 0.95
-        e = smooth(k)
-        z = 1.04 + 0.05 * smooth((t - sc['t0']) / dur)
-        drift = -26 * (1 - e) if k < 1 else -0.6 * (t - sc['t0'])
-        canvas = self.hero(n, zoom=z, dx=drift, dy=-28).copy()
+        dur = max(0.6, sc['t1'] - sc['t0'])
+        t0 = sc['t0']
+        lt = t - t0
+        z = 1.0 + 0.018 * smooth(min(1.0, lt / dur))      # one slow push-in, no pulse
+        cur = self.hero(n, zoom=z, dy=-28)
+        k = lt / SLIDE
         if k < 1.0:
-            # crossfade the outgoing frame, never a cut
             prev = n - 1 if n > 1 else 14
-            back = self.hero(prev, zoom=1.04, dx=42 * e, dy=-28)
-            canvas = back * (1 - e) + canvas * e
+            canvas = self.push(self.hero(prev, zoom=z, dy=-28), cur, smooth(k))
+        else:
+            canvas = cur.copy()
 
-        # extras: the wrist / macro plate takes the frame for a beat, with the
-        # same slow crossfade as everything else, then hands back over
-        for ex in sc.get('extras', []):
-            a = smooth((t - ex['t']) / 0.40) * smooth((ex['t'] + ex['dur'] - t) / 0.40)
-            if a > 0.004:
-                canvas = canvas * (1 - a) + self.hero(ex['plate'], zoom=1.02, dy=-20) * a
-
-        # name card enters from the right on the first half second
-        ni = ease_out((t - sc['name_in']) / 0.5)
+        ni = ease_out((t - sc['name_in']) / 0.45)
         no = 1.0 - ease_out((t - sc['name_out']) / 0.40)
         a = max(0.0, min(ni, no))
         if a > 0.004:
             self.type_layer(canvas, 'namescrim', a * 0.95)
-            self.type_layer(canvas, 'name_' + sc['n'], a, dy=30 * (1 - ni))
+            self.type_layer(canvas, 'name_' + sc['n'], a, dy=26 * (1 - ni))
         self.type_layer(canvas, 'strip', 1.0)
         return self.finish(canvas, t)
 
-    def insert(self, canvas, name, a, k2):
-        im = self.plates[name]
-        side = 430
-        x0 = W - side - 40
-        y0 = int(952 - 34 * k2)
-        tile = im.resize((side, side), Image.LANCZOS)
-        src = np.asarray(tile, np.float32)
-        # masked edges so the insert melts into the dark plate
-        yy = np.linspace(0, 1, side, dtype=np.float32)[:, None]
-        xx = np.linspace(0, 1, side, dtype=np.float32)[None, :]
-        edge = np.clip(np.minimum(np.minimum(yy, 1 - yy), np.minimum(xx, 1 - xx)) / 0.16, 0, 1)
-        m = (edge ** 1.4 * a)[..., None]
-        region = canvas[y0:y0 + side, x0:x0 + side]
-        region[:] = region * (1 - m) + src * m
-
     def feature(self, sc, t):
         plate = int(sc['plate'][1:])
-        prev = sc['id']
-        dur = sc['t1'] - sc['t0']
-        k = (t - sc['t0']) / 0.9
-        e = smooth(k)
-        z = 1.05 + 0.04 * smooth((t - sc['t0']) / dur)
-        canvas = self.hero(plate, zoom=z, dx=-0.5 * (t - sc['t0']), dy=-28).copy()
+        prev_plate = int(sc['prev'][1:]) if 'prev' in sc else plate
+        dur = max(0.6, sc['t1'] - sc['t0'])
+        t0 = sc['t0']
+        z = 1.0 + 0.016 * smooth(min(1.0, (t - t0) / dur))
+        cur = self.hero(plate, zoom=z, dy=-28)
+        k = (t - t0) / SLIDE
         if k < 1.0:
-            back = self.hero(14, zoom=1.04, dx=40 * e, dy=-28)
-            canvas = back * (1 - e) + canvas * e
-        a = ease_out((t - sc['t0'] - 0.35) / 0.45)
+            canvas = self.push(self.hero(prev_plate, zoom=z, dy=-28), cur, smooth(k))
+        else:
+            canvas = cur.copy()
+        a = ease_out((t - t0 - 0.55) / 0.45)
         name = 'cta' if sc['kind'] == 'cta' else sc['kind']
-        self.type_layer(canvas, name, a, dy=24 * (1 - a))
+        self.type_layer(canvas, name, a, dy=22 * (1 - a))
         if sc['kind'] != 'cta':
             self.type_layer(canvas, 'strip', a)
         return self.finish(canvas, t)
