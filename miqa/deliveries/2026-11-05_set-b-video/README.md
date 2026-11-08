@@ -94,3 +94,30 @@ node miqa/products/2026-11-05_set-b-video/text_v4.mjs
 > আগের কাট: `miqa-set-b-sylvelle-v3_*` (৮২ সে.), `miqa-set-b-sylvelle-collection_*` (৭০.৭ সে.),
 > `miqa-set-b-collection_*` (v1, ৩২ সে.), `archive-2026-11-05_v1-32s/`।
 > **নতুন ভিডিও = `…-20s_…` ফাইল।**
+
+---
+
+## ⭐ Daylight কাট (নতুন — লক করা থিম)
+
+`miqa/brand/MIQA-LIGHT-THEME.md` রেসিপি অনুযায়ী — **উজ্জ্বল আইভরি স্টেজ, এক ফ্রেমে এক ঘড়ি
+(বড় ও স্পষ্ট), টাইপ শুধু দুটি ব্যান্ডে**।
+
+| ফাইল | কী |
+|---|---|
+| `miqa-set-b-sylvelle_daylight_1080x1920.mp4` | **নতুন ভিডিও — ০:৪৫, ১০৮০×১৯২০, ৩০fps** |
+| `MIQA-SetB-Daylight_1080x1920.zip` | ভিডিও ZIP-এ (ডাউনলোডের জন্য) |
+| `MIQA-SetB-Daylight-Facebook.zip` | অ্যাড আর্টের ZIP |
+| `facebook-d2/` | ৪:৫, স্কোয়ার, স্টোরি + **৪টি ক্যারোসেল কার্ড** |
+| `CAPTION-VIDEO-DAYLIGHT.md` | ভিডিও ক্যাপশন (৬ সংস্করণ) |
+| `DOWNLOAD-DAYLIGHT.md` | ডাউনলোড লিংক |
+| `CONTACT-SHEET-DAYLIGHT.jpg` | ১৩ কী-ফ্রেম |
+
+**ভিডিওর ক্রম:** ৪ রঙ এক সারিতে হুক (৳৩৫০) → কালো → নেভি ব্লু → সাদা → সবুজ →
+ম্যাক্রো (ফ্লোরাল ক্রেসন্ট) → হাতে-পরা → গিফট বক্স → ৭ দিনের রিপ্লেসমেন্ট → CTA।
+ভয়েস `voice-01` (৭ লাইন)। **সেট B-তে ওয়াটার-রেজিস্ট্যান্সের দাবি নেই (D37)।**
+
+**রিবিল্ড:** `node …/light_type_b.mjs` → `/tmp/venv/bin/python …/build_light_b.py` →
+`/tmp/venv/bin/python …/render_light_b.py --out /tmp/bframes2` → ffmpeg (রেসিপি §৯) →
+`node …/facebook_posts_b2.mjs`
+
+**প্লেট:** `plates/light/` — ৮টি নতুন হাই-কি স্টুডিও রেন্ডার।
