@@ -1,4 +1,40 @@
-# Set B · FIYOTA Sylvelle — ২০ সেকেন্ডের রিল
+# Set B · FIYOTA Sylvelle — নতুন ৪২ সেকেন্ডের রিল + ফেসবুক পোস্ট সেট
+
+> **সর্বশেষ (এই সেট):** `miqa-set-b-sylvelle_midnight_1080x1920.mp4` (০:৪২, “Midnight Garden” থিম)
+> + `facebook/`-এ তিনটি পোস্ট আর্ট (৪:৫ · ১:১ · স্টোরি) + `CAPTION.md` + `CAPTION-VIDEO.md`।
+> নিচের অংশটা আগের ২০ সেকেন্ডের v4 কাট — রেফারেন্স হিসেবে রাখা।
+
+## নতুন ভিডিও (০:৪২) — “Midnight Garden”
+
+সেট C/D-র মতোই একই ছাঁচে, কিন্তু সেট B-র নিজের থিমে: গাঢ় সবুজ-টিল সিল্ক,
+উপর-ডান থেকে ঠান্ডা চাঁদের আলো আর নিচ-বাঁয়ে উষ্ণ অ্যাম্বার।
+
+| ফাইল | স্পেক |
+|---|---|
+| `miqa-set-b-sylvelle_midnight_1080x1920.mp4` | 1080×1920 · 30 fps · 42.29 সে. · H.264 High + AAC 192k · faststart · 25 MB |
+| `facebook/set-b-sylvelle_post_1080x1350.jpg` | ফিড ৪:৫ — চার রঙের ২×২ ওয়াল, ৳৩৫০, COD |
+| `facebook/set-b-sylvelle_post_1080x1080.jpg` | স্কোয়ার ১:১ |
+| `facebook/set-b-sylvelle_story_1080x1920.jpg` | স্টোরি ৯:১৬ — কালো ডায়ালের হিরো শট |
+| `CAPTION.md` / `CAPTION-VIDEO.md` | পোস্ট আর্ট ও ভিডিওর ক্যাপশন |
+| `MIQA-SetB-Facebook-Post.zip` | তিনটি ছবি + CAPTION.md |
+
+**ভিডিওর ছাঁচ:** ২×২ ওয়াল টানা → প্রতি ঘড়ির ডিজাইন আলাদা করে বলা (কালো/নীল/সাদা/সবুজ) →
+৭ দিনের রিপ্লেসমেন্ট → ৫% pledge → ৳৩৫০ + COD। এক স্ক্রিনে একটাই কথা,
+প্রোডাক্ট ডানে→বাঁয়ে হার্ড-এজ স্লাইড (কোনো ক্রসফেড/ফ্ল্যাশ নেই)।
+ভয়েস: `voice-01` (৮ লাইন)।
+
+**রিবিল্ড:**
+
+```bash
+node miqa/products/2026-11-05_set-b-video/midnight_type.mjs
+/tmp/venv/bin/python miqa/products/2026-11-05_set-b-video/build_b.py
+/tmp/venv/bin/python miqa/products/2026-11-05_set-b-video/render_b.py --out /tmp/bframes
+node miqa/products/2026-11-05_set-b-video/facebook_posts_b.mjs
+```
+
+---
+
+## আগের কাট · ২০ সেকেন্ডের রিল
 
 **ফরম্যাট:** 9:16 · 30 fps · **দৈর্ঘ্য:** 20.07 সে. · **সংস্করণ:** v4
 **কনসেপ্ট:** পাপড়ির আলো (Petal Light) — শান্ত, ফ্ল্যাশহীন, পুরো ঘড়ি
@@ -58,3 +94,30 @@ node miqa/products/2026-11-05_set-b-video/text_v4.mjs
 > আগের কাট: `miqa-set-b-sylvelle-v3_*` (৮২ সে.), `miqa-set-b-sylvelle-collection_*` (৭০.৭ সে.),
 > `miqa-set-b-collection_*` (v1, ৩২ সে.), `archive-2026-11-05_v1-32s/`।
 > **নতুন ভিডিও = `…-20s_…` ফাইল।**
+
+---
+
+## ⭐ Daylight কাট (নতুন — লক করা থিম)
+
+`miqa/brand/MIQA-LIGHT-THEME.md` রেসিপি অনুযায়ী — **উজ্জ্বল আইভরি স্টেজ, এক ফ্রেমে এক ঘড়ি
+(বড় ও স্পষ্ট), টাইপ শুধু দুটি ব্যান্ডে**।
+
+| ফাইল | কী |
+|---|---|
+| `miqa-set-b-sylvelle_daylight_1080x1920.mp4` | **নতুন ভিডিও — ০:৪৫, ১০৮০×১৯২০, ৩০fps** |
+| `MIQA-SetB-Daylight_1080x1920.zip` | ভিডিও ZIP-এ (ডাউনলোডের জন্য) |
+| `MIQA-SetB-Daylight-Facebook.zip` | অ্যাড আর্টের ZIP |
+| `facebook-d2/` | ৪:৫, স্কোয়ার, স্টোরি + **৪টি ক্যারোসেল কার্ড** |
+| `CAPTION-VIDEO-DAYLIGHT.md` | ভিডিও ক্যাপশন (৬ সংস্করণ) |
+| `DOWNLOAD-DAYLIGHT.md` | ডাউনলোড লিংক |
+| `CONTACT-SHEET-DAYLIGHT.jpg` | ১৩ কী-ফ্রেম |
+
+**ভিডিওর ক্রম:** ৪ রঙ এক সারিতে হুক (৳৩৫০) → কালো → নেভি ব্লু → সাদা → সবুজ →
+ম্যাক্রো (ফ্লোরাল ক্রেসন্ট) → হাতে-পরা → গিফট বক্স → ৭ দিনের রিপ্লেসমেন্ট → CTA।
+ভয়েস `voice-01` (৭ লাইন)। **সেট B-তে ওয়াটার-রেজিস্ট্যান্সের দাবি নেই (D37)।**
+
+**রিবিল্ড:** `node …/light_type_b.mjs` → `/tmp/venv/bin/python …/build_light_b.py` →
+`/tmp/venv/bin/python …/render_light_b.py --out /tmp/bframes2` → ffmpeg (রেসিপি §৯) →
+`node …/facebook_posts_b2.mjs`
+
+**প্লেট:** `plates/light/` — ৮টি নতুন হাই-কি স্টুডিও রেন্ডার।
