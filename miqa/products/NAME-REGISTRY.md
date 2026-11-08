@@ -26,7 +26,13 @@
 | ৫ নভেম্বর ২০২৬ | TRUE WORTH Octavia (Black) | ট্রু ওয়ার্থ অক্টেভিয়া (কালো) | মেয়েদের | Rose-Gold + Black Glitter Heart Dial | প্রস্তাবিত (⭐) | সেট C-০৩। ডায়ালে **TRUE WORTH** (ক্লায়েন্টের ছবিতেই) — তাই নামের ব্র্যান্ড TRUE WORTH, মডেল-নাম আলাদা। ⚠️ ব্র্যান্ড-ঝুঁকি হলে শুধু `Octavia (Black)` |
 | ৫ নভেম্বর ২০২৬ | FIYOTA Octavia (Green) | ফিয়োটা অক্টেভিয়া (সবুজ) | মেয়েদের | Rose-Gold + Emerald Sunray Dial | প্রস্তাবিত (⭐) | সেট C-০৪। ০১-এর রঙ ভ্যারিয়েন্ট — একই নাম |
 | ৫ নভেম্বর ২০২৬ | FIYOTA Octavia (White) | ফিয়োটা অক্টেভিয়া (সাদা) | মেয়েদের | Rose-Gold + White/Silver Sunray Dial | প্রস্তাবিত (⭐) | সেট C-০৫। ০১-এর রঙ ভ্যারিয়েন্ট — একই নাম |
-
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Emerald) | মন্টভেয়ার (এমারেল্ড) | ছেলেদের | Two-Tone + Emerald Green Dial | প্রস্তাবিত (⭐), ক্লায়েন্টের সিদ্ধান্ত বাকি | সেট H-০১। মডেল-নাম **Montvare** (mont + vare)। বিকল্প: Halvaren, Ostrave, Caldrem; বাদ: Meridane (জুয়েলারি ট্রেডমার্ক), Caldren, Corvane, Halvren, Castellan, Delvane, Meridiano, Solmere। ওয়েব-চেক: ৮ নভেম্বর ২০২৬ — "Montvare" কোনো ঘড়ির ব্র্যান্ড/মডেল নয় ✅ |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Champagne Gold) | মন্টভেয়ার (শ্যাম্পেন গোল্ড) | ছেলেদের | Full Gold + Champagne Dial | প্রস্তাবিত (⭐) | সেট H-০২। H-০১-এর রঙ ভ্যারিয়েন্ট — একই নাম, শুধু রঙের ব্র্যাকেট |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Black) | মন্টভেয়ার (কালো) | ছেলেদের | Two-Tone + Black Sunray Dial | প্রস্তাবিত (⭐) | সেট H-০৩। H-০১-এর রঙ ভ্যারিয়েন্ট |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Silver) | মন্টভেয়ার (সিলভার) | ছেলেদের | Two-Tone + Silver-Cream Dial | প্রস্তাবিত (⭐) | সেট H-০৪। H-০১-এর রঙ ভ্যারিয়েন্ট |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Blue) | মন্টভেয়ার (নীল) | ছেলেদের | Two-Tone + Royal Blue Dial | প্রস্তাবিত (⭐) | সেট H-০৫। H-০১-এর রঙ ভ্যারিয়েন্ট |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Cherry Red) | মন্টভেয়ার (চেরি রেড) | ছেলেদের | Two-Tone + Cherry Red Dial | প্রস্তাবিত (⭐) | সেট H-০৬। H-০১-এর রঙ ভ্যারিয়েন্ট |
+| ৮ নভেম্বর ২০২৬ | MONTVARE (Black Steel) | মন্টভেয়ার (ব্ল্যাক স্টিল) | ছেলেদের | Full Black PVD + Black Dial | প্রস্তাবিত (⭐) | সেট H-০৭। আলাদা কেস-ফিনিশ (ফুল PVD), তাই আলাদা ব্র্যাকেট নাম |
 **অন্য ঘড়িতে ব্যবহৃত পাওয়া গেছে, তাই দেওয়া যাবে না** (ওয়েব-চেক, ৩–৫ নভেম্বর ২০২৬):
 - Odette: ভারতে ODETTE ঘড়ির ব্র্যান্ড
 - Linnea: Sonata/Titan-এর কালেকশন
