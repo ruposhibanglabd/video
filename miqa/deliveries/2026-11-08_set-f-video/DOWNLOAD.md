@@ -37,7 +37,8 @@ https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliverie
 | `CONTACT-SHEET-SOURCE.jpg` | ক্লায়েন্টের দেওয়া ২০টি আসল ছবি এক পাতায় |
 | `MIQA-SetF-Website.zip` | ২৭টি ওয়েবসাইট ছবি (১৬০০×১৬০০) + ৬০০ থাম্ব + `WEBSITE.md` |
 | `website/` | ওয়েবসাইট ছবি — প্রতি প্রোডাক্টে `_1_main` · `_2_angle` · `_3_dial` · `_4_bracelet` · `_5_wrist` |
-| `WEBSITE.md` | কোন ছবি কোথায় বসাবেন, রেডি বাংলা প্রোডাক্ট কপি, alt text |
+| `WEBSITE.md` | কোন ছবি কোথায় বসাবেন, alt text, ইমেজ স্পেক |
+| `DESCRIPTIONS.md` | পাঁচ রঙের ১ লাইন · শর্ট · বিস্তারিত বিবরণ · ফিচার · যত্ন · SEO · FAQ |
 | `CONTACT-SHEET-WEBSITE.jpg` | ২৭টি ওয়েবসাইট ছবি এক পাতায় |
 
 > রিপো **public**। PR মার্জ হলে `main` দিয়েও একই লিংক কাজ করবে।

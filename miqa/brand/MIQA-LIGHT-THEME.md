@@ -122,7 +122,7 @@ miqa/deliveries/<তারিখ>_set-<x>-video/
   website/…_main · _detail · _wrist (১৬০০×১৬০০) · thumbs/  ← ওয়েবসাইট ছবি
   MIQA-Set<X>-Website.zip
   CONTACT-SHEET-DAYLIGHT.jpg · CONTACT-SHEET-WEBSITE.jpg
-  CAPTION.md · CAPTION-VIDEO.md · WEBSITE.md · DOWNLOAD.md · README.md
+  CAPTION.md · CAPTION-VIDEO.md · WEBSITE.md · DESCRIPTIONS.md · DOWNLOAD.md · README.md
 ```
 
 ## ৯. রিবিল্ড কমান্ড (হুবহু)
@@ -170,6 +170,9 @@ node miqa/products/<set>/facebook_posts_d2.mjs
 - প্রতিটা প্লেটে লিংকের উচ্চতা আলাদা — ব্রেসলেট ক্রপ বক্স প্লেট-ভিত্তিক ম্যাপে রাখতে হয়
 - প্লেটে মিরর-রিফ্লেকশন থাকে; রিফ্লেকশন ক্রপে ঢুকলে `bottomFade()`
 - **লেখা নেই** — URL/ফোন/ডিসকাউন্ট/লোগো/দাম কিছুই না (দাম সাইটের টেক্সটে)
+- সাথে **`DESCRIPTIONS.md`** — প্রতিটি রঙের ১ লাইন, শর্ট (meta), বিস্তারিত বিবরণ,
+  ফিচার, কে পরবেন, যত্ন, SEO title/meta/slug/keywords + কমন FAQ। ছবির প্যাক
+  একা ডেলিভারি নয় (D40)।
 - ঘড়ির কেস/ডায়াল/স্টোন/রঙ **হুবহু** — শুধু ক্রপ, রিসাইজ, হালকা শার্পেন
 
 রিবিল্ড:
