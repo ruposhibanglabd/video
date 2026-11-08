@@ -59,3 +59,32 @@ node miqa/products/2026-11-05_set-c-video/dark_type_c.mjs
 /tmp/venv/bin/python miqa/products/2026-11-05_set-c-video/build_c.py
 /tmp/venv/bin/python miqa/products/2026-11-05_set-c-video/render_c.py --out /tmp/cframes
 ```
+
+---
+
+## ⭐ Daylight কাট (নতুন — লক করা থিম)
+
+`miqa/brand/MIQA-LIGHT-THEME.md` রেসিপি অনুযায়ী নতুন করে বানানো — **উজ্জ্বল আইভরি স্টেজ,
+এক ফ্রেমে এক ঘড়ি (বড় ও স্পষ্ট), টাইপ শুধু দুটি ব্যান্ডে**।
+
+| ফাইল | কী |
+|---|---|
+| `miqa-set-c-octavia_daylight_1080x1920.mp4` | **নতুন ভিডিও — ০:৫৫, ১০৮০×১৯২০, ৩০fps** |
+| `MIQA-SetC-Daylight_1080x1920.zip` | ভিডিও ZIP-এ (ডাউনলোডের জন্য) |
+| `MIQA-SetC-Daylight-Facebook.zip` | অ্যাড আর্টের ZIP |
+| `facebook-d2/` | ৪:৫, স্কোয়ার, স্টোরি + **৫টি ক্যারোসেল কার্ড** |
+| `CAPTION-VIDEO-DAYLIGHT.md` | ভিডিও ক্যাপশন (৬ সংস্করণ) |
+| `DOWNLOAD-DAYLIGHT.md` | ডাউনলোড লিংক |
+| `CONTACT-SHEET-DAYLIGHT.jpg` | ১৪ কী-ফ্রেম |
+
+**ভিডিওর ক্রম:** ৫ রঙ এক সারিতে হুক (৳৩৫০) → কালো → শ্যাম্পেন → সবুজ → পার্ল →
+হার্ট ডায়াল → ম্যাক্রো → হাতে-পরা (ওয়াটার রেজিস্ট্যান্স) → গিফট বক্স →
+৫% pledge → ৭ দিনের রিপ্লেসমেন্ট → CTA। ভয়েস `voice-01` (৯ লাইন)।
+
+**রিবিল্ড:** `node …/light_type_c.mjs` → `/tmp/venv/bin/python …/build_light_c.py` →
+`/tmp/venv/bin/python …/render_light_c.py --out /tmp/cframes` → ffmpeg (রেসিপি §৯) →
+`node …/facebook_posts_c2.mjs`
+
+**প্লেট:** `plates/light/` — ১০টি নতুন হাই-কি স্টুডিও রেন্ডার।
+
+> `.mp4` ফাইলটা ২৩ MB, তাই Git-এ আছে (গিটহাবে ১০০ MB লিমিটের নিচে)।
