@@ -2,12 +2,16 @@
  * Set F "Cushion Stone" — website product images (2000×2000, sRGB JPEG).
  *
  * One folder per colourway → miqa/deliveries/2026-11-08_set-f-video/website/
- *   set-f-01-ivory_main.jpg       full watch, straight on, Daylight stage
- *   set-f-01-ivory_detail.jpg     case + dial macro (stones, hands, markers)
- *   set-f-01-ivory_wrist.jpg      on-wrist lifestyle
+ *   set-f-01-ivory_1_main.jpg     full watch, straight on  (thumbnail / card)
+ *   set-f-01-ivory_2_angle.jpg    three-quarter view, case turned
+ *   set-f-01-ivory_3_dial.jpg     case + dial macro (12, markers, hands)
+ *   set-f-01-ivory_4_bracelet.jpg bracelet macro (stone links + metal frame)
+ *   set-f-01-ivory_5_wrist.jpg    on-wrist lifestyle
  * …and shared cards:
  *   set-f_shared_group.jpg        all five colourways, one row
  *   set-f_shared_gift.jpg         boxed, open lid, ribbon
+ *
+ * 5 photos per product is a standing requirement — never ship 3.
  *
  * Rules: product render untouched (case, dial, hands, stones, colour) — only
  * staged, cropped, resampled and sharpened. Text-free: no URL, phone, discount,
@@ -219,20 +223,29 @@ async function strip(ctx, file, { dir = PLATES, w = 1960, cy = S / 2, crop = nul
 
 /* ----------------------------------------------------------------- sets */
 const COLOURS = [
-  { slug: 'set-f-01-ivory',    bn: 'আইভরি পার্ল',     plate: 'p01_ivory',    wrist: 'web_wrist_ivory' },
-  { slug: 'set-f-02-white',    bn: 'সিলভার হোয়াইট',  plate: 'p02_white',    wrist: 'web_wrist_white' },
-  { slug: 'set-f-03-lavender', bn: 'ল্যাভেন্ডার',     plate: 'p03_lavender', wrist: 'web_wrist_lavender' },
-  { slug: 'set-f-04-emerald',  bn: 'এমারেল্ড সবুজ',   plate: 'p04_green',    wrist: 'web_wrist_green' },
-  { slug: 'set-f-05-rose',     bn: 'রোজ পিংক',        plate: 'p05_pink',     wrist: 'web_wrist_pink' },
+  { slug: 'set-f-01-ivory',    bn: 'আইভরি পার্ল',     plate: 'p01_ivory',    angleKey: 'ivory',    wrist: 'web_wrist_ivory' },
+  { slug: 'set-f-02-white',    bn: 'সিলভার হোয়াইট',  plate: 'p02_white',    angleKey: 'white',    wrist: 'web_wrist_white' },
+  { slug: 'set-f-03-lavender', bn: 'ল্যাভেন্ডার',     plate: 'p03_lavender', angleKey: 'lavender', wrist: 'web_wrist_lavender' },
+  { slug: 'set-f-04-emerald',  bn: 'এমারেল্ড সবুজ',   plate: 'p04_green',    angleKey: 'green',    wrist: 'web_wrist_green' },
+  { slug: 'set-f-05-rose',     bn: 'রোজ পিংক',        plate: 'p05_pink',     angleKey: 'pink',     wrist: 'web_wrist_pink' },
 ];
 
 /** dial region inside a plate, normalised */
 // crop ends above the plate's mirror reflection so no ghost watch appears
 const HEAD = [0.185, 0.215, 0.815, 0.695];
+// square around the stone link below the case (bracelet macro)
+// bracelet macro box per plate — the stone link sits at a different height in each
+const BRACELET = {
+  ivory:    [0.255, 0.575, 0.745, 0.900],
+  white:    [0.255, 0.575, 0.745, 0.900],
+  lavender: [0.255, 0.690, 0.745, 1.000],
+  green:    [0.255, 0.640, 0.745, 0.965],
+  pink:     [0.255, 0.618, 0.745, 0.943],
+};
 const WRISTBOX = [0.06, 0.01, 0.995, 0.845];
 
-/** full watch, centred, on a soft real-photo backdrop */
-async function main_(c) {
+/** 1 · full watch, centred, on a soft real-photo backdrop */
+async function shotMain(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
   await backdrop(ctx, c.plate, { crop: [0.18, 0.16, 0.82, 0.90], blur: 64, glaze: 0.72 });
@@ -241,8 +254,19 @@ async function main_(c) {
   return cnv;
 }
 
-/** case + dial macro — the stones and markers read clearly at thumbnail size */
-async function detail(c) {
+/** 2 · three-quarter view — crown and case depth visible */
+async function shotAngle(c) {
+  const cnv = createCanvas(S, S);
+  const ctx = cnv.getContext('2d');
+  const f = `web_angle_${c.angleKey}`;
+  await backdrop(ctx, f, { dir: UW, crop: [0.08, 0.02, 0.92, 0.99], blur: 70, glaze: 0.66 });
+  await place(ctx, f, { dir: UW, crop: [0.04, 0.02, 0.96, 0.99], h: S * 1.0, cy: S * 0.5, feather: 0.09, featherY: 0.03, sharp: 1.2 });
+  grain(ctx, S, S);
+  return cnv;
+}
+
+/** 3 · case + dial macro — the 12, markers and hands read at thumbnail size */
+async function shotDial(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
   await backdrop(ctx, c.plate, { crop: HEAD, blur: 64, glaze: 0.74 });
@@ -251,12 +275,21 @@ async function detail(c) {
   return cnv;
 }
 
-/** on-wrist lifestyle */
-async function wrist(c) {
+/** 4 · bracelet macro — square stone links in their polished metal frame */
+async function shotBracelet(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
-  // full-bleed: the lifestyle photo *is* the square, so nothing is composited
-  // and there is no seam — a light Daylight glaze keeps it airy and on-brand
+  const box = BRACELET[c.angleKey];
+  await backdrop(ctx, c.plate, { crop: box, blur: 70, glaze: 0.72 });
+  await place(ctx, c.plate, { dir: UW, crop: box, h: S * 0.88, cy: S * 0.5, feather: 0.16, featherY: 0.16, sharp: 3.2 });
+  grain(ctx, S, S);
+  return cnv;
+}
+
+/** 5 · on-wrist lifestyle — full-bleed so nothing is composited (no seam) */
+async function shotWrist(c) {
+  const cnv = createCanvas(S, S);
+  const ctx = cnv.getContext('2d');
   await cover(ctx, c.wrist, { dir: UW, crop: WRISTBOX, glaze: 0.12, dark: 0.02 });
   grain(ctx, S, S);
   return cnv;
@@ -288,9 +321,11 @@ const main = async () => {
     console.log(name, (buf.length / 1024).toFixed(0) + ' KB');
   };
   for (const c of COLOURS) {
-    write(`${c.slug}_main.jpg`, await main_(c));
-    write(`${c.slug}_detail.jpg`, await detail(c));
-    write(`${c.slug}_wrist.jpg`, await wrist(c));
+    write(`${c.slug}_1_main.jpg`, await shotMain(c));
+    write(`${c.slug}_2_angle.jpg`, await shotAngle(c));
+    write(`${c.slug}_3_dial.jpg`, await shotDial(c));
+    write(`${c.slug}_4_bracelet.jpg`, await shotBracelet(c));
+    write(`${c.slug}_5_wrist.jpg`, await shotWrist(c));
   }
   write('set-f_shared_group.jpg', await group());
   write('set-f_shared_gift.jpg', await gift());
