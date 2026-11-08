@@ -119,8 +119,10 @@ miqa/deliveries/<তারিখ>_set-<x>-video/
   MIQA-Set<X>-Daylight_1080x1920.zip     ← ডাউনলোডের জন্য
   facebook-d2/*.jpg                       ← নতুন (লাইট) আর্ট
   facebook/*.jpg                          ← পুরোনো আর্ট (রেফারেন্স)
-  CONTACT-SHEET-DAYLIGHT.jpg
-  CAPTION.md · CAPTION-VIDEO.md · DOWNLOAD.md · README.md
+  website/…_main · _detail · _wrist (১৬০০×১৬০০) · thumbs/  ← ওয়েবসাইট ছবি
+  MIQA-Set<X>-Website.zip
+  CONTACT-SHEET-DAYLIGHT.jpg · CONTACT-SHEET-WEBSITE.jpg
+  CAPTION.md · CAPTION-VIDEO.md · WEBSITE.md · DOWNLOAD.md · README.md
 ```
 
 ## ৯. রিবিল্ড কমান্ড (হুবহু)
@@ -142,12 +144,48 @@ node miqa/products/<set>/light_type.mjs
 node miqa/products/<set>/facebook_posts_d2.mjs
 ```
 
-## ১০. রেফারেন্স ইমপ্লিমেন্টেশন
+## ১০. ওয়েবসাইট প্রোডাক্ট ছবি
+
+সেট F থেকে নতুন ফরম্যাট — একই Daylight স্টেজে সাইটের জন্য ক্যাটালগ ছবি।
+
+| ফাইল | কী |
+|---|---|
+| `<slug>_main.jpg` | পুরো ঘড়ি, সোজা সামনে থেকে — প্রোডাক্ট কার্ড/প্রধান ছবি |
+| `<slug>_detail.jpg` | কেস + ডায়াল ম্যাক্রো (বড় ১২, মার্কার, হাতা, স্টোন) |
+| `<slug>_wrist.jpg` | হাতে পরা লাইফস্টাইল |
+| `set-x_shared_group.jpg` | সব রঙ এক সারিতে |
+| `set-x_shared_gift.jpg` | খোলা গিফট বক্স |
+
+নিয়ম:
+- **১৬০০×১৬০০**, sRGB JPEG q92 (প্রতি ফাইল ≈ ২০০–৪০০ KB); `thumbs/`-এ ৬০০×৬০০ q82
+- প্লেট **২× lanczos আপস্কেল + unsharp** (`work/uw/`) — সোর্স প্লেট ৮৯৬×১১৯৫, তাই
+  ওয়েবসাইট সাইজে নরম হয়ে যায়; ২× না করলে ডায়ালের অক্ষর ঝাপসা
+- ব্যাকগ্রাউন্ড = ওই প্লেটেরই blurred কপি + Daylight গ্লেজ → ফ্ল্যাট গ্রেডিয়েন্টের
+  বদলে আসল ফটো-টেক্সচার, তবু পুরো প্যাক একই রঙে
+- লাইফস্টাইল ছবি **full-bleed cover** — কম্পোজিট করলে সিম/সেঁध দেখা যায়, তাই নয়
+- `_detail`-এ রিফ্লেকশন বা ফাঁকা নিচ আসলে `bottomFade()`
+- **লেখা নেই** — URL/ফোন/ডিসকাউন্ট/লোগো/দাম কিছুই না (দাম সাইটের টেক্সটে)
+- ঘড়ির কেস/ডায়াল/স্টোন/রঙ **হুবহু** — শুধু ক্রপ, রিসাইজ, হালকা শার্পেন
+
+রিবিল্ড:
+
+```bash
+mkdir -p miqa/products/<set>/work/uw
+for f in miqa/products/<set>/plates/*.png; do
+  convert "$f" -filter Lanczos -resize 200% -unsharp 0x1+0.7+0.02 \
+    "miqa/products/<set>/work/uw/$(basename "$f")"
+done
+node miqa/products/<set>/web_images_f.mjs     # ১৭টি ছবি
+node miqa/products/<set>/web_sheet_f.mjs      # CONTACT-SHEET-WEBSITE.jpg
+```
+
+## ১১. রেফারেন্স ইমপ্লিমেন্টেশন
 
 | ফাইল | কী |
 |---|---|
 | `miqa/products/2026-11-06_set-d-video/light_type.mjs` | টাইপ লেয়ার |
 | `miqa/products/2026-11-06_set-d-video/build_light.py` | VO/স্কোর/টাইমলাইন |
+| `miqa/products/2026-11-08_set-f-video/web_images_f.mjs` | ওয়েবসাইট ছবি (স্কয়ার, ব্যাকড্রপ, গ্রেইন) |
 | `miqa/products/2026-11-06_set-d-video/render_light.py` | ফ্রেম রেন্ডারার (grid4, band, card, push) |
 | `miqa/products/2026-11-06_set-d-video/facebook_posts_d2.mjs` | ৪:৫/১:১/৯:১৬ + ক্যারোসেল |
 | `miqa/deliveries/2026-11-06_set-d-video/` | চূড়ান্ত আউটপুট |

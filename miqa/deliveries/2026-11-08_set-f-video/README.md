@@ -23,6 +23,11 @@
 | `DOWNLOAD.md` | সরাসরি ডাউনলোড লিংক |
 | `CONTACT-SHEET-DAYLIGHT.jpg` | ১৩টি কী-ফ্রেম |
 | `CONTACT-SHEET-SOURCE.jpg` | ক্লায়েন্টের ২০টি আসল ছবি |
+| **`website/`** | **ওয়েবসাইট প্রোডাক্ট ছবি — ৫ রঙ × ৩ ছবি (১৬০০×১৬০০) + গ্রুপ + গিফট বক্স** |
+| **`website/thumbs/`** | একই ছবির ৬০০×৬০০ ভার্সন (গ্রিড/কার্টের জন্য) |
+| **`WEBSITE.md`** | কোন ছবি সাইটের কোথায়, রেডি প্রোডাক্ট কপি, alt text |
+| **`MIQA-SetF-Website.zip`** | ওয়েবসাইট ছবির ZIP |
+| `CONTACT-SHEET-WEBSITE.jpg` | ১৭টি ওয়েবসাইট ছবি এক পাতায় |
 
 ## ভিডিওর ক্রম (০:৪৭)
 
@@ -49,6 +54,14 @@ node miqa/products/2026-11-08_set-f-video/light_type_f.mjs
 /tmp/venv/bin/python miqa/products/2026-11-08_set-f-video/build_light_f.py
 /tmp/venv/bin/python miqa/products/2026-11-08_set-f-video/render_light_f.py --out /tmp/fframes
 node miqa/products/2026-11-08_set-f-video/facebook_posts_f.mjs
+# ওয়েবসাইট ছবি — আগে প্লেটগুলো ২× আপস্কেল করে কাজের ফোল্ডারে নিন
+mkdir -p miqa/products/2026-11-08_set-f-video/work/uw
+for f in miqa/products/2026-11-08_set-f-video/plates/*.png; do
+  convert "$f" -filter Lanczos -resize 200% -unsharp 0x1+0.7+0.02 \
+    "miqa/products/2026-11-08_set-f-video/work/uw/$(basename "$f")"
+done
+node miqa/products/2026-11-08_set-f-video/web_images_f.mjs      # ওয়েবসাইট ছবি
+node miqa/products/2026-11-08_set-f-video/web_sheet_f.mjs       # কনট্যাক্ট শিট
 ```
 
 ## নিয়ম মানা
