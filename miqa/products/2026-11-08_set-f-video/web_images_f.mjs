@@ -1,5 +1,5 @@
 /**
- * Set F "Cushion Stone" — website product images (2000×2000, sRGB JPEG).
+ * Set F "Cushion Stone" — website product images, 6 colourways (1600×1600, sRGB JPEG).
  *
  * One folder per colourway → miqa/deliveries/2026-11-08_set-f-video/website/
  *   set-f-01-ivory_1_main.jpg     full watch, straight on  (thumbnail / card)
@@ -8,7 +8,7 @@
  *   set-f-01-ivory_4_bracelet.jpg bracelet macro (stone links + metal frame)
  *   set-f-01-ivory_5_wrist.jpg    on-wrist lifestyle
  * …and shared cards:
- *   set-f_shared_group.jpg        all five colourways, one row
+ *   set-f_shared_group.jpg        all six colourways, one row
  *   set-f_shared_gift.jpg         boxed, open lid, ribbon
  *
  * 5 photos per product is a standing requirement — never ship 3.
@@ -228,6 +228,15 @@ const COLOURS = [
   { slug: 'set-f-03-lavender', bn: 'ল্যাভেন্ডার',     plate: 'p03_lavender', angleKey: 'lavender', wrist: 'web_wrist_lavender' },
   { slug: 'set-f-04-emerald',  bn: 'এমারেল্ড সবুজ',   plate: 'p04_green',    angleKey: 'green',    wrist: 'web_wrist_green' },
   { slug: 'set-f-05-rose',     bn: 'রোজ পিংক',        plate: 'p05_pink',     angleKey: 'pink',     wrist: 'web_wrist_pink' },
+  // ষষ্ঠ রঙ — নেভি স্টোন / সিলভার (ক্লায়েন্টের শেষ ছবি থেকে যোগ করা)
+  { slug: 'set-f-06-navy',     bn: 'নেভি স্টোন সিলভার', plate: 'web_p06_navy_main', angleKey: 'navy', wrist: 'web_wrist_navy',
+    plateDir: UW, angleFile: 'web_p06_navy_angle',
+    // the reference photo's own backdrop has a beige box shadow — take the
+    // blurred backdrop from a clean silk patch instead
+    // backdrop from an ivory plate so no shadow blob from the reference photo leaks in
+    backdropFrom: 'p01_ivory',
+    // tighter head crop: the reference photo's padded edge shadow must not enter
+    head: [0.225, 0.285, 0.775, 0.700] },
 ];
 
 /** dial region inside a plate, normalised */
@@ -241,6 +250,7 @@ const BRACELET = {
   lavender: [0.255, 0.690, 0.745, 1.000],
   green:    [0.255, 0.640, 0.745, 0.965],
   pink:     [0.255, 0.618, 0.745, 0.943],
+  navy:     [0.265, 0.615, 0.735, 0.930],
 };
 const WRISTBOX = [0.06, 0.01, 0.995, 0.845];
 
@@ -248,8 +258,9 @@ const WRISTBOX = [0.06, 0.01, 0.995, 0.845];
 async function shotMain(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
-  await backdrop(ctx, c.plate, { crop: [0.18, 0.16, 0.82, 0.90], blur: 64, glaze: 0.72 });
-  await place(ctx, c.plate, { dir: UW, crop: [0.10, 0.02, 0.92, 0.99], h: S * 1.0, cy: S * 0.5, feather: 0.10, featherY: 0.03, sharp: 1.2 });
+  const dir = c.plateDir || UW;
+  await backdrop(ctx, c.plate, { dir, crop: [0.18, 0.16, 0.82, 0.90], blur: 64, glaze: 0.72 });
+  await place(ctx, c.plate, { dir, crop: [0.10, 0.02, 0.92, 0.99], h: S * 1.0, cy: S * 0.5, feather: 0.10, featherY: 0.03, sharp: 1.2 });
   grain(ctx, S, S);
   return cnv;
 }
@@ -258,7 +269,7 @@ async function shotMain(c) {
 async function shotAngle(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
-  const f = `web_angle_${c.angleKey}`;
+  const f = c.angleFile || `web_angle_${c.angleKey}`;
   await backdrop(ctx, f, { dir: UW, crop: [0.08, 0.02, 0.92, 0.99], blur: 70, glaze: 0.66 });
   await place(ctx, f, { dir: UW, crop: [0.04, 0.02, 0.96, 0.99], h: S * 1.0, cy: S * 0.5, feather: 0.09, featherY: 0.03, sharp: 1.2 });
   grain(ctx, S, S);
@@ -269,8 +280,10 @@ async function shotAngle(c) {
 async function shotDial(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
-  await backdrop(ctx, c.plate, { crop: HEAD, blur: 64, glaze: 0.74 });
-  await place(ctx, c.plate, { dir: UW, crop: HEAD, h: S * 0.76, cy: S * 0.5, feather: 0.15, featherY: 0.12, sharp: 2 });
+  const dir = c.plateDir || UW;
+  const head = c.head || HEAD;
+  await backdrop(ctx, c.backdropFrom || c.plate, { dir: c.backdropFrom ? UW : dir, crop: head, blur: 64, glaze: 0.74 });
+  await place(ctx, c.plate, { dir, crop: head, h: S * 0.76, cy: S * 0.5, feather: 0.15, featherY: 0.12, sharp: 2 });
   grain(ctx, S, S);
   return cnv;
 }
@@ -280,8 +293,9 @@ async function shotBracelet(c) {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
   const box = BRACELET[c.angleKey];
-  await backdrop(ctx, c.plate, { crop: box, blur: 70, glaze: 0.72 });
-  await place(ctx, c.plate, { dir: UW, crop: box, h: S * 0.88, cy: S * 0.5, feather: 0.16, featherY: 0.16, sharp: 3.2 });
+  const dir = c.plateDir || UW;
+  await backdrop(ctx, c.backdropFrom || c.plate, { dir: c.backdropFrom ? UW : dir, crop: box, blur: 70, glaze: 0.72 });
+  await place(ctx, c.plate, { dir, crop: box, h: S * 0.88, cy: S * 0.5, feather: 0.16, featherY: 0.16, sharp: 3.2 });
   grain(ctx, S, S);
   return cnv;
 }
@@ -299,7 +313,7 @@ async function shotWrist(c) {
 async function group() {
   const cnv = createCanvas(S, S);
   const ctx = cnv.getContext('2d');
-  await cover(ctx, 'p06_group', { crop: [0.045, 0.16, 0.955, 0.865], glaze: 0.10 });
+  await cover(ctx, 'web_p06_group6', { dir: UW, crop: [0.03, 0.135, 0.97, 0.94], glaze: 0.08 });
   grain(ctx, S, S);
   return cnv;
 }

@@ -17,10 +17,11 @@ const COLS = [
   ['ল্যাভেন্ডার', 'set-f-03-lavender'],
   ['এমারেল্ড সবুজ', 'set-f-04-emerald'],
   ['রোজ পিংক', 'set-f-05-rose'],
+  ['নেভি স্টোন সিলভার', 'set-f-06-navy'],
 ];
 const ROWS = [['1_main', '১ · মেইন'], ['2_angle', '২ · অ্যাঙ্গেল'], ['3_dial', '৩ · ডায়াল'], ['4_bracelet', '৪ · ব্রেসলেট'], ['5_wrist', '৫ · হাতে']];
 
-const cell = 292, gap = 14, padX = 44, headH = 210, rowLab = 44;
+const cell = 262, gap = 12, padX = 40, headH = 220, rowLab = 42;
 const cw = padX * 2 + COLS.length * cell + (COLS.length - 1) * gap;
 const ch = headH + ROWS.length * (cell + rowLab + 40 + gap) + 300 + 140;
 
@@ -35,11 +36,11 @@ ctx.fillStyle = '#8A6440';
 ctx.font = '30px MontSB';
 ctx.fillText('M I Q A   ·   W E B S I T E   P H O T O S', cw / 2, 74);
 ctx.fillStyle = '#2B1118';
-ctx.font = '62px HindSB';
+ctx.font = '56px HindSB';
 ctx.fillText('কুশন স্টোন — ওয়েবসাইট প্যাক', cw / 2, 148);
 ctx.fillStyle = 'rgba(43,17,24,0.62)';
 ctx.font = '30px HindSB';
-ctx.fillText('প্রতি প্রোডাক্টে ৫টি ছবি (১৬০০×১৬০০) · পাঁচ রঙ · মোট ২৫টি + গ্রুপ ও গিফট বক্স', cw / 2, 192);
+ctx.fillText('প্রতি প্রোডাক্টে ৫টি ছবি (১৬০০×১৬০০) · ছয় রঙ · মোট ৩০টি + গ্রুপ ও গিফট বক্স', cw / 2, 196);
 
 let y = headH;
 for (const [rn, rl] of ROWS) {

@@ -183,7 +183,7 @@ for f in miqa/products/<set>/plates/*.png; do
   convert "$f" -filter Lanczos -resize 200% -unsharp 0x1+0.7+0.02 \
     "miqa/products/<set>/work/uw/$(basename "$f")"
 done
-node miqa/products/<set>/web_images_f.mjs     # ২৫ + ২ = ২৭টি ছবি
+node miqa/products/<set>/web_images_f.mjs     # রঙ × ৫ + গ্রুপ + গিফট (৬ রঙে ৩২টি)
 node miqa/products/<set>/web_sheet_f.mjs      # CONTACT-SHEET-WEBSITE.jpg
 ```
 
