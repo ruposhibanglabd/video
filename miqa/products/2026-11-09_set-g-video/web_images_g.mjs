@@ -14,13 +14,20 @@
  * Product is never altered: only staged, cropped, resampled, sharpened.
  * No text, no URL, no price, no logo overlay, no watermark.
  */
-import { createCanvas, loadImage } from '@napi-rs/canvas';
+import { createCanvas, loadImage, GlobalFonts } from '@napi-rs/canvas';
 import fs from 'fs';
 
 const PLATES = 'miqa/products/2026-11-09_set-g-video/plates';
 const UW = 'miqa/products/2026-11-09_set-g-video/work/uw';
 const OUT = 'miqa/deliveries/2026-11-09_set-g-video/website';
 const S = 1600;
+
+/* ---------------------------------------------------------- fonts */
+const F = 'miqa/brand/fonts';
+GlobalFonts.registerFromPath(`${F}/AnekBangla-ExtraBold.ttf`, 'AnekXB');
+GlobalFonts.registerFromPath(`${F}/AnekBangla-SemiBold.ttf`, 'AnekSB');
+GlobalFonts.registerFromPath(`${F}/AnekBangla-Bold.ttf`, 'AnekB');
+GlobalFonts.registerFromPath(`${F}/Montserrat-SemiBold.ttf`, 'MontSB');
 
 /* ---------------------------------------------------------- stage */
 function stage(ctx, W, H) {
@@ -189,6 +196,45 @@ async function cover(ctx, file, { crop = null, glaze = 0.10, cool = 0.16 } = {})
   ctx.fillStyle = rg; ctx.fillRect(0, 0, S, S);
 }
 
+
+/**
+ * Product caption, bottom-left of the main shot. A printed-plate feel that
+ * matches Steel Daylight: brass hairline, graphite Bengali display, steel
+ * sub-line. Only approved claim words are ever drawn — no URL, no phone,
+ * no price, no logo mark, no border.
+ */
+function caption(ctx, lines) {
+  const X = Math.round(S * 0.075);
+  const BASE = Math.round(S - 250);
+  // soft wash so the type sits on clean paper, never on the watch's shadow
+  const wg = ctx.createRadialGradient(X + 120, BASE - 60, 0, X + 120, BASE - 60, S * 0.46);
+  wg.addColorStop(0, 'rgba(252,251,247,0.82)');
+  wg.addColorStop(0.55, 'rgba(250,248,244,0.45)');
+  wg.addColorStop(1, 'rgba(250,248,244,0)');
+  ctx.fillStyle = wg; ctx.fillRect(0, 0, S, S);
+
+  // brass hairline
+  ctx.fillStyle = '#C9A45C';
+  ctx.fillRect(X, BASE - 152, Math.round(S * 0.055), 2);
+
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = 'rgba(20,24,29,0.62)';
+  ctx.font = '26px AnekSB';
+  ctx.fillText(lines.eyebrow, X, BASE - 110);
+
+  const grd = ctx.createLinearGradient(X, BASE - 90, X, BASE - 8);
+  grd.addColorStop(0, '#14181D');
+  grd.addColorStop(1, '#2C333A');
+  ctx.fillStyle = grd;
+  ctx.font = '68px AnekXB';
+  ctx.fillText(lines.title, X, BASE - 18);
+
+  ctx.fillStyle = '#5C646C';
+  ctx.font = '34px AnekSB';
+  ctx.fillText(lines.sub, X, BASE + 34);
+}
+
 /* ---------------------------------------------------------- sets */
 // measured watch bounds per plate (2× plate pixels) — crops are derived from
 // these so no crop box drifts between colourways
@@ -246,6 +292,11 @@ async function shotMain(c) {
   await backdrop(ctx, c.plate, { crop: [0.18, 0.14, 0.82, 0.92], blur: 72, glaze: 0.78 });
   await place(ctx, c.plate, { crop: [0.06, 0.02, 0.94, 0.99], h: S * 1.0, cy: S * 0.5, feather: 0.09, featherY: 0.025, sharp: 1.6 });
   grain(ctx, S, S);
+  caption(ctx, {
+    eyebrow: 'MIQA · স্টিল নাইট',
+    title: 'বাটারফ্লাই লক',
+    sub: 'দুই পাশ থেকে ভাঁজ হয়ে বন্ধ হয়',
+  });
   return cnv;
 }
 
