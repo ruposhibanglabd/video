@@ -1,65 +1,47 @@
-# ডাউনলোড — সেট G · স্টিল নাইট
+# ডাউনলোড — সেট G · Steel Daylight (v4)
 
-সব ফাইল **গিটে পুশ করা** (ব্রাঞ্চ `arena/3c25d26c-video`)। রিপো **public** —
-GitHub লগইন ছাড়াই ডাউনলোড হবে।
+**দুটো কাট, দুটো রেজোলিউশন — মোট ৪টি ভিডিও + ২টি কভার।**
+বেস লিংক:
+`https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/`
 
-## ⭐ ১ · 4K মাস্টার ভিডিও (০:৫৪.৭ · ২১৬০×৩৮৪০ · ৯০ MB)
+## ভিডিও
 
-```
-https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video/miqa-set-g-steel-night_2160x3840.mp4
-```
+| কাট | 4K (2160×3840) | 1080 (1080×1920) |
+|---|---|---|
+| **মূল · ০:৫৩** | [`miqa-set-g-steel-daylight_2160x3840.mp4`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-steel-daylight_2160x3840.mp4) · 87.9 MB | [`…_1080x1920.mp4`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-steel-daylight_1080x1920.mp4) · 12.8 MB |
+| **শর্ট · ০:৩৮** | [`…-short_2160x3840.mp4`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-steel-daylight-short_2160x3840.mp4) · 74.1 MB | [`…-short_1080x1920.mp4`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-steel-daylight-short_1080x1920.mp4) · 8.3 MB |
 
-## ২ · ১০৮০ কপি (রিলস/মোবাইল · ২৩ MB)
+## কভার ও কনট্যাক্ট শিট
 
-```
-https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video/miqa-set-g-steel-night_1080x1920.mp4
-```
+- [`miqa-set-g-cover_2160x3840.jpg`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-cover_2160x3840.jpg)
+- [`miqa-set-g-cover_1080x1920.jpg`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/miqa-set-g-cover_1080x1920.jpg)
+- [`CONTACT-SHEET-VIDEO.jpg`](https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/set-g-video-v4/CONTACT-SHEET-VIDEO.jpg) — পুরো ভিডিও এক নজরে
 
-## ৩ · ভিডিও প্যাক (১০৮০ + কভার + কপি + QC · ২৪ MB)
+## ডকুমেন্ট
 
-```
-https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video/MIQA-SetG-Video.zip
-```
+- `VOICEOVER.md` — ৯ দৃশ্যের টাইমলাইন, হুবহু অন-স্ক্রিন লেখা, ডিজাইন-নোট, রিবিল্ড কমান্ড
+- `QC-REPORT.md` — ১৮টি ক্লায়েন্ট-চেক + টেকনিক্যাল + সৎ ঝুঁকি
+- `AD-COPY.md` — ফেসবুক/ইনস্টাগ্রাম ক্যাপশন ও হেডলাইন
+- `CREDITS.md` — মিউজিক/ভয়েস/ফটো ক্রেডিট
 
-## ৪ · সাইট + ছবি প্যাক (৪৪ MB)
+## কোনটা কোথায়
 
-```
-https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video/MIQA-SetG-Site-Website.zip
-```
-
-## ৫ · শুধু ছবি + বিবরণ (১২ MB)
-
-```
-https://github.com/ruposhibanglabd/video/raw/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video/MIQA-SetG-Website.zip
-```
-
-## ব্রাউজারে
-
-```
-https://github.com/ruposhibanglabd/video/tree/arena/3c25d26c-video/miqa/deliveries/2026-11-09_set-g-video
-```
-
-## ফাইল-তালিকা (RUNBOOK §4 অনুযায়ী)
-
-| ফাইল | কী |
+| প্ল্যাটফর্ম | ফাইল |
 |---|---|
-| `miqa-set-g-steel-night_2160x3840.mp4` | **4K মাস্টার** — ০:৫৪.৭, ২-পাস, BT.709, −14 LUFS |
-| `miqa-set-g-steel-night_1080x1920.mp4` | ১০৮০ রিলস কপি |
-| `miqa-set-g-cover_2160x3840.jpg` · `_1080x1920.jpg` | কভার/থাম্বনেইল |
-| `AD-COPY.md` | Primary Text (২টি), Headline (৩), Description, ক্যাপশন, হ্যাশট্যাগ |
-| `CREDITS.md` | ভয়েস/মিউজিক/ফন্টের লাইসেন্স |
-| `QC-REPORT.md` | ১২-পয়েন্ট + টেকনিক্যাল চেকের ফল |
-| `VOICEOVER.md` | ৯ লাইনের স্ক্রিপ্ট, দৃশ্য-ছক, নিয়ম |
-| `CONTACT-SHEET-VIDEO.jpg` | প্রতি সেকেন্ডের কনট্যাক্ট শিট |
-| `site/` | পুরো ওয়েবসাইট (index.html + assets) |
-| `website/` · `descriptions/` | ২৬টি ওয়েবসাইট ছবি · ৫টি বিবরণ-কার্ড |
-| `DESCRIPTIONS.md` · `WEBSITE.md` · `SITE.md` | কপি, ইমেজ-ম্যাপ, সাইট-ডক |
+| ফেসবুক/ইনস্টাগ্রাম রিলস (দ্রুত স্ক্রল-স্টপ) | শর্ট · 1080 |
+| ফেসবুক/ইনস্টাগ্রাম রিলস (পুরো গল্প) | মূল · 1080 |
+| ইউটিউব শর্টস / বড় স্ক্রিন / আর্কাইভ | মূল · 4K |
+| মার্কেটপ্লেস/ওয়েবসাইট হিরো | মূল · 1080 + কভার |
 
 ## স্পেক
 
-| | |
-|---|---|
-| দাম | ৳৮৫০ (৫ ফিনিশে একই) |
-| দাবি | বাটারফ্লাই লক · ওয়াটার রেজিস্ট্যান্ট · কোয়ালিটি Good · ১ বছর ওয়ারেন্টি · কালার গ্যারেন্টি · ৭ দিনের রিপ্লেসমেন্ট |
-| থিম | **Midnight Precision** (ছেলেদের লাইন) — অবসিডিয়ান বেস, স্ট্রিপ-লাইট, ব্রাস হাইলাইট |
-| ভিডিও | ২১৬০×৩৮৪০ @30fps, H.264 High, AAC 48kHz stereo, −14.1 LUFS |
+| | মূল | শর্ট |
+|---|---|---|
+| দৈর্ঘ্য | 00:53.33 | 00:37.82 |
+| রেজোলিউশন | 2160×3840 / 1080×1920 | একই |
+| ফ্রেম রেট | 30 fps | 30 fps |
+| ভিডিও | H.264 High, yuv420p, bt709 | একই |
+| অডিও | AAC 320k / 256k, 48 kHz | একই |
+| লাউডনেস | −14.0 LUFS | −14.0 LUFS |
+| ট্রু পিক | −3.4 dBTP | −3.3 dBTP |
+| ফাইল | 87.9 MB · 12.8 MB | 74.1 MB · 8.3 MB |
