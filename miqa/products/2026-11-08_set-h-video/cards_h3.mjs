@@ -24,7 +24,7 @@ GlobalFonts.registerFromPath(`${F}/HindSiliguri-Medium.ttf`, 'HindMed');
 GlobalFonts.registerFromPath(`${F}/Montserrat-SemiBold.ttf`, 'MontSB');
 GlobalFonts.registerFromPath(`${F}/Montserrat-Regular.ttf`, 'MontR');
 
-const PLATES = 'miqa/products/2026-11-08_set-h/plates-v4';
+const PLATES = 'miqa/products/2026-11-08_set-h/plates-v5';
 const WEB = 'miqa/deliveries/2026-11-08_set-h/website';
 const VO = 'miqa/products/2026-11-08_set-h-video/audio/vo';
 const BASE = 'miqa/products/2026-11-08_set-h-video';
