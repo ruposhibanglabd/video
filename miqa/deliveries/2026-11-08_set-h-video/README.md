@@ -82,8 +82,24 @@ node miqa/products/2026-11-08_set-h-video/cards_h.mjs               # পুর�
 
 ## ডাউনলোড (গিট)
 
-- **সব একসাথে (ZIP, ৩০MB):** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/MIQA-SetH-v4-bundle.zip`
-- **শুধু ভিডিও:** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/miqa-set-h-montvare-v4_1080x1920.mp4`
-- গোল্ড তুলনা: `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/v4-gold_real-vs-v3-vs-v4.jpg`
-- সবুজ তুলনা: `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/v4-gold_real-vs-v3-vs-v4_green.jpg`
-- কার্ড ০১–০৭: `.../v4-cards_01-07.jpg` · কার্ড ০৮–১৩: `.../v4-cards_08-13.jpg`
+- **সব একসাথে (ZIP, ২৭MB):** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/MIQA-SetH-v5-bundle.zip`
+- **শুধু ভিডিও:** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/miqa-set-h-montvare-v5_1080x1920.mp4`
+- গোল্ড তুলনা: `.../v4-gold_real-vs-v3-vs-v4.jpg` · সবুজ: `.../v4-gold_real-vs-v3-vs-v4_green.jpg`
+- কার্ড ০১–০৭: `.../v5-cards_01-07.jpg` · কার্ড ০৮–১৩: `.../v5-cards_08-13.jpg`
+
+## v5 — পণ্য প্রথম ফ্রেমেই
+
+v4-এ ভিডিও খুলত লেখার পেজ দিয়ে, তাই ফেসবুকের প্রথম তিন সেকেন্ড নষ্ট হত। v5-এ:
+
+| | v4 | **v5** |
+|---|---|---|
+| প্রথম ফ্রেম | শুধু লেখা | **পুরো সোনালি Datejust** |
+| হুক | ৪.০ সে. | **২.৬ সে.** (মিউজিকের বিটে কাট) |
+| হুকের মোশন | স্টিল | ৬% ধীরে জুম-আউট |
+| "সাত রঙ" পেজ | লেখা বড়, ঘড়ি ছোট | **সাতটি ঘড়ি দুই সারিতে বড়, লেখা ছোট নিচে** |
+| কালার কার্ড | ঘড়ি h=1330, নাম ৯৬px | **ঘড়ি h=1404, নাম ৭৪px** |
+| কার্ড ঢোকার পর | থেমে যেত | ৩% সেটল |
+| প্লেটের রিফ্লেকশন | ঘড়ির নিচে ভূত | **কেটে বাদ** |
+
+নতুন কী-ফাংশন `keyPlate()` — লুমা দিয়ে আলফা, তারপর সাদা ব্যাকড্রপ আনমিক্স করে ফ্রিঞ্জ তোলে,
+আর "ধাতু" চেনা যায় এমন সারি পর্যন্ত ক্রপ করে, যাতে প্লেটের বেক-করা রিফ্লেকশন না আসে।
