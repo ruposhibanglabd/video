@@ -1,116 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MIQA · Set H — v4 ডাউনলোড</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIQA · Set H — v8 ডাউনলোড</title>
 <style>
-  :root{
-    --ink:#14181D; --ink2:#2A3036; --steel:#79828A; --brass:#A8823F;
-    --cool1:#F4F6F8; --cool2:#E9EDF1; --line:#D8DFE5;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--cool1); color:var(--ink);
-    font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,-apple-system,Segoe UI,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1000px;margin:0 auto;padding:48px 22px 80px}
-  .brand{
-    font:600 12px/1 Montserrat,system-ui,sans-serif;letter-spacing:.42em;
-    color:var(--steel);text-transform:uppercase
-  }
-  h1{font-size:34px;line-height:1.25;margin:16px 0 8px;letter-spacing:-.01em}
-  h1 span{color:var(--brass)}
-  .sub{color:var(--ink2);opacity:.75;font-size:16px;margin:0 0 34px;line-height:1.6}
-  .card{
-    background:#fff;border:1px solid var(--line);border-radius:14px;
-    padding:26px 26px 24px;margin-bottom:18px
-  }
-  .hero{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-  .hero .meta{flex:1;min-width:240px}
-  .hero h2{font-size:21px;margin:0 0 6px;font-weight:600}
-  .specs{list-style:none;padding:0;margin:12px 0 0;display:flex;gap:18px;flex-wrap:wrap}
-  .specs li{font:500 12px/1 Montserrat,system-ui,sans-serif;letter-spacing:.12em;
-    color:var(--steel);text-transform:uppercase}
-  .btn{
-    display:inline-flex;align-items:center;gap:10px;
-    background:var(--ink);color:#fff;text-decoration:none;
-    padding:15px 26px;border-radius:999px;font-weight:600;font-size:16px;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .btn:hover{background:#000;transform:translateY(-1px)}
-  .btn.brass{background:var(--brass)}
-  .btn.brass:hover{background:#96733a}
-  .size{font:500 11px/1 Montserrat,system-ui,sans-serif;letter-spacing:.1em;
-    color:var(--steel);margin-top:10px}
-  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-  .thumb{
-    display:block;background:#fff;border:1px solid var(--line);border-radius:12px;
-    overflow:hidden;text-decoration:none;color:inherit
-  }
-  .thumb img{display:block;width:100%;height:auto}
-  .thumb span{
-    display:block;padding:11px 14px;font-size:13px;font-weight:500;
-    border-top:1px solid var(--line);color:var(--ink2)
-  }
-  h3{font:600 11px/1 Montserrat,system-ui,sans-serif;letter-spacing:.34em;
-     color:var(--steel);text-transform:uppercase;margin:38px 0 14px}
-  .note{font-size:14px;line-height:1.75;color:var(--ink2);opacity:.8;margin:0}
-  .foot{margin-top:40px;font:500 10px/1 Montserrat,system-ui,sans-serif;
-    letter-spacing:.34em;color:var(--steel);text-transform:uppercase}
+  :root { --ink:#14181D; --ink2:#2A3036; --steel:#79828A; --brass:#A8823F;
+          --cool1:#F4F6F8; --cool2:#E9EDF1; --cool3:#D8DFE5; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Hind Siliguri","Anek Bangla",system-ui,-apple-system,"Segoe UI",sans-serif;
+         background:linear-gradient(#F7F9FB,#E9EDF1 55%,#D3DBE2); color:var(--ink); min-height:100vh; }
+  .wrap { max-width:960px; margin:0 auto; padding:56px 24px 80px; }
+  .brand { font:600 13px/1 Montserrat,system-ui,sans-serif; letter-spacing:.42em;
+           text-transform:uppercase; color:var(--steel); text-align:center; }
+  h1 { font-size:44px; line-height:1.15; text-align:center; margin:18px 0 10px; font-weight:800; }
+  .sub { text-align:center; color:#5D666F; font-size:18px; margin:0 0 40px; line-height:1.7; }
+  .card { background:#fff; border:1px solid rgba(20,24,29,.10); border-radius:18px;
+          padding:28px; box-shadow:0 18px 44px rgba(40,52,64,.10); margin-bottom:22px; }
+  .card h2 { font-size:20px; margin:0 0 4px; font-weight:700; }
+  .meta { color:var(--steel); font-size:14px; margin:0 0 18px; }
+  .btns { display:flex; flex-wrap:wrap; gap:12px; }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:14px 22px; border-radius:999px;
+         text-decoration:none; font-weight:600; font-size:16px; }
+  .brass { background:var(--brass); color:#fff; }
+  .ghost { background:var(--cool2); color:var(--ink); border:1px solid rgba(20,24,29,.10); }
+  .thumbs { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:640px){ .thumbs{grid-template-columns:1fr;} h1{font-size:32px;} }
+  .thumb { display:block; text-decoration:none; color:var(--ink); background:var(--cool1);
+           border:1px solid rgba(20,24,29,.10); border-radius:14px; overflow:hidden; }
+  .thumb img { display:block; width:100%; height:auto; }
+  .thumb span { display:block; padding:10px 12px; font-size:14px; color:#5D666F; }
+  .note { font-size:14px; color:var(--steel); line-height:1.8; margin-top:8px; }
+  .note b { color:var(--ink2); }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="brand">MIQA · Set H</div>
+  <h1>ভিডিও v8 · ওয়েবসাইট ইমেজ v8</h1>
+  <p class="sub">সাত রঙ · ঠান্ডা স্টিল-হোয়াইট স্টেজ · ৳৮৯৯ · ক্যাশ অন ডেলিভারি<br>
+     ডায়ালে ক্রাউন → ROLEX → ডে-উইন্ডো → OYSTER PERPETUAL</p>
 
-  <div class="brand">MIQA · Montvare</div>
-  <h1>Set H — <span>রিয়েল গোল্ড</span> ফাইনাল ভিডিও</h1>
-  <p class="sub">v4 · সাত রঙ · ঠান্ডা স্টিল-হোয়াইট স্টেজ · ৳৮৯৯ · ক্যাশ অন ডেলিভারি।<br>
-     নিচের বাটনে ক্লিক করে ফাইলটা সরাসরি নামিয়ে নিন।</p>
-
-  <div class="card hero">
-    <div class="meta">
-      <h2>miqa-set-h-montvare-v4_1080x1920.mp4</h2>
-      <ul class="specs">
-        <li>1080 × 1920</li>
-        <li>30 fps</li>
-        <li>68 sec</li>
-        <li>H.264 + AAC</li>
-      </ul>
-      <div class="size">30 MB</div>
+  <div class="card">
+    <h2>ভিডিও — ১০৮০×১৯২০, ৬৭ সেকেন্ড</h2>
+    <p class="meta">H.264 · ৩০fps · ভয়েসওভার + মিউজিক বেড | ২৩.৭ MB</p>
+    <div class="btns">
+      <a class="btn brass" href="https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/miqa-set-h-montvare-v8_1080x1920.mp4" download>⬇ ভিডিও ডাউনলোড</a>
+      <a class="btn ghost" href="https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/MIQA-SetH-v8-bundle.zip" download>⬇ সব একসাথে (ZIP)</a>
     </div>
-    <a class="btn brass" href="miqa-set-h-montvare-v4_1080x1920.mp4" download>⬇ ভিডিও ডাউনলোড</a>
   </div>
 
-  <h3>তুলনা ও প্রিভিউ</h3>
-  <div class="grid">
-    <a class="thumb" href="v4-gold_real-vs-v3-vs-v4.jpg" download>
-      <img src="v4-gold_real-vs-v3-vs-v4.jpg" alt="শ্যাম্পেন গোল্ড তুলনা">
-      <span>গোল্ড তুলনা — আসল / v3 / v4</span>
-    </a>
-    <a class="thumb" href="v4-gold_real-vs-v3-vs-v4_green.jpg" download>
-      <img src="v4-gold_real-vs-v3-vs-v4_green.jpg" alt="সবুজ তুলনা">
-      <span>সবুজ — আসল / v3 / v4</span>
-    </a>
-    <a class="thumb" href="v4-cards_01-07.jpg" download>
-      <img src="v4-cards_01-07.jpg" alt="কার্ড ১–৭">
-      <span>কার্ড ০১–০৭</span>
-    </a>
-    <a class="thumb" href="v4-cards_08-13.jpg" download>
-      <img src="v4-cards_08-13.jpg" alt="কার্ড ৮–১৩">
-      <span>কার্ড ০৮–১৩</span>
-    </a>
+  <div class="card">
+    <h2>ওয়েবসাইট ইমেজ — ৩০টি ছবি</h2>
+    <p class="meta">১৬০০×১৬০০ sRGB q92 + ৬০০² থাম্ব | ৯.৭ MB</p>
+    <div class="btns">
+      <a class="btn brass" href="https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-v8/MIQA-SetH-Website-v8.zip" download>⬇ ইমেজ প্যাক (ZIP)</a>
+      <a class="btn ghost" href="https://github.com/ruposhibanglabd/video/tree/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-v8/website">ফোল্ডার দেখুন</a>
+    </div>
+    <p class="note"><b>প্রতি রঙে:</b> _1_main (পুরো ঘড়ি) · _2_angle · _3_dial · _4_bracelet<br>
+       <b>শেয়ার্ড:</b> set-h_shared_lock (ক্ল্যাশ ম্যাক্রো) · set-h_shared_group (সাতটা একসাথে)</p>
   </div>
 
-  <h3>নোট</h3>
-  <p class="note">
-    ভিডিওতে আছে — ৳৮৯৯ · ক্যাশ অন ডেলিভারি · রোলেক্স লক · ওয়াটার রেজিস্ট্যান্ট ·
-    ১ বছর ওয়ারেন্টি · ৭ দিনের রিপ্লেসমেন্ট · কালার গ্যারান্টি।
-    <br>৫% বার্তা: MIQA-এর মুনাফার ৫% পথশিশুদের কল্যাণে।
-  </p>
+  <div class="card">
+    <h2>কার্ড প্রিভিউ</h2>
+    <p class="meta">ভিডিওর ১৩টি ফ্রেম — যাচাইয়ের জন্য</p>
+    <div class="thumbs">
+      <a class="thumb" href="v8-cards_01-07.jpg" download>
+        <img src="v8-cards_01-07.jpg" alt="কার্ড ১–৭">
+        <span>কার্ড ০১–০৭ · হুক, কালার গ্রিড, সাত রঙ</span>
+      </a>
+      <a class="thumb" href="v8-cards_08-13.jpg" download>
+        <img src="v8-cards_08-13.jpg" alt="কার্ড ৮–১৩">
+        <span>কার্ড ০৮–১৩ · লক, প্রমিজ, ৫%, CTA</span>
+      </a>
+      <a class="thumb" href="miqa-set-h-cover-v8_1080x1920.jpg" download>
+        <img src="miqa-set-h-cover-v8_1080x1920.jpg" alt="কভার">
+        <span>কভার ইমেজ ১০৮০×১৯২০</span>
+      </a>
+    </div>
+  </div>
 
-  <div class="foot">Beyond time, beyond style.</div>
+  <p class="note" style="text-align:center">MIQA · BEYOND TIME, BEYOND STYLE.</p>
 </div>
 </body>
 </html>

@@ -24,12 +24,12 @@ GlobalFonts.registerFromPath(`${F}/HindSiliguri-Medium.ttf`, 'HindMed');
 GlobalFonts.registerFromPath(`${F}/Montserrat-SemiBold.ttf`, 'MontSB');
 GlobalFonts.registerFromPath(`${F}/Montserrat-Regular.ttf`, 'MontR');
 
-const PLATES = 'miqa/products/2026-11-08_set-h/plates-v4';
-const WEB = 'miqa/deliveries/2026-11-08_set-h/website';
+const PLATES = 'miqa/products/2026-11-08_set-h/plates-v5';
+const WEB = 'miqa/deliveries/2026-11-08_set-h-v8/website';
 const VO = 'miqa/products/2026-11-08_set-h-video/audio/vo';
 const BASE = 'miqa/products/2026-11-08_set-h-video';
 const OUTD = 'miqa/deliveries/2026-11-08_set-h-video';
-const OUT = `${OUTD}/miqa-set-h-montvare-v5_1080x1920.mp4`;
+const OUT = `${OUTD}/miqa-set-h-montvare-v8_1080x1920.mp4`;
 const FF = 'node_modules/@ffmpeg-installer/linux-x64/ffmpeg';
 const FP = 'node_modules/@ffprobe-installer/linux-x64/ffprobe';
 
@@ -454,7 +454,7 @@ async function scenePromise() {
   if (g.roundRect) g.roundRect(X, by, WID, bh, 14); else g.rect(X, by, WID, bh);
   g.clip();
   g.imageSmoothingQuality = 'high';
-  const src = { x: 170, y: 300, w: 1260, h: 430 };
+  const src = { x: 460, y: 520, w: 700, h: 470 };
   const k = Math.max(WID / src.w, bh / src.h);
   g.drawImage(br, src.x, src.y, src.w, src.h,
     X + (WID - src.w * k) / 2, by + (bh - src.h * k) / 2, src.w * k, src.h * k);
