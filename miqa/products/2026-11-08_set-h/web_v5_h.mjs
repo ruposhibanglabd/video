@@ -17,8 +17,8 @@ import { createCanvas, loadImage } from '@napi-rs/canvas';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SRC = 'miqa/products/2026-11-08_set-h/plates-web3';
-const OUT = 'miqa/deliveries/2026-11-08_set-h-v7/website';
+const SRC = 'miqa/products/2026-11-08_set-h/plates-web4';
+const OUT = 'miqa/deliveries/2026-11-08_set-h-v8/website';
 const THUMBS = path.join(OUT, 'thumbs');
 const S = 1600;
 const THUMB = 600;
@@ -145,8 +145,21 @@ async function build(name, outName, opts = {}) {
   const bw = bx1 - bx0 + 1;
   const bh = by1 - by0 + 1;
 
-  // ---- pass B: scale the crop so the whole watch fills ~92% of the square
-  const sc = Math.min((S * 0.92) / bh, (S * 0.92) / bw);
+  // widest row of the mask = the case, so every colour renders at the same
+  // apparent size no matter how wide its bracelet is
+  let caseW = 0;
+  for (let y = by0; y <= by1; y++) {
+    let xa = -1, xb = -1;
+    for (let x = bx0; x <= bx1; x++) {
+      if (diff[y * pw0 + x] > 30) { if (xa < 0) xa = x; xb = x; }
+    }
+    if (xa >= 0 && xb - xa > caseW) caseW = xb - xa;
+  }
+
+  // ---- pass B: scale so the case is a constant width, whole watch always inside
+  const CASE = S * 0.40;
+  let sc = caseW > 0 ? CASE / caseW : Math.min((S * 0.92) / bh, (S * 0.92) / bw);
+  sc = Math.min(sc, (S * 0.955) / bh, (S * 0.90) / bw);
   const pw = Math.round(bw * sc);
   const ph = Math.round(bh * sc);
 
@@ -162,25 +175,48 @@ async function build(name, outName, opts = {}) {
   const ox = Math.round((S - pw) / 2);
   const oy = Math.round((S - ph) / 2);
 
-  // multiplicative flat-field: this plate's backdrop -> the locked stage at the
-  // very same canvas position, so the patch edge cannot show a tone step.
-  // The contact shadow only gets a gentler gain, so the watch stays grounded.
+  // ---- watch mask at patch scale: anything that departs from this plate's own
+  // backdrop, plus its cast shadow. Feathered so the edge blends into the stage.
+  const raw = new Float32Array(pw * ph);
   for (let y = 0; y < ph; y++) {
     for (let x = 0; x < pw; x++) {
       const i = (y * pw + x) * 4;
       const f = fitAt(bx0 + x / sc, by0 + y / sc);
-      const t = target(x + ox, y + oy);
-      const w = 0.30 + 0.70 * smoothstep(120, 195, plum(i));
-      for (let ci = 0; ci < 3; ci++) {
-        const g = f[ci] > 12 ? t[ci] / f[ci] : 1;
-        const corr = pp[i + ci] * (1 + (g - 1) * w);
-        pp[i + ci] = Math.max(0, Math.min(255, Math.round(corr)));
-      }
+      const dv = Math.max(
+        Math.abs(pp[i] - f[0]),
+        Math.abs(pp[i + 1] - f[1]),
+        Math.abs(pp[i + 2] - f[2]),
+      );
+      raw[y * pw + x] = dv > 26 ? 1 : 0;
     }
   }
-  pctx.putImageData(pd, 0, 0);
+  // two box passes = soft feather; keeps the bracelet edge from looking cut out
+  const rad = Math.max(6, Math.round(Math.min(pw, ph) * 0.012));
+  const blurPass = (src) => {
+    const tmp = new Float32Array(pw * ph);
+    const out = new Float32Array(pw * ph);
+    for (let y = 0; y < ph; y++) {
+      let acc = 0;
+      for (let x = -rad; x <= rad; x++) acc += src[y * pw + Math.min(pw - 1, Math.max(0, x))];
+      for (let x = 0; x < pw; x++) {
+        tmp[y * pw + x] = acc / (2 * rad + 1);
+        acc += src[y * pw + Math.min(pw - 1, x + rad + 1)] - src[y * pw + Math.max(0, x - rad)];
+      }
+    }
+    for (let x = 0; x < pw; x++) {
+      let acc = 0;
+      for (let y = -rad; y <= rad; y++) acc += tmp[Math.min(ph - 1, Math.max(0, y)) * pw + x];
+      for (let y = 0; y < ph; y++) {
+        out[y * pw + x] = acc / (2 * rad + 1);
+        acc += tmp[Math.min(ph - 1, y + rad + 1) * pw + x] - tmp[Math.max(0, y - rad) * pw + x];
+      }
+    }
+    return out;
+  };
+  const alpha = blurPass(blurPass(raw));
 
-  // ---- stage
+  // ---- stage, then composite: backdrop is replaced outright (so no residue of
+  // the plate's own backdrop can survive), the watch keeps its own pixels
   const c = createCanvas(S, S);
   const ctx = c.getContext('2d');
   const sd = ctx.createImageData(S, S);
@@ -188,33 +224,28 @@ async function build(name, outName, opts = {}) {
     for (let x = 0; x < S; x++) {
       const i = (y * S + x) * 4;
       const t = target(x, y);
-      sd.data[i] = t[0];
-      sd.data[i + 1] = t[1];
-      sd.data[i + 2] = t[2];
+      const px_ = x - ox;
+      const py_ = y - oy;
+      let a = 0;
+      if (px_ >= 0 && px_ < pw && py_ >= 0 && py_ < ph) a = Math.min(1, alpha[py_ * pw + px_]);
+      // slight flat-field gain on the watch so its cast shadow matches the stage
+      let cr = 0, cg = 0, cb = 0;
+      if (a > 0) {
+        const f = fitAt(bx0 + px_ / sc, by0 + py_ / sc);
+        const w = 0.30 + 0.70 * smoothstep(120, 195, 0.299 * pp[(py_ * pw + px_) * 4] + 0.587 * pp[(py_ * pw + px_) * 4 + 1] + 0.114 * pp[(py_ * pw + px_) * 4 + 2]);
+        const gi = [0, 1, 2].map((k) => (f[k] > 12 ? t[k] / f[k] : 1));
+        const idx = (py_ * pw + px_) * 4;
+        cr = pp[idx] * (1 + (gi[0] - 1) * w);
+        cg = pp[idx + 1] * (1 + (gi[1] - 1) * w);
+        cb = pp[idx + 2] * (1 + (gi[2] - 1) * w);
+      }
+      sd.data[i] = Math.max(0, Math.min(255, Math.round(t[0] * (1 - a) + (a > 0 ? cr : t[0]) * a)));
+      sd.data[i + 1] = Math.max(0, Math.min(255, Math.round(t[1] * (1 - a) + (a > 0 ? cg : t[1]) * a)));
+      sd.data[i + 2] = Math.max(0, Math.min(255, Math.round(t[2] * (1 - a) + (a > 0 ? cb : t[2]) * a)));
       sd.data[i + 3] = 255;
     }
   }
   ctx.putImageData(sd, 0, 0);
-
-  // feather the patch border into the stage: the flat-field is very close but
-  // never exact, and an exact border would read as a faint rectangle line
-  const fw = Math.round(Math.min(pw, ph) * 0.05);
-  const mask = createCanvas(pw, ph);
-  const mctx = mask.getContext('2d');
-  mctx.drawImage(pc, 0, 0);
-  mctx.globalCompositeOperation = 'destination-in';
-  const fade = (x0, y0, x1, y1) => {
-    const g = mctx.createLinearGradient(x0, y0, x1, y1);
-    g.addColorStop(0, 'rgba(255,255,255,0)');
-    g.addColorStop(1, 'rgba(255,255,255,1)');
-    mctx.fillStyle = g;
-    mctx.fillRect(0, 0, pw, ph);
-  };
-  fade(0, 0, fw, 0);
-  fade(pw, 0, pw - fw, 0);
-  fade(0, 0, 0, fw);
-  fade(0, ph, 0, ph - fw);
-  ctx.drawImage(mask, ox, oy);
 
   // ---- grade + write
   const sharp = createCanvas(S, S);

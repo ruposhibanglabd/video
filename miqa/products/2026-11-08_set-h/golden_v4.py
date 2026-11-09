@@ -16,7 +16,7 @@ import sys, os
 import cv2
 import numpy as np
 
-PLATES_IN = 'miqa/products/2026-11-08_set-h/plates-v3'
+PLATES_IN = os.environ.get('GOLD_IN', 'miqa/products/2026-11-08_set-h/plates-v3')
 PLATES_OUT = os.environ.get('GOLD_OUT', 'miqa/products/2026-11-08_set-h/plates-v4')
 
 # tuning
