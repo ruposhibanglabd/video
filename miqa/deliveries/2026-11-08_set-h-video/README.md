@@ -79,3 +79,11 @@ node miqa/products/2026-11-08_set-h-video/cards_h.mjs               # পুর�
 
 ভয়েস: `miqa/products/2026-11-08_set-h-video/audio/vo/*.mp3` (৯টি ক্লিপ, `voice-01`)।
 সময়ের হিসাব ক্লিপের দৈর্ঘ্য থেকেই আসে — কণ্ঠ বদলালে টাইমলাইন নিজে থেকে মিলে যাবে।
+
+## ডাউনলোড (গিট)
+
+- **সব একসাথে (ZIP, ৩০MB):** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/MIQA-SetH-v4-bundle.zip`
+- **শুধু ভিডিও:** `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/miqa-set-h-montvare-v4_1080x1920.mp4`
+- গোল্ড তুলনা: `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/v4-gold_real-vs-v3-vs-v4.jpg`
+- সবুজ তুলনা: `https://github.com/ruposhibanglabd/video/raw/arena/75062295-video/miqa/deliveries/2026-11-08_set-h-video/v4-gold_real-vs-v3-vs-v4_green.jpg`
+- কার্ড ০১–০৭: `.../v4-cards_01-07.jpg` · কার্ড ০৮–১৩: `.../v4-cards_08-13.jpg`
