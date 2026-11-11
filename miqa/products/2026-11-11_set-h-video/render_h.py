@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Set H video — Steel Daylight renderer for real handheld footage.
+"""Set H video — renderer for real handheld footage (v7: full-frame footage).
 
 The client sent five phone clips (messy desk, shaky hand) instead of photos.
-What this renderer does with them:
+v6 hid most of each clip behind a soft white matte; the client rejected that
+("সাদা শেড দিয়ে ঢেকে দিয়েছ … ভিডিওটা রিয়েল যেন লাগে"). v7 shows the footage itself:
 
-  * every shot is LOCKED on its subject with the tracks from track_h.py
-    (centre, scale, rotation) — the watch sits still on the stage and only our
-    own slow push-in moves, so the film reads as smooth studio footage;
-  * slow motion comes from blending neighbouring frames *after* alignment;
-  * the clip is white-balanced so the client's sheet of paper lands on the
-    Steel Daylight stage colour, then feathered into the stage with a soft
-    super-ellipse matte — the desk, the marble and the other hands fall away;
-  * type lives only in the reserved bands (mtype_h.mjs), and the ৳৯৯৯ tab stays
-    on the right edge for the whole film;
+  * the clip fills the whole 9:16 frame — nothing is painted over it;
+  * every shot is still LOCKED on its subject with the tracks from track_h.py
+    (centre, scale, rotation), so the watch sits still and only our own slow
+    push-in moves;
+  * where the stabilised phone frame ends, the same footage continues out of
+    focus (mirrored + blurred) — never a white fill;
+  * away from the watch the picture falls gently out of focus and a touch darker,
+    the way a lens does, so the desk clutter stops competing with the product;
+  * one neutral white balance + contrast curve per shot (the product is not recoloured);
+  * type sits on small solid cards (header chip, price tab, one caption card)
+    instead of a haze over the picture;
   * shots change with the men's-line move (MIQA-MEN-THEME §5): a right→left push,
     eased, plus a ~2 % push-in inside each shot — no fades, no flashes.
 
@@ -73,32 +76,39 @@ class Stage:
                       for i in range(5)]
 
 
-def matte(w, h, cx, cy, rx, ry, n=2.8, inner=0.60):
-    """soft super-ellipse (1 inside, feathered to 0 at the rim) → (x0, y0, alpha[h,w,1])"""
-    x0, x1 = max(0, int(cx - rx)), min(w, int(cx + rx) + 1)
-    y0, y1 = max(0, int(cy - ry)), min(h, int(cy + ry) + 1)
-    y, x = np.mgrid[y0:y1, x0:x1].astype(np.float32)
+def focus_mask(w, h, cx, cy, rx, ry, n=2.4, lo=0.85, hi=1.9):
+    """0 on the subject → 1 far from it (soft super-ellipse): how far out of focus a pixel is"""
+    y, x = np.mgrid[0:h, 0:w].astype(np.float32)
     d = (np.abs((x - cx) / rx) ** n + np.abs((y - cy) / ry) ** n) ** (1.0 / n)
-    return x0, y0, sstep(1.0, inner, d).astype(np.float32)[..., None]
+    return sstep(lo, hi, d).astype(np.float32)
+
+
+def rbox_sdf(w, h, x0, y0, x1, y1, r, ox=0, oy=0):
+    """signed distance to a rounded box for the pixel block [oy:oy+h, ox:ox+w]"""
+    y, x = np.mgrid[oy:oy + h, ox:ox + w].astype(np.float32)
+    qx = np.abs(x + 0.5 - (x0 + x1) / 2) - ((x1 - x0) / 2 - r)
+    qy = np.abs(y + 0.5 - (y0 + y1) / 2) - ((y1 - y0) / 2 - r)
+    return np.hypot(np.maximum(qx, 0), np.maximum(qy, 0)) + np.minimum(np.maximum(qx, qy), 0) - r
 
 
 # ───────────────────────────── footage ───────────────────────────────────────
 #  per shot: zoom = stage px per source px at the seed frame, rot = levelling (deg),
 #  wb = white-balance reference ('auto' = this shot's own paper, or another shot's name)
 SHOT = {
-    'A': dict(zoom=0.80, mat=(560, 480)),
-    'C': dict(zoom=0.70, mat=(470, 470)),
-    'D': dict(zoom=0.84, mat=(430, 460)),
-    'E': dict(zoom=0.90, mat=(450, 460)),
-    'F': dict(zoom=1.06, mat=(420, 450)),
-    'G': dict(zoom=0.80, mat=(380, 470)),
-    'H': dict(zoom=0.80, mat=(380, 470)),
-    'J': dict(zoom=0.98, mat=(470, 460)),
-    'K': dict(zoom=0.98, mat=(470, 460)),
-    'L': dict(zoom=0.92, mat=(450, 460)),
-    'N': dict(zoom=0.80, mat=(520, 480)),
+    'A': dict(zoom=0.86, foc=None),
+    'C': dict(zoom=0.78, foc=(470, 560), steady=True),
+    'D': dict(zoom=0.92, foc=(430, 600), steady=True),
+    'E': dict(zoom=0.98, foc=(430, 600), steady=True),
+    'F': dict(zoom=1.10, foc=(430, 600), steady=True),
+    'G': dict(zoom=0.92, foc=(400, 600)),
+    'H': dict(zoom=0.92, foc=(420, 600)),
+    'J': dict(zoom=1.04, foc=(470, 600)),
+    'K': dict(zoom=1.04, foc=(470, 600)),
+    'L': dict(zoom=0.98, foc=(460, 600)),
+    'M': dict(zoom=1.0, foc=None),
+    'N': dict(zoom=0.92, foc=None),
 }
-PAPER_RGB = np.array([243.0, 240.0, 235.0])      # where the client's paper should land (stage tone)
+PAPER_RGB = np.array([240.0, 238.0, 234.0])      # where the client's sheet of paper should land: clean neutral white
 
 
 class Clip:
@@ -176,27 +186,23 @@ def colour_lut(name):
 
 class Seg:
     """one piece of footage: source frames fa→fb play over t0→t1.
-    at = where the tracked subject sits on the 1080×1920 stage, mc/mat = centre/radii of the soft window."""
+    at = where the tracked subject sits in the 1080×1920 frame; win = the part of the frame this footage fills
+    (None = all of it); foc = radii of the in-focus zone around `at` (None = everything sharp)."""
 
-    def __init__(self, shot, fa, fb, t0, t1, at=(540, 770), mc=(540, 765), mat=None, push=0.012, drift=(0, 0),
-                 zoom=None, slide=0.5, out=None, n=2.8, key=3):
+    def __init__(self, shot, fa, fb, t0, t1, at=(540, 770), win=None, foc='shot', push=0.012, drift=(0, 0),
+                 zoom=None, slide=0.5, out=None, steady=None):
         self.shot, self.fa, self.fb, self.t0, self.t1 = shot, fa, fb, t0, t1
-        self.at, self.mc, self.push, self.drift, self.n = at, mc, push, drift, n
-        self.mat = mat if mat is not None else SHOT[shot]['mat']
+        self.at, self.push, self.drift = at, push, drift
+        self.win = win if win is not None else (0, 0, 1080, 1920)
+        self.foc = SHOT[shot]['foc'] if foc == 'shot' else foc
         self.zoom = zoom if zoom is not None else SHOT[shot]['zoom']
         self.rot = 0.0
         self.slide, self.out = slide, out        # slide = seconds of the right→left push in; out='push' → leaves on its own at t1
         self.corr = None
-        # phone footage: every 2nd–3rd frame is motion-blurred. Keep only the sharpest frame of each
-        # `key`-frame window and dissolve between those (they are already locked on the subject),
-        # so a slowed shot stays evenly crisp instead of pulsing. key=1 → every frame (real action).
         tr = TRACKS[shot]
-        sh = tr['sharp']
-        ks = []
-        for a in range(fa, fb + 1, key):
-            w = [f for f in range(a, min(fb, a + key - 1) + 1)]
-            ks.append(max(w, key=lambda f: sh[f - tr['f0']]))
-        self.keys = ks if len(ks) > 1 else [fa, fb]
+        self.keys = list(range(fa, fb + 1))
+        self.sharp = [max(1e-6, tr['sharp'][f - tr['f0']]) for f in self.keys]
+        self.steady = SHOT[shot].get('steady', False) if steady is None else steady
 
 
 class Layer:
@@ -213,45 +219,54 @@ def timeline(cut='long'):
           ('05_water_color', 19.85), ('06_warranty', 22.55), ('07_price', 26.65),
           ('08_five', 30.05), ('09_cta', 34.10)]
     D = 40.8
-    CTA = dict(at=(540, 650), mc=(540, 650), push=0.010)
+    CTA = dict(at=(540, 640), push=0.010)
     Q = 0.36          # quicker push for the colour-by-colour run
+    LOW = dict(at=(500, 860))      # clasp shots: the phone held the strap low in frame
     segs = [
         # 01 hook — three colours on the table, the white one is lifted to the lens
-        Seg('A', 0, 81, 0.00, 2.72, at=(414, 560), mc=(500, 765), mat=(540, 490), zoom=0.72, push=0.0, slide=0, key=1),
-        Seg('N', 9, 43, 2.72, 4.85, at=(530, 770), push=0.014, drift=(-8, 0), key=2),
+        Seg('A', 0, 93, 0.00, 2.72, at=(430, 480), zoom=1.0, push=0.0, slide=0),
+        Seg('N', 9, 43, 2.72, 4.85, at=(530, 800), push=0.014, drift=(-8, 0)),
         # 02 four colours, each on its VO word
         Seg('C', 262, 290, 4.85, 5.92),
         Seg('D', 66, 92, 5.92, 6.78, slide=Q),
         Seg('E', 30, 54, 6.78, 7.52, slide=Q),
         Seg('F', 137, 155, 7.52, 8.62, slide=Q, out='push'),
         # 03 butterfly lock
-        Seg('L', 244, 262, 11.25, 12.10),
-        Seg('G', 45, 71, 12.10, 14.30),
-        Seg('H', 321, 338, 14.30, 15.55, at=(540, 800)),
+        Seg('L', 240, 274, 11.25, 12.10, **LOW),
+        Seg('G', 40, 76, 12.10, 14.52, **LOW),
+        Seg('H', 314, 344, 14.52, 15.55, **LOW),
         # 04 semi-automatic machine (see-through back)
         Seg('J', 70, 101, 15.55, 17.65),
         Seg('K', 259, 281, 17.65, 19.65),
         # 05 waterproof · colour guarantee
-        Seg('E', 34, 60, 19.65, 21.00),
-        Seg('L', 250, 275, 21.00, 22.40),
+        Seg('E', 20, 64, 19.65, 21.00),
+        Seg('L', 250, 300, 21.00, 22.40, **LOW),
         # 06 warranty + replacement
         Seg('D', 66, 92, 22.40, 24.45, push=0.016),
         Seg('F', 137, 155, 24.45, 26.45, push=0.016),
         # 07 price
-        Seg('C', 246, 290, 26.45, 29.85, push=0.014, out='push'),
+        Seg('C', 246, 290, 26.45, 29.85, push=0.014),
+        # 08 the 5 % pledge — the whole collection on the table behind the card
+        Seg('M', 250, 304, 29.85, 33.90, at=(540, 640), zoom=1.0, push=0.008, foc=None),
         # 09 CTA — slow colour carousel above the ask
-        Seg('E', 20, 64, 33.90, 36.30, mat=(450, 350), zoom=0.70, **CTA),
-        Seg('F', 137, 155, 36.30, 38.50, mat=(420, 350), zoom=0.82, **CTA),
-        Seg('D', 66, 92, 38.50, D + 0.5, mat=(430, 350), zoom=0.66, **CTA),
+        Seg('E', 20, 64, 33.90, 36.30, zoom=0.80, **CTA),
+        Seg('F', 137, 155, 36.30, 38.50, zoom=0.92, **CTA),
+        Seg('D', 66, 92, 38.50, D + 0.5, zoom=0.76, **CTA),
     ]
-    # "চারটি রঙ, একই রাজকীয় লুক" — all four dials at once, each still locked and alive
-    q = dict(mat=(232, 212), n=2.3, push=0.012, slide=0.5, out='push')
+    # "চারটি রঙ, একই রাজকীয় লুক" — all four dials at once: a 2×2 split of live footage, each still locked
+    q = dict(push=0.012, slide=0.5, out='push', foc=None)
+    GX, GY, GUT = 540, 810, 4
     over = [
-        Seg('C', 262, 290, 8.62, 11.25, at=(300, 606), mc=(300, 606), zoom=0.40, **q),
-        Seg('D', 66, 92, 8.70, 11.25, at=(770, 652), mc=(770, 652), zoom=0.46, **q),
-        Seg('E', 30, 54, 8.62, 11.25, at=(300, 1024), mc=(300, 1024), zoom=0.49, **q),
-        Seg('F', 137, 155, 8.70, 11.25, at=(770, 1040), mc=(770, 1040), zoom=0.60, **q),
+        Seg('C', 262, 290, 8.62, 11.25, at=(270, 600), win=(0, 0, GX - GUT, GY - GUT), zoom=0.42, **q),
+        Seg('D', 66, 92, 8.62, 11.25, at=(810, 630), win=(GX + GUT, 0, 1080, GY - GUT), zoom=0.48, **q),
+        Seg('E', 30, 54, 8.62, 11.25, at=(270, 1040), win=(0, GY + GUT, GX - GUT, 1920), zoom=0.51, **q),
+        Seg('F', 137, 155, 8.62, 11.25, at=(810, 1040), win=(GX + GUT, GY + GUT, 1080, 1920), zoom=0.63, **q),
     ]
+    # the caption card: one solid card under the type, its box eases from scene to scene (x0, y0, x1, y1, radius)
+    FEAT, SUB, MID = (48, 1280, 1032, 1652, 40), (48, 1280, 1032, 1600, 40), (48, 1280, 1032, 1614, 40)
+    cards = [(0.00, (48, 1236, 1032, 1626, 40)), (2.72, FEAT), (4.85, SUB), (8.62, FEAT), (11.25, SUB), (15.55, FEAT),
+             (19.65, MID), (26.45, (48, 1206, 1032, 1676, 40)), (29.85, (48, 968, 1032, 1640, 40)),
+             (33.90, (48, 1018, 1032, 1782, 40))]
     L = [
         Layer('head', 0.0, D + 1, tin=0.5, rise=0),
         Layer('tab', 0.0, D + 1, tin=0.01, rise=0),          # the price never leaves the right edge
@@ -269,18 +284,18 @@ def timeline(cut='long'):
         Layer('colour', 20.86, 22.28),
         Layer('promise1', 22.52, 26.32),
         Layer('promise2', 24.12, 26.32),
-        Layer('price', 27.45, 29.72),
-        Layer('cod', 28.55, 29.72),
+        Layer('price', 26.62, 29.60),
+        Layer('cod', 28.20, 29.60),
         Layer('five', 30.00, 33.74, tin=0.6, tout=0.16, rise=14),
         Layer('cta', 34.04, D + 1, tin=0.5),
         Layer('chev', 36.6, D + 1, tin=0.4, rise=0, bob=1),
     ]
-    hide_head = [(29.85, 33.9)]
+    hide_head = []
     sfx = dict(whoosh=[2.70, 4.85, 11.25, 15.55, 19.65, 22.40, 26.45, 33.90],
-               click=[12.25, 14.45], tick=[15.9, 16.4, 16.9, 17.4, 17.9, 18.4, 18.9], drop=[19.72],
-               shimmer=[0.05, 27.5, 34.0], tap=[5.0, 5.9, 6.76, 7.5], boom=[0.0, 29.9])
+               click=[12.25, 14.70], tick=[15.9, 16.4, 16.9, 17.4, 17.9, 18.4, 18.9], drop=[19.72],
+               shimmer=[0.05, 26.75, 34.0], tap=[5.0, 5.9, 6.76, 7.5], boom=[0.0, 29.9])
     scenes = [0, 4.85, 11.25, 15.55, 19.65, 22.40, 26.45, 29.85, 33.90, D]
-    return dict(D=D, segs=segs, over=over, layers=L, vo=vo, sfx=sfx, scenes=scenes, hide_head=hide_head)
+    return dict(D=D, segs=segs, over=over, layers=L, cards=cards, vo=vo, sfx=sfx, scenes=scenes, hide_head=hide_head)
 
 
 # ───────────────────────────── renderer ──────────────────────────────────────
@@ -291,8 +306,9 @@ class Renderer:
         self.tl = timeline(cut)
         self.cut = cut
         self.stage = Stage(self.w, self.h)
-        self.mattes = {}
+        self.masks = {}
         self.cover = {}
+        self.cardc = None
         self.clips = {}
         self.type = {}
         tdir = f'{BASE}/work/type{scale}'
@@ -314,12 +330,34 @@ class Renderer:
             self.clips[key] = c = Clip(key, seg.fa, seg.fb)
         return c
 
-    def get_matte(self, sg):
-        key = (sg.mc, sg.mat, sg.n)
-        if key not in self.mattes:
+    def seg_masks(self, sg):
+        """per shot window: out-of-focus weight (0 on the watch → 1 far away) and a soft lens vignette"""
+        key = (sg.win, sg.at, sg.foc)
+        if key not in self.masks:
             S = self.S
-            self.mattes[key] = matte(self.w, self.h, sg.mc[0] * S, sg.mc[1] * S, sg.mat[0] * S, sg.mat[1] * S, sg.n)
-        return self.mattes[key]
+            x0, y0, x1, y1 = [v * S for v in sg.win]
+            w, h = x1 - x0, y1 - y0
+            foc = None
+            if sg.foc:
+                foc = focus_mask(w, h, sg.at[0] * S - x0, sg.at[1] * S - y0, sg.foc[0] * S, sg.foc[1] * S)
+            y, x = np.mgrid[0:h, 0:w].astype(np.float32)
+            r2 = ((x - (sg.at[0] * S - x0)) / (760 * S)) ** 2 + ((y - (sg.at[1] * S - y0)) / (1180 * S)) ** 2
+            vig = np.clip(1.0 - 0.20 * sstep(0.25, 1.6, r2), 0, 1).astype(np.float32)
+            if len(self.masks) > 12:
+                self.masks.clear()
+            self.masks[key] = (foc, vig)
+        return self.masks[key]
+
+    def subject(self, sg):
+        """1 on the watch itself, 0 a little way out (tighter than the focus zone)"""
+        key = ('sub', sg.win, sg.at, sg.foc)
+        if key not in self.masks:
+            S = self.S
+            x0, y0, x1, y1 = [v * S for v in sg.win]
+            m = focus_mask(x1 - x0, y1 - y0, sg.at[0] * S - x0, sg.at[1] * S - y0, sg.foc[0] * S, sg.foc[1] * S,
+                           lo=0.55, hi=0.95)
+            self.masks[key] = (1.0 - m).astype(np.float32)
+        return self.masks[key]
 
     def affine(self, clip, seg, f, t, ox, oy, S=None, corr=(0.0, 0.0)):
         S = self.S if S is None else S
@@ -362,76 +400,137 @@ class Renderer:
         return seg.corr
 
     def footage(self, seg, t, ox, oy, ww, hh):
-        """→ (rgb float32 [hh,ww,3], coverage float32 [hh,ww,1]) for the matte's bounding box"""
+        """→ rgb uint8 [hh,ww,3] for the window whose top-left corner is (ox, oy); always fully covered"""
         clip = self.clip(seg)
-        u = min(1.0, max(0.0, (t - seg.t0) / (seg.t1 - seg.t0)))
-        pos = u * (len(seg.keys) - 1)
-        j = min(int(pos), len(seg.keys) - 2)
-        w = float(sstep(0.12, 0.88, pos - j))
-        i0, i1 = seg.keys[j], seg.keys[j + 1]
+        S = self.S
+        # v7: every output frame is ONE real source frame at real speed — nothing is invented in between
+        # (v6 dissolved between key frames; full-frame, that showed moving fingers twice). A shot that has
+        # to last longer than its footage plays forward, then backward (ping-pong) — for a hand holding a
+        # watch still the turn-round is invisible.
+        L = len(seg.keys)
+        n = int(math.floor((t - (seg.t0 - seg.slide / 2)) * FPS + 0.5))      # the clip is already running as it slides in
+        per = max(1, 2 * (L - 1))
+        q = n % per
+        j = q if q < L else per - q
         corr = self.refine(clip, seg)
-        M, k = self.affine(clip, seg, i0, t, ox, oy, corr=corr[j])
+        M, k = self.affine(clip, seg, seg.keys[j], t, ox, oy, corr=corr[j])
         fl = cv2.INTER_CUBIC if k > 1 else cv2.INTER_LINEAR
 
-        def one(i, M):
-            src = clip.get(i)
+        def one(jj):
+            Mj, _ = self.affine(clip, seg, seg.keys[jj], t, ox, oy, corr=corr[jj])
+            src = clip.get(seg.keys[jj])
             if k < 0.8:          # down-scaling: pre-filter so the fluted bezel does not alias
                 src = cv2.GaussianBlur(src, (0, 0), 0.42 / k)
-            return cv2.warpAffine(src, M, (ww, hh), flags=fl, borderMode=cv2.BORDER_REPLICATE)
+            return cv2.warpAffine(src, Mj, (ww, hh), flags=fl, borderMode=cv2.BORDER_REFLECT_101)
 
-        if w < 0.02:
-            im = one(i0, M)
-        else:
-            M2, _ = self.affine(clip, seg, i1, t, ox, oy, corr=corr[j + 1])
-            if w > 0.98:
-                M, im = M2, one(i1, M2)
-            else:
-                im = cv2.addWeighted(one(i0, M), 1 - w, one(i1, M2), w, 0)
+        im = one(j)
+        foc, vig = self.seg_masks(seg)
+        if seg.steady and foc is not None:
+            # a phone blurs every 2nd–3rd frame. ON THE WATCH ONLY (it is rigid and locked to < 1 px) lean on
+            # whichever of the neighbouring real frames is sharpest, so the dial stays evenly crisp;
+            # hands and desk around it always come from the current frame.
+            sh = seg.sharp
+            nb = [jj for jj in (j - 2, j - 1, j + 1, j + 2) if 0 <= jj < L]
+            wts = np.array([sh[j]] + [sh[jj] for jj in nb], np.float64) ** 4
+            wts /= wts.sum()
+            use = [(jj, wt) for jj, wt in zip(nb, wts[1:]) if wt > 0.08]
+            if use:
+                tot = wts[0] + sum(wt for _, wt in use)
+                acc = im.astype(np.float32) * np.float32(wts[0] / tot)
+                for jj, wt in use:
+                    cv2.scaleAdd(one(jj).astype(np.float32), float(wt / tot), acc, acc)
+                acc = np.clip(acc, 0, 255).astype(np.uint8)
+                on = self.subject(seg)
+                im = cv2.blendLinear(im, acc, 1.0 - on, on)
         im = cv2.LUT(im, clip.lut)
-        bl = cv2.GaussianBlur(im, (0, 0), 1.6 * self.S)          # light unsharp after stabilising
-        im = cv2.addWeighted(im, 1.45, bl, -0.45, 0)
-        # where the phone frame ends, the stage takes over (no smeared edges)
+        # how much of this window the phone frame really covers (soft edge)
         if 'src' not in self.cover:
             c = np.zeros((1920, 1080), np.uint8)
             c[2:-2, 2:-2] = 255
             d = cv2.distanceTransform(c, cv2.DIST_L2, 3)
-            self.cover['src'] = sstep(3.0, 84.0, d).astype(np.float32)
+            self.cover['src'] = sstep(2.0, 110.0, d).astype(np.float32)
         cov = cv2.warpAffine(self.cover['src'], M, (ww, hh), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT,
                              borderValue=0)
-        return im[..., ::-1].astype(np.float32), cov[..., None]
+        # two out-of-focus copies of the same picture, built small (cheap, and identical at 1080 and 4K)
+        f4 = 4 * S
+        sm = cv2.resize(im, (max(8, ww // f4), max(8, hh // f4)), interpolation=cv2.INTER_AREA)
+        soft = cv2.resize(cv2.GaussianBlur(sm, (0, 0), 1.0), (ww, hh), interpolation=cv2.INTER_CUBIC)       # ≈ 4 px @1080
+        far = cv2.resize(cv2.GaussianBlur(sm, (0, 0), 9.0), (ww, hh), interpolation=cv2.INTER_CUBIC)        # ≈ 36 px @1080
+        bl = cv2.GaussianBlur(im, (0, 0), 1.6 * S)               # light unsharp after stabilising
+        im = cv2.addWeighted(im, 1.45, bl, -0.45, 0)
+        if foc is not None:                                      # lens fall-off away from the watch
+            im = cv2.blendLinear(im, soft, 1.0 - foc * 0.75, foc * 0.75)
+        if float(cov.min()) < 0.999:                             # past the phone frame: the same footage, out of focus
+            im = cv2.blendLinear(im, far, cov, 1.0 - cov)
+        im = cv2.blendLinear(im, np.zeros_like(im), vig, 1.0 - vig)
+        return im[..., ::-1]
 
     def draw(self, out, sg, t, t_out, sl_out):
-        """one footage window; it arrives from the right and leaves to the left (hard push, no fade).
+        """one piece of footage; it arrives from the right and leaves to the left (hard push, no fade).
         t_out / sl_out = centre and length of the push that takes it away (None = stays)."""
-        W = self.w
+        W, S = self.w, self.S
         dx = 0.0
         if sg.slide > 0:
             k = (t - (sg.t0 - sg.slide / 2)) / sg.slide
             if k <= 0:
                 return
-            dx = (1.0 - ease_io(k)) * (W + 20 * self.S)
+            dx = (1.0 - ease_io(k)) * W
         if t_out is not None:
             k = (t - (t_out - sl_out / 2)) / sl_out
             if k >= 1:
                 return
             if k > 0:
-                dx = -ease_io(k) * (W + 20 * self.S)
+                dx = -ease_io(k) * W
         dx = int(round(dx))
-        x0, y0, m = self.get_matte(sg)
-        hh, ww = m.shape[:2]
-        X0, X1 = max(0, x0 + dx), min(W, x0 + dx + ww)
+        x0, y0, x1, y1 = [v * S for v in sg.win]
+        hh, ww = y1 - y0, x1 - x0
+        X0, X1 = max(0, x0 + dx), min(W, x1 + dx)
         if X1 - X0 < 2:
             return
-        fg, cov = self.footage(sg, t, x0, y0, ww, hh)
+        fg = self.footage(sg, t, x0, y0, ww, hh)
         a, b = X0 - (x0 + dx), X1 - (x0 + dx)
-        reg = out[y0:y0 + hh, X0:X1]
-        reg += (fg[:, a:b] - reg) * (m[:, a:b] * cov[:, a:b])
+        out[y0:y1, X0:X1] = fg[:, a:b]
+
+    def card_box(self, t):
+        """caption-card box at time t (eased between scene boxes, in step with the pushes)"""
+        cards = self.tl['cards']
+        box = np.array(cards[0][1], np.float64)
+        for (tc, bx) in cards[1:]:
+            k = ease_io((t - (tc - 0.25)) / 0.5)
+            if k <= 0:
+                break
+            box = box + (np.array(bx, np.float64) - box) * k
+        return box
+
+    def card(self, out, t):
+        S = self.S
+        x0, y0, x1, y1, r = self.card_box(t) * S
+        key = (round(x0), round(y0), round(x1), round(y1), round(r))
+        if self.cardc is None or self.cardc[0] != key:
+            x0, y0, x1, y1, r = key
+            pad = 70 * S
+            X0, Y0, X1, Y1 = max(0, x0 - pad), max(0, y0 - pad), min(self.w, x1 + pad), min(self.h, y1 + pad + 20 * S)
+            d = rbox_sdf(X1 - X0, Y1 - Y0, x0, y0, x1, y1, r, X0, Y0)
+            a = np.clip(0.5 - d / max(1.0, S * 0.75), 0, 1)
+            ds = rbox_sdf(X1 - X0, Y1 - Y0, x0, y0 + 12 * S, x1, y1 + 12 * S, r, X0, Y0)
+            sh = 0.34 * np.exp(-(np.maximum(ds, 0) / (26.0 * S)) ** 2) * (1 - a)
+            inset = min(1.0, r / (40.0 * S))                     # hairline only while it is a card, not full screen
+            ln = np.clip(1.0 - np.abs(d + 11 * S) / (1.1 * S), 0, 1) * 0.42 * inset
+            yy = np.linspace(0, 1, self.h, dtype=np.float32)[Y0:Y1, None, None]
+            col = np.array([251, 249, 245], np.float32) * (1 - yy) + np.array([240, 236, 229], np.float32) * yy
+            col = col + (np.array([176, 140, 74], np.float32) - col) * ln[..., None]
+            self.cardc = (key, (X0, Y0, X1, Y1), (a * 0.97)[..., None].astype(np.float32),
+                          (1 - sh)[..., None].astype(np.float32), col.astype(np.float32))
+        _, (X0, Y0, X1, Y1), a, sh, col = self.cardc
+        reg = out[Y0:Y1, X0:X1]
+        reg *= sh
+        reg += (col - reg) * a
 
     # frame -------------------------------------------------------------------
     def frame(self, n):
         t = n / FPS
         tl = self.tl
-        out = self.stage.rgb.copy()
+        out = self.stage.rgb.copy()          # only ever seen as the hairline between the four split tiles
         segs = tl['segs']
         for i, sg in enumerate(segs):
             nxt = segs[i + 1] if i + 1 < len(segs) else None
@@ -448,6 +547,7 @@ class Renderer:
         for k in list(self.clips):
             if k not in need:
                 del self.clips[k]
+        self.card(out, t)
         # type
         for lay in tl['layers']:
             if t < lay.t0 or t > lay.t1 + lay.tout:
@@ -495,6 +595,7 @@ def main():
     R = Renderer(a.cut, a.scale)
     if a.cover:
         R.tl['layers'] = [Layer('head', 0, 99, rise=0), Layer('tab', 0, 99, rise=0), Layer('hook', 0, 99, rise=0)]
+        R.tl['cards'] = R.tl['cards'][:1]
         cv2.imwrite(a.cover, R.frame(round(10.0 * FPS))[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 92])
         print('wrote', a.cover)
         return

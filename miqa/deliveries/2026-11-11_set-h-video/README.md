@@ -1,16 +1,18 @@
-# সেট H · মিকার হানিকম্ব কালেকশন — রিল (০:৪১)
+# সেট H · মিকার হানিকম্ব কালেকশন — রিল (০:৪১) · v2
 
 ক্লায়েন্টের ৫টি ফোন-ভিডিও থেকে বানানো ছেলেদের ঘড়ির বিজ্ঞাপন · ৯:১৬ · ৩০ fps · দাম ৳৯৯৯ (পুরো ভিডিও জুড়ে ডান পাশে)।
+
+**v2 (১১ নভেম্বর ২০২৬):** ক্লায়েন্ট v1-এর সাদা শেড বাতিল করেছেন — এখন আসল ফুটেজ পুরো ফ্রেম জুড়ে, লেখা ছোট কার্ডে (D56)। কপি, ভয়েস, দামের ট্যাব আগের মতোই।
 
 ## ডাউনলোড (এক ক্লিকে)
 
 | ফাইল | লিংক | সাইজ |
 |---|---|---|
-| **১০৮০ মোবাইল — ফেসবুক/ইনস্টাগ্রামে আপলোডের জন্য** | [`miqa-set-h-honeycomb_1080x1920.mp4`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb_1080x1920.mp4) | 28.3 MB |
-| ৪K মাস্টার | [`miqa-set-h-honeycomb_2160x3840.mp4`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb_2160x3840.mp4) | 94.6 MB |
-| কভার ১০৮০ | [`miqa-set-h-honeycomb-cover_1080x1920.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-cover_1080x1920.jpg) | 0.4 MB |
-| কভার ৪K | [`miqa-set-h-honeycomb-cover_2160x3840.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-cover_2160x3840.jpg) | 1.2 MB |
-| কনট্যাক্ট শিট | [`CONTACT-SHEET-VIDEO.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/CONTACT-SHEET-VIDEO.jpg) | 0.8 MB |
+| **১০৮০ মোবাইল — ফেসবুক/ইনস্টাগ্রামে আপলোডের জন্য** | [`miqa-set-h-honeycomb-v2_1080x1920.mp4`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-v2_1080x1920.mp4) | 37.0 MB |
+| ৪K মাস্টার | [`miqa-set-h-honeycomb-v2_2160x3840.mp4`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-v2_2160x3840.mp4) | 94.7 MB |
+| কভার ১০৮০ | [`miqa-set-h-honeycomb-v2-cover_1080x1920.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-v2-cover_1080x1920.jpg) | 0.5 MB |
+| কভার ৪K | [`miqa-set-h-honeycomb-v2-cover_2160x3840.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/miqa-set-h-honeycomb-v2-cover_2160x3840.jpg) | 1.5 MB |
+| কনট্যাক্ট শিট | [`CONTACT-SHEET-VIDEO.jpg`](https://github.com/ruposhibanglabd/video/raw/main/miqa/deliveries/2026-11-11_set-h-video/CONTACT-SHEET-VIDEO.jpg) | 1.2 MB |
 
 ## ডকুমেন্ট
 
@@ -24,7 +26,7 @@
 
 হুক (৳৯৯৯ + চার রঙ) → চারটি রঙ → বাটারফ্লাই লক → সেমি-অটোমেটিক মেশিন → ওয়াটারপ্রুফ + কালার গ্যারান্টি →
 ১ বছরের ওয়ারেন্টি + ৭ দিনের রিপ্লেসমেন্ট গ্যারান্টি → দাম + ক্যাশ অন ডেলিভারি → ৫% → CTA।
-থিম Steel Daylight; ডান→বাঁ পুশ, কোনো ফেড/ফ্ল্যাশ নেই।
+আসল ফুটেজ পুরো ফ্রেমে, লেখা Steel Daylight রঙের কার্ডে; ডান→বাঁ পুশ, কোনো ফেড/ফ্ল্যাশ নেই।
 
 ## রিবিল্ড
 
