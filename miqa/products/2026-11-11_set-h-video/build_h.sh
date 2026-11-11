@@ -5,7 +5,7 @@ set -euo pipefail
 J=miqa/products/2026-11-11_set-h-video
 FF=node_modules/@ffmpeg-installer/linux-x64/ffmpeg
 OUT=miqa/deliveries/2026-11-11_set-h-video
-NAME=miqa-set-h-honeycomb
+NAME=miqa-set-h-honeycomb-v2      # v2 = full-frame footage (client rejected the white-matte v1, D56)
 DUR=40.8
 mkdir -p "$J/work" "$OUT"
 
@@ -25,9 +25,10 @@ $FF -y -v error -i "$J/work/long_4k.mp4" -i "$J/work/audio/master.wav" -map 0:v 
   -color_primaries bt709 -color_trc bt709 -colorspace bt709 -c:a aac -b:a 320k -ar 48000 -ac 2 \
   -movflags +faststart -use_editlist 0 "$OUT/${NAME}_2160x3840.mp4"
 
-# 1080 mobile copy — Lanczos down-scale of the same master
+# 1080 mobile copy — Lanczos down-scale of the same master. Full-frame footage is far busier than the v1
+# white stage, so the rate is capped at 7 Mb/s (≈ 37 MB) to keep the phone download small.
 $FF -y -v error -i "$J/work/long_4k.mp4" -i "$J/work/audio/master.wav" -map 0:v -map 1:a -vf "scale=1080:1920:flags=lanczos" -af "$APAD" \
-  -c:v libx264 -preset slow -crf 18 -maxrate 12M -bufsize 24M -profile:v high -level 4.1 -pix_fmt yuv420p -g 30 \
+  -c:v libx264 -preset slow -crf 20 -maxrate 7M -bufsize 14M -profile:v high -level 4.1 -pix_fmt yuv420p -g 30 \
   -color_primaries bt709 -color_trc bt709 -colorspace bt709 -c:a aac -b:a 256k -ar 48000 -ac 2 \
   -movflags +faststart -use_editlist 0 "$OUT/${NAME}_1080x1920.mp4"
 

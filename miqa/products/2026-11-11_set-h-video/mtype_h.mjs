@@ -47,10 +47,10 @@ function brassLight(ctx, x0, x1) {
   g.addColorStop(0.75, '#D2AE66'); g.addColorStop(1, '#E6CB8C');
   return g;
 }
-function halo(ctx, blur = 26, a = 0.9) {
-  ctx.shadowColor = `rgba(250,248,244,${a})`; ctx.shadowBlur = blur;
-  ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
-}
+/* v7: the footage is shown full-frame and all body type sits on a solid caption card that the renderer draws
+   (render_h.py `cards`), so the old white haze behind the letters (halo + scrim) is gone — the client found
+   that the white covered the watches. Both helpers are kept as no-ops so the layout code reads the same. */
+function halo() {}
 function noShadow(ctx) { ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; }
 function t(ctx, s, x, y, font, fill, blur = 26, align = 'center') {
   ctx.font = font; ctx.textAlign = align; ctx.textBaseline = 'alphabetic';
@@ -80,22 +80,7 @@ function rrect(ctx, x, y, w, h, r) {
   ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
 }
 function pill(ctx, cx, cy, w, h, fill) { rrect(ctx, cx - w / 2, cy - h / 2, w, h, h / 2); ctx.fillStyle = fill; ctx.fill(); }
-function scrim(ctx, y0, h, bottom = 0.9) {
-  // soft lift under the type; runs to the bottom of the frame so there is no hard lower edge
-  const H = 1920 - y0;
-  const g = ctx.createLinearGradient(0, y0, 0, 1920);
-  g.addColorStop(0, 'rgba(242,238,231,0)');
-  g.addColorStop(Math.min(0.5, (h * 0.35) / H), `rgba(242,238,231,${bottom * 0.7})`);
-  g.addColorStop(Math.min(0.8, h / H), `rgba(236,231,223,${bottom * 0.8})`);
-  g.addColorStop(1, 'rgba(228,223,215,0)');
-  ctx.fillStyle = g; ctx.fillRect(0, y0, 1080, H);
-}
-function scrimTop(ctx, y1, h, top = 0.88) {
-  const g = ctx.createLinearGradient(0, y1 - h, 0, y1);
-  g.addColorStop(0, `rgba(250,248,244,${top})`); g.addColorStop(0.6, `rgba(250,248,244,${top * 0.6})`);
-  g.addColorStop(1, 'rgba(250,248,244,0)');
-  ctx.fillStyle = g; ctx.fillRect(0, y1 - h, 1080, h);
-}
+function scrim() {}
 function seal(ctx, cx, cy, r) {
   ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.strokeStyle = 'rgba(160,124,58,0.55)'; ctx.lineWidth = 2.4; ctx.stroke();
@@ -137,9 +122,12 @@ function feature(ctx, label, head, sub, small, headPx = 86) {
   if (small) t(ctx, small, 540, Y.small, '30px HindM', INK_SOFT, 22);
 }
 
-/* ── header on every footage card ─────────────────────────────────────── */
+/* ── header chip on every footage shot ─────────────────────────────────────── */
 layer('head', ctx => {
-  scrimTop(ctx, 320, 320, 0.88);
+  // a small solid chip, not a haze: the footage stays clear all round it
+  ctx.shadowColor = 'rgba(10,14,18,0.30)'; ctx.shadowBlur = 26; ctx.shadowOffsetY = 8;
+  rrect(ctx, 256, 96, 568, 162, 34); ctx.fillStyle = 'rgba(250,248,244,0.97)'; ctx.fill(); noShadow(ctx);
+  ctx.shadowOffsetY = 0;
   spaced(ctx, 'MIQA', 540, 142, '34px CinzelM', brass(ctx, 380, 700), 12, 20);
   line(ctx, 540, 166, 210, 0.6);
   t(ctx, 'ছেলেদের হানিকম্ব কালেকশন', 540, 226, '34px AnekSB', INK_SOFT, 22);
@@ -204,7 +192,6 @@ layer('lock', ctx => feature(ctx, 'FEATURE 01', 'বাটারফ্লাই 
 layer('machine', ctx => feature(ctx, 'FEATURE 02', 'সেমি-অটোমেটিক মেশিন', 'পেছন দিক থেকে মেশিন দেখা যায়', 'সি-থ্রু ব্যাক ডিজাইন', 72));
 layer('water', ctx => {
   feature(ctx, 'FEATURE 03', 'ওয়াটারপ্রুফ', null, null);   // client's word only — no usage promises added
-  drop(ctx, 540, 1268, 15, 'rgba(96,128,156,0.95)');
 });
 layer('colour', ctx => { t(ctx, 'সাথে কালার গ্যারান্টি', 540, Y.sub + 8, '50px AnekB', BRASS, 26); });
 layer('promise1', ctx => {
@@ -233,15 +220,14 @@ layer('cod', ctx => {
 
 /* ── 08 the 5% pledge — verbatim (BRAND-BIBLE §3) ─────────────────────── */
 layer('five', ctx => {
-  seal(ctx, 540, 720, 232);
-  t(ctx, '৫%', 540, 794, '182px AnekXB', brass(ctx, 300, 780), 36);
-  spaced(ctx, 'MIQA', 540, 1036, '32px CinzelM', brass(ctx, 380, 700), 12, 20);
-  line(ctx, 540, 1066, 240, 0.6);
-  t(ctx, 'MIQA-এর মুনাফার ৫%', 540, 1170, '62px AnekXB', INK, 30);
-  t(ctx, 'পথশিশুদের কল্যাণে।', 540, 1254, '62px AnekXB', INK, 30);
-  line(ctx, 540, 1304, 420, 0.6, 2, '150,158,166');
-  t(ctx, 'প্রতিটি অর্ডারের একটি অংশ', 540, 1362, '30px HindM', INK_SOFT, 22);
-  spaced(ctx, 'BEYOND TIME, BEYOND STYLE.', 540, 1436, '24px MontSB', BRASS, 6, 18);
+  // v7: a caption card over live footage (box 968–1640 in render_h.py), no longer a full white screen
+  seal(ctx, 540, 1100, 78);
+  t(ctx, '৫%', 540, 1128, '78px AnekXB', brass(ctx, 440, 640), 0);
+  t(ctx, 'MIQA-এর মুনাফার ৫%', 540, 1298, '62px AnekXB', INK, 30);
+  t(ctx, 'পথশিশুদের কল্যাণে।', 540, 1382, '62px AnekXB', INK, 30);
+  line(ctx, 540, 1428, 420, 0.6, 2, '150,158,166');
+  t(ctx, 'প্রতিটি অর্ডারের একটি অংশ', 540, 1486, '30px HindM', INK_SOFT, 22);
+  spaced(ctx, 'BEYOND TIME, BEYOND STYLE.', 540, 1566, '24px MontSB', BRASS, 6, 18);
 });
 
 /* ── 09 order CTA — the two lines verbatim ────────────────────────────── */
