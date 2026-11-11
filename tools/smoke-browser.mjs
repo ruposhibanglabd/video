@@ -10,7 +10,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { createCanvas } from '@napi-rs/canvas';
+import { createCanvas, Image as NapiImage } from '@napi-rs/canvas';
 
 /* ------------------------------------------------------------- DOM stubs */
 class FakeFontFace {
@@ -27,6 +27,11 @@ const fakeDoc = {
 globalThis.document = fakeDoc;
 globalThis.window = globalThis;
 globalThis.FontFace = FakeFontFace;
+// Load the same bundled photographs as a real browser, using local files here.
+globalThis.Image = class extends NapiImage {
+  set src(value) { super.src = value.startsWith('file:') ? new URL(value).pathname : value; }
+  get src() { return super.src; }
+};
 
 /* ------------------------------------------------------- WebCodecs stubs */
 class Chunk {

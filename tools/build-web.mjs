@@ -27,6 +27,7 @@ fs.mkdirSync(DIST, { recursive: true });
 copyDir(path.join(ROOT, 'public'), DIST);
 copyDir(path.join(ROOT, 'src'), path.join(DIST, 'src'), (f) => /\.(mjs|js|css)$/.test(f));
 copyDir(path.join(ROOT, 'assets', 'fonts'), path.join(DIST, 'fonts'), (f) => /\.ttf$/.test(f));
+copyDir(path.join(ROOT, 'assets', 'storefront'), path.join(DIST, 'assets', 'storefront'), (f) => /\.(jpg|jpeg|png|webp)$/.test(f));
 
 // mp4-muxer (MIT) — vendored so the page has zero third-party network calls
 fs.mkdirSync(path.join(DIST, 'vendor'), { recursive: true });

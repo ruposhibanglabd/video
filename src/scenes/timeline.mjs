@@ -1,14 +1,16 @@
 /**
  * The original 77-scene narrative plan, preserved in order.
  *
- * - srcStart/srcEnd : source transcript timing (seconds, 343s total).
- * - outStart/outEnd : mapped timing for the reference 08:12.356 voiceover.
- * - narration       : verbatim Bengali narration for that scene.
+ * - srcStart/srcEnd and outStart/outEnd : legacy editorial estimates retained
+ *   as reference metadata; runtime no longer uses these rough timecodes.
+ * - narration       : verbatim Bengali narration for that scene; runtime uses
+ *   its text weight to place the visual beat against the supplied voice.
  * - kicker/headline : concise on-screen copy (never full narration paragraphs).
  * - kind            : visual scene renderer used for this beat.
  * - transition      : how the scene leaves (fade | push | wipe | snap).
  *
- * Runtime timing is always recalculated from the *measured* audio duration.
+ * Runtime timing is computed from the measured audio duration, narration
+ * lengths, and natural pauses detected in the uploaded voiceover.
  */
 export const REFERENCE_AUDIO_SECONDS = 492.356;
 export const SOURCE_AUDIO_SECONDS = 343;

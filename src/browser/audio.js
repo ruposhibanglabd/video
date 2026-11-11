@@ -56,7 +56,7 @@ export async function toEncoderBuffer(buffer) {
 
 /**
  * Find natural pauses: RMS windows below a threshold for >= 0.22 s.
- * Returns the *end* of each pause (where speech resumes) in seconds.
+ * Returns the midpoint of each pause in seconds, matching the server renderer.
  */
 export function detectPauseEnds(buffer, { windowSec = 0.02, threshold = 0.012, minPause = 0.22 } = {}) {
   const rate = buffer.sampleRate;
@@ -76,7 +76,7 @@ export function detectPauseEnds(buffer, { windowSec = 0.02, threshold = 0.012, m
     if (quiet && runStart < 0) runStart = i;
     if (!quiet && runStart >= 0) {
       const pauseLen = (i - runStart) * windowSec;
-      if (pauseLen >= minPause) points.push(i * windowSec);
+      if (pauseLen >= minPause) points.push(((runStart + i) / 2) * windowSec);
       runStart = -1;
     }
   }

@@ -16,6 +16,11 @@ export function adminStage(ctx, t, {
   vw = 760, vh = 900, scale = 1, panY = 0, active = 0, title = 'ড্যাশবোর্ড', sub = '',
   p = 1, enter = 1, draw, badge = 3, glow = C.blue, showChrome = true,
 } = {}) {
+  // Standardize wide admin captures into a larger, consistent browser viewport.
+  // The old 968×620 panels left too much unused vertical space in a 9:16 frame.
+  if (box.w >= 900) {
+    box = { x: 28, y: 560, w: 1024, h: Math.max(800, Math.min(840, box.h + 160)) };
+  }
   const e = easeOutQuint(clamp(enter));
   ctx.save();
   ctx.globalAlpha *= e;
