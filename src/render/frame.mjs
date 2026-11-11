@@ -6,6 +6,8 @@ import {
   grain, vignette, glowOrb, text, lin, fillRR, circle,
 } from './kit.mjs';
 import { SCENES, BRAND } from '../scenes/timeline.mjs';
+import { ambientLayer, storyRail, chapterOf } from './motion.mjs';
+import { voiceSmooth } from './voice.mjs';
 import { kicker, headline, L } from '../scenes/stage.mjs';
 import { openScenes } from '../scenes/open.mjs';
 import { featureScenes } from '../scenes/features.mjs';
@@ -14,6 +16,7 @@ import { operationsScenes } from '../scenes/operations.mjs';
 import { closingScenes } from '../scenes/closing.mjs';
 
 export const FPS = 30;
+const easeOutQuintSafe = (x) => 1 - Math.pow(1 - clamp(x), 5);
 export const REGISTRY = { ...openScenes, ...featureScenes, ...orderScenes, ...operationsScenes, ...closingScenes };
 
 /* ------------------------------------------------------------------ schedule */
@@ -133,32 +136,67 @@ export class Compositor {
     const ctx = this.ctx;
     const { idx, scene, t, dur } = this.sceneTime(schedule, frame);
     const prev = schedule.scenes[idx - 1];
+    const tAbs = frame / this.fps;
+    const chapter = chapterOf(scene.n);
+    const level = voiceSmooth(tAbs, 0.4);
+
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     // base cinematic background (drifting, deterministic)
-    cinematicBG(ctx, frame / this.fps, { w: this.width, h: this.height });
+    cinematicBG(ctx, tAbs, { w: this.width, h: this.height });
+    // slow, chapter-specific ambient life — reacts gently to the voice
+    ambientLayer(ctx, tAbs, { chapter, seed: idx * 0.37, strength: 1 });
 
     const style = scene.transition || 'fade';
-    const inDur = style === 'snap' ? 0.10 : style === 'hold' ? 0 : style === 'wipe' ? 0.32 : 0.30;
+    const inDur = style === 'snap' ? 0.10
+      : style === 'hold' ? 0
+      : style === 'whip' ? 0.24
+      : style === 'zoom' ? 0.34
+      : style === 'wipe' ? 0.32
+      : 0.30;
     const blend = inDur > 0 ? clamp(t / inDur) : 1;
 
     if (prev && blend < 1) {
       const prevDur = Math.max(0.001, (prev.f1 - prev.f0) / this.fps);
       ctx.save();
-      ctx.globalAlpha = 1 - easeOut(blend) * 0.95;
-      this.drawSceneBody(ctx, prev, Math.max(0, prevDur - 0.001), prevDur);
+      if (style === 'zoom') {
+        const ez = easeOut(blend);
+        ctx.globalAlpha = (1 - ez) * 0.9;
+        this.drawScaled(prev, prevDur, 1 + 0.18 * ez);
+      } else if (style === 'whip') {
+        const ew = easeOut(blend);
+        ctx.globalAlpha = 1 - ew;
+        ctx.translate(-this.width * 0.22 * ew, 0);
+        this.drawSceneBody(ctx, prev, Math.max(0, prevDur - 0.001), prevDur);
+      } else {
+        ctx.globalAlpha = 1 - easeOut(blend) * 0.95;
+        this.drawSceneBody(ctx, prev, Math.max(0, prevDur - 0.001), prevDur);
+      }
       ctx.restore();
     }
 
     ctx.save();
     if (prev && style === 'push') {
-      const e = easeOut(blend);
-      ctx.globalAlpha = e;
-      ctx.translate((1 - e) * this.width * 0.06, 0);
+      const e = easeOutQuintSafe(blend);
+      ctx.globalAlpha = clamp(e * 1.25);
+      ctx.translate((1 - e) * this.width * 0.11, 0);
+      ctx.scale(1 + (1 - e) * 0.03, 1 + (1 - e) * 0.03);
+      ctx.translate(-this.width * (1 - e) * 0.015, -this.height * (1 - e) * 0.01);
+    } else if (prev && style === 'whip') {
+      const e = easeOutQuintSafe(blend);
+      ctx.globalAlpha = clamp(e * 1.3);
+      ctx.translate((1 - e) * this.width * 0.55, 0);
+    } else if (prev && style === 'zoom') {
+      const e = easeOutQuintSafe(blend);
+      ctx.globalAlpha = clamp(e * 1.2);
+      this.drawScaled(scene, t, 1.1 - 0.1 * e);
+      ctx.restore();
+      this.finishFrame(ctx, schedule, scene, idx, tAbs, level, style, blend);
+      return this.canvas;
     } else if (prev && style === 'snap') {
       ctx.globalAlpha = blend;
     } else if (prev) {
-      ctx.globalAlpha = easeOutQuint(blend);
+      ctx.globalAlpha = easeOutQuintSafe(blend);
     }
     this.drawSceneBody(ctx, scene, t, dur);
     ctx.restore();
@@ -179,11 +217,69 @@ export class Compositor {
       }
     }
 
+    if (prev && style === 'whip' && blend < 1) {
+      // speed streaks on the fast horizontal move
+      const e = easeOut(blend);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 14; i++) {
+        const y = ((i * 137) % this.height);
+        const w = this.width * (0.25 + 0.5 * ((i * 53) % 100) / 100);
+        const g = ctx.createLinearGradient(this.width * (1 - e) * 1.2 - w, 0, this.width * (1 - e) * 1.2, 0);
+        g.addColorStop(0, 'rgba(120,190,255,0)');
+        g.addColorStop(0.85, `rgba(150,205,255,${0.10 * (1 - e)})`);
+        g.addColorStop(1, 'rgba(120,190,255,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(this.width * (1 - e) * 1.2 - w, y, w, 2);
+      }
+      ctx.restore();
+    }
+
+    this.finishFrame(ctx, schedule, scene, idx, tAbs, level, style, blend);
+    return this.canvas;
+  }
+
+  /** Draw a scene body with an extra uniform scale (for the zoom transition). */
+  drawScaled(scene, t, scale) {
+    const ctx = this.ctx;
+    const dur = Math.max(0.001, (scene.f1 - scene.f0) / this.fps);
+    ctx.save();
+    ctx.translate(this.width / 2, this.height / 2);
+    ctx.scale(scale, scale);
+    ctx.translate(-this.width / 2, -this.height / 2);
+    this.drawSceneBody(ctx, scene, t, dur);
+    ctx.restore();
+  }
+
+  /** Persistent furniture + film finish, drawn above the scene. */
+  finishFrame(ctx, schedule, scene, idx, tAbs, level, style, blend) {
+    // voice-reactive light bloom along the lower third (very light)
+    if (level > 0.02) {
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createRadialGradient(
+        this.width * 0.5, this.height * 0.72, 40,
+        this.width * 0.5, this.height * 0.72, 720,
+      );
+      g.addColorStop(0, `rgba(90,150,255,${0.045 * level})`);
+      g.addColorStop(1, 'rgba(90,150,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, this.width, this.height);
+      ctx.restore();
+    }
+
+    // chapter progress — hidden during the hook, fades in with scene 2 and
+    // fades out under the final card
+    if (scene.n > 1) {
+      const railIn = scene.n === 2 ? clamp(tAbs / 2.2) : 1;
+      const railOut = scene.n >= 76 ? clamp((schedule.totalFrames / this.fps - tAbs) / 3) : 1;
+      storyRail(ctx, schedule, scene, tAbs, { opacity: 0.92 * railIn * railOut });
+    }
+
     // film finish
     grain(ctx, 0.035, this.width, this.height);
     vignette(ctx, this.width, this.height, 0.34);
     ctx.restore();
-    return this.canvas;
   }
 }
 

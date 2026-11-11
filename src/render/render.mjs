@@ -16,6 +16,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { Compositor, buildSchedule, FPS } from './frame.mjs';
 import { PLATFORM_READY } from './platform.mjs';
+import { setVoiceEnvelope, envelopeFromPcm, hasVoice } from './voice.mjs';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -74,6 +75,30 @@ export function detectSilences(file) {
   }
 }
 
+/**
+ * Decode the voiceover once to mono PCM and build the RMS envelope the motion
+ * system reacts to. The audio itself is never written or altered here.
+ */
+export async function analyseVoice(file, { sampleRate = 8000, fps = 20 } = {}) {
+  return new Promise((resolve, reject) => {
+    const ff = spawn(ffmpegPath(), [
+      '-hide_banner', '-loglevel', 'error', '-i', file,
+      '-ac', '1', '-ar', String(sampleRate), '-f', 'f32le', '-',
+    ]);
+    const chunks = [];
+    ff.stdout.on('data', (d) => chunks.push(d));
+    ff.on('error', reject);
+    ff.on('close', (code) => {
+      if (code !== 0) return resolve(null);
+      const buf = Buffer.concat(chunks);
+      const pcm = new Float32Array(buf.buffer, buf.byteOffset, Math.floor(buf.length / 4));
+      const { rms, fps: f } = envelopeFromPcm(pcm, sampleRate, fps);
+      setVoiceEnvelope(rms, f);
+      resolve({ samples: rms.length, fps: f });
+    });
+  });
+}
+
 function parseArgs(argv) {
   const args = {};
   for (let i = 0; i < argv.length; i++) {
@@ -90,6 +115,7 @@ async function renderStill(audio, at, pngPath) {
   await PLATFORM_READY;
   const probed = audio ? probeAudio(audio) : { duration: 492.356 };
   const silences = audio ? await detectSilences(audio) : [];
+  if (audio) await analyseVoice(audio);
   const schedule = buildSchedule(probed.duration, { snapPoints: silences });
   const frame = Math.min(schedule.totalFrames - 1, Math.round(at * FPS));
   const comp = new Compositor({ preview: true });
@@ -111,7 +137,8 @@ async function renderVideo({ audio, out, width = 1080, height = 1920 }) {
 
   const silences = await detectSilences(audio);
   const schedule = buildSchedule(probed.duration, { snapPoints: silences });
-  emit({ type: 'schedule', totalFrames: schedule.totalFrames, snapped: silences.length, duration: probed.duration });
+  const voice = await analyseVoice(audio);
+  emit({ type: 'schedule', totalFrames: schedule.totalFrames, snapped: silences.length, duration: probed.duration, voice: !!hasVoice(), envelope: voice?.samples || 0 });
 
   fs.mkdirSync(path.dirname(out), { recursive: true });
   const temp = out.replace(/\.mp4$/, '') + '.part.mp4';

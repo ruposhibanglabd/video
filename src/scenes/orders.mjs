@@ -15,7 +15,11 @@ import { BRAND } from './timeline.mjs';
 
 export const orderScenes = {
   sectionOrders(ctx, t, d) {
-    chapterCard(ctx, t, { index: 3, title: 'অর্ডার ম্যানেজমেন্ট', sub: 'নতুন অর্ডার থেকে ডেলিভারি পর্যন্ত', accent: C.cyan, p: clamp(t / 0.6) });
+    chapterCard(ctx, t, {
+      index: 3, title: 'অর্ডার ম্যানেজমেন্ট', sub: 'নতুন অর্ডার থেকে ডেলিভারি পর্যন্ত',
+      items: ['অর্ডারের বিস্তারিত তথ্য', 'স্ট্যাটাস অনুযায়ী পরিচালনা', 'রিপোর্ট, পেমেন্ট ও স্টক'],
+      accent: C.violet, p: clamp(t / 0.6),
+    });
     brandWatermark(ctx, t, 0.25);
   },
 

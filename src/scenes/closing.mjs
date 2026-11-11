@@ -492,38 +492,87 @@ export const closingScenes = {
   },
 
   endCard(ctx, t, d, S) {
-    // held through the final syllable — no fade to black
+    // Held through the final syllable — no fade to black. The last frame must
+    // read as a poster: logo, promise, price, and two ways to contact.
     const p = beat(t, 0.02, 0.7, easeOutQuint);
     ctx.save();
-    glowOrb(ctx, W / 2, 900, 640, C.blue, 0.26);
-    ctx.globalAlpha *= p;
-    brandMark(ctx, W / 2 - 210, 700, 84, { withWordmark: true });
+    glowOrb(ctx, W / 2, 760, 700, C.blue, 0.26);
+    glowOrb(ctx, W / 2, 1180, 520, C.violet, 0.12);
     ctx.restore();
-    const q = beat(t, 0.35, 0.7);
+
+    // logo lockup: mark drops in, then a light sweep crosses it once
+    const e = easeOutBack(clamp(p));
     ctx.save();
-    ctx.globalAlpha *= q;
-    text(ctx, 'আপনার ব্যবসা', W / 2, 940, { size: 62, weight: 700, color: C.white, align: 'center', maxWidth: 940 });
-    text(ctx, 'আপনার ডিজাইন', W / 2, 1020, { size: 62, weight: 700, color: C.cyan, align: 'center', maxWidth: 940 });
-    text(ctx, 'আপনার অনলাইন পরিচয়', W / 2, 1100, { size: 62, weight: 700, color: GOLD, align: 'center', maxWidth: 940 });
+    ctx.globalAlpha *= clamp(p * 1.2);
+    ctx.translate(0, (1 - e) * -26);
+    brandMark(ctx, W / 2 - 176, 606, 92, { withWordmark: true });
+    const sweep = clamp((t - 0.55) / 0.9);
+    if (sweep > 0 && sweep < 1) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(W / 2 - 176, 606, 92, 92);
+      ctx.clip();
+      ctx.globalCompositeOperation = 'lighter';
+      const sx = W / 2 - 176 - 60 + sweep * 220;
+      const g = ctx.createLinearGradient(sx - 40, 0, sx + 40, 0);
+      g.addColorStop(0, 'rgba(255,255,255,0)');
+      g.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+      g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(sx - 40, 606, 80, 92);
+      ctx.restore();
+    }
     ctx.restore();
+
+    // tagline — three beats, each colour coded
+    const lines = [
+      ['আপনার ব্যবসা', C.white, 0.30],
+      ['আপনার ডিজাইন', C.cyan, 0.42],
+      ['আপনার অনলাইন পরিচয়', GOLD, 0.54],
+    ];
+    lines.forEach(([label, color, at], i) => {
+      const q = beat(t, at, 0.62, easeOutQuint);
+      if (q <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= q;
+      const y = 856 + i * 84 + (1 - q) * 18;
+      // accent bar that grows in from the left of the line
+      const w = 5;
+      ctx.restore();
+      text(ctx, label, W / 2, y, {
+        size: 66, weight: 700, color, align: 'center', maxWidth: 940, opacity: q,
+      });
+    });
+
+    // divider + offer
     const r = beat(t, 0.7, 0.6);
     ctx.save();
     ctx.globalAlpha *= r;
-    fillRR(ctx, W / 2 - 300, 1180, 600, 2, 1, alpha(C.cyan, 0.4));
-    text(ctx, 'মাত্র ৩,০০০ টাকায় ওয়েবসাইট!', W / 2, 1268, { size: 40, weight: 700, color: C.white, align: 'center' });
-    chip(ctx, 'কোনো এডভান্স নেই!', W / 2, 1306, { align: 'center', color: C.green, size: 24, h: 52 });
+    fillRR(ctx, W / 2 - 300, 1122, 600, 2, 1, alpha(C.cyan, 0.38));
+    text(ctx, 'মাত্র ৩,০০০ টাকায় ওয়েবসাইট!', W / 2, 1206, { size: 44, weight: 700, color: C.white, align: 'center', maxWidth: 900 });
+    chip(ctx, 'কোনো এডভান্স নেই!', W / 2, 1244, { align: 'center', color: C.green, size: 24, h: 52 });
     ctx.restore();
-    const s = beat(t, 0.9, 0.6);
+
+    // contact strip — two clear next steps
+    const sp = beat(t, 0.88, 0.65, easeOutQuint);
     ctx.save();
-    ctx.globalAlpha *= s;
-    const by = 1400;
-    glassPanel(ctx, 90, by, 900, 110, { r: 28, fill: 'rgba(11,19,36,0.92)' });
-    icon(ctx, 'globe', 124, by + 30, 34, C.cyan, 1.8);
-    text(ctx, 'codepixelweb.vercel.app', 176, by + 52, { size: 32, weight: 700, color: C.white, maxWidth: 470 });
-    line(ctx, 660, by + 20, 660, by + 90, 'rgba(130,170,255,0.25)', 1.4);
-    whatsappGlyph(ctx, 692, by + 26, 40, '#25D366');
-    text(ctx, '01876892958', 748, by + 62, { size: 30, weight: 700, color: '#EAFFF3' });
+    ctx.globalAlpha *= sp;
+    ctx.translate(0, (1 - sp) * 24);
+    const cardW = 434, cardH = 128, gap = 16;
+    const x0 = W / 2 - cardW - gap / 2, x1 = W / 2 + gap / 2;
+    const cy = 1326;
+    // website card
+    glassPanel(ctx, x0, cy, cardW, cardH, { r: 30, fill: 'rgba(11,19,36,0.92)' });
+    icon(ctx, 'globe', x0 + 28, cy + 24, 26, C.cyan, 1.8);
+    text(ctx, 'ওয়েবসাইট', x0 + 66, cy + 45, { size: 19, weight: 600, color: 'rgba(176,198,228,0.9)' });
+    text(ctx, 'codepixelweb.vercel.app', x0 + 28, cy + 96, { size: 27, weight: 700, color: C.white, maxWidth: cardW - 56 });
+    // whatsapp card
+    glassPanel(ctx, x1, cy, cardW, cardH, { r: 30, fill: 'rgba(9,32,24,0.92)' });
+    whatsappGlyph(ctx, x1 + 26, cy + 22, 30, '#25D366');
+    text(ctx, 'হোয়াটসঅ্যাপ', x1 + 66, cy + 45, { size: 19, weight: 600, color: 'rgba(176,228,203,0.9)' });
+    text(ctx, '01876892958', x1 + 28, cy + 96, { size: 34, weight: 800, color: '#EAFFF3' });
     ctx.restore();
+
     brandWatermark(ctx, t, 0.0);
   },
 };

@@ -2,6 +2,9 @@ node_modules/
 .tmp/
 uploads/
 output/*.mp4
+# এক ব্যতিক্রম: শেয়ার কপি (<100 MB) ইচ্ছাকৃতভাবে Git-এ রাখা —
+# যাতে git clone / GitHub থেকে সরাসরি ডাউনলোড করা যায়। মাস্টার (136 MB) Git-এ যায় না।
+!output/CodePixel-Web-Promo-Reels-share.mp4
 output/*.part.mp4
 output/stills/
 output/qa/

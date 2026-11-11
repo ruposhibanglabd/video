@@ -55,6 +55,27 @@ export async function toEncoderBuffer(buffer) {
 }
 
 /**
+ * RMS envelope of the narration (20 samples/second) — the motion system uses
+ * it for voice-reactive detail. Purely derived data; the audio is untouched.
+ */
+export function buildEnvelope(buffer, { fps = 20 } = {}) {
+  const data = buffer.getChannelData(0);
+  const win = Math.max(1, Math.round(buffer.sampleRate / fps));
+  const n = Math.floor(data.length / win);
+  const rms = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    let sum = 0;
+    const base = i * win;
+    for (let j = 0; j < win; j += 4) {
+      const v = data[base + j] || 0;
+      sum += v * v;
+    }
+    rms[i] = Math.sqrt(sum / Math.ceil(win / 4));
+  }
+  return { rms, fps };
+}
+
+/**
  * Find natural pauses: RMS windows below a threshold for >= 0.22 s.
  * Returns the *end* of each pause (where speech resumes) in seconds.
  */

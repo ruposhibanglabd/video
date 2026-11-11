@@ -30,8 +30,12 @@ mp4-muxer); কোনো ফাইল সার্ভারে যায় ন�
 ### CLI দিয়ে মাস্টার রেন্ডার (সার্ভার/লোকাল, সবচেয়ে ভালো কোয়ালিটি)
 
 ```bash
-node src/render/render.mjs \
-  --audio assets/voiceover/voiceover.mp3 \
+# দ্রুত: ফ্রেম-রেঞ্জ সমান্তরালে রেন্ডার → lossless concat → অডিও মাক্স
+npm run render:fast -- --audio assets/voiceover/voiceover.mp3 \
+  --out output/CodePixel-Web-Promo-Reels.mp4 --workers 2
+
+# একক প্রসেস (একই স্পেক)
+node src/render/render.mjs --audio assets/voiceover/voiceover.mp3 \
   --out output/CodePixel-Web-Promo-Reels.mp4
 ```
 
@@ -79,17 +83,66 @@ CLI রেন্ডারে অডিও থেকে শুধু AAC-তে �
 
 ---
 
+## ৩.১ রেন্ডার হওয়া ভিডিও নামানো (Git থেকে)
+
+তৈরি ভিডিওটা `output/CodePixel-Web-Promo-Reels-share.mp4` (৭১ MB · CRF 28 ·
+১০৮০×১৯২০ · 30 fps · h264 + AAC) — এই একটি ফাইল ইচ্ছাকৃতভাবে Git-এ রাখা আছে,
+তাই ক্লোন করলেই পাবেন। মাস্টার (১৩৬ MB, CRF 20) Git-এ নেই — GitHub ১০০ MB-র বেশি
+ফাইল নেয় না; দরকার হলে নিচের কমান্ডে নিজে বানিয়ে নিন।
+
+**ক. ব্রাউজার থেকে (সবচেয়ে সহজ)**
+
+1. https://github.com/ruposhibanglabd/video/blob/arena/a85c4bc8-video/output/CodePixel-Web-Promo-Reels-share.mp4
+2. ডান দিকে **Download raw file** (⤓ আইকন) চাপুন।
+
+সরাসরি লিংক (রাইট-ক্লিক → Save link as):
+
+```
+https://raw.githubusercontent.com/ruposhibanglabd/video/arena/a85c4bc8-video/output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**খ. শুধু ওই একটি ফাইল, git দিয়ে (পুরো রিপো ক্লোন না করে)**
+
+```bash
+git clone --depth 1 --branch arena/a85c4bc8-video \
+  --filter=blob:none --sparse https://github.com/ruposhibanglabd/video.git codepixel
+cd codepixel
+git sparse-checkout set output
+ls -lh output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**গ. পুরো রিপো ক্লোন**
+
+```bash
+git clone --branch arena/a85c4bc8-video https://github.com/ruposhibanglabd/video.git
+open output/CodePixel-Web-Promo-Reels-share.mp4
+```
+
+**ঘ. মাস্টার কোয়ালিটি (CRF 20, ১৩৬ MB) নিজে বানাতে**
+
+```bash
+npm install
+npm run render:fast -- --audio assets/voiceover/voiceover.mp3 \
+  --out output/CodePixel-Web-Promo-Reels.mp4 --workers 4
+```
+
+> ফাইলটা Git-এ থাকায় রিপো ~৭৯ MB হয়ে যায়। না চাইলে
+> `output/CodePixel-Web-Promo-Reels-share.mp4` ডিলিট করে `.gitignore`-এর ব্যতিক্রম
+> লাইনটা সরিয়ে দিন — তখন ভিডিও শুধু রেন্ডার করে পাবেন।
+
 ## ৪. আর্কিটেকচার
 
 | ফোল্ডার | কাজ |
 |---|---|
 | `src/render/platform.mjs` | একমাত্র প্ল্যাটফর্ম-নির্ভর অংশ: Node-এ Skia canvas + ফন্ট রেজিস্ট্রেশন, ব্রাউজারে `<canvas>` + FontFace |
+| `src/render/motion.mjs` | চ্যাপ্টার ম্যাপ, স্টোরি রেল, চ্যাপ্টার-ভিত্তিক অ্যাম্বিয়েন্ট লেয়ার, বাংলা সংখ্যা |
+| `src/render/voice.mjs` | ভয়েসওভারের RMS এনভেলপ — ভিজ্যুয়াল ন্যারেশনের সাথে শ্বাস নেয় (অডিও বদলায় না) |
 | `src/render/kit.mjs` | ডিটারমিনিস্টিক ড্রয়িং কিট (টাইপোগ্রাফি, গ্লো, গ্লাস, ডিভাইস, আইকন, প্রোডাক্ট ইলাস্ট্রেশন) |
 | `src/render/frame.mjs` | টাইমলাইন → ফ্রেম শিডিউল, ট্রানজিশন, কম্পোজিটর |
 | `src/render/render.mjs` | CLI: ffprobe দিয়ে duration, silence-snap, ffmpeg পাইপ, ভেরিফিকেশন |
 | `src/ui/storefront.mjs` | ফিকশনাল ডেমো স্টোরফ্রন্ট **AURUM** — হোম, প্রোডাক্ট, কার্ট, চেকআউট, ল্যান্ডিং |
 | `src/ui/admin.mjs` | বাংলা অ্যাডমিন প্যানেল — ড্যাশবোর্ড, প্রোডাক্ট, অর্ডার, কুরিয়ার, পেমেন্ট |
-| `src/scenes/timeline.mjs` | মূল ৭৭ সিনের প্ল্যান (নেশন, সোর্স/আউটপুট টাইমকোড, সিন টাইপ) |
+| `src/scenes/timeline.mjs` | মূল ৭৭ সিনের প্ল্যান (নেশন, সোর্স/আউটপুট টাইমকোড, সিন টাইপ, ট্রানজিশন) |
 | `src/scenes/*.mjs` | সিন রেন্ডারার (open / features / orders / operations / closing) |
 | `src/browser/audio.js` | ব্রাউজারে ডিকোড, duration, পজ-ডিটেকশন, 48 kHz স্টেরিও কপি |
 | `src/browser/encode.js` | WebCodecs H.264 + AAC → mp4-muxer → Blob |
@@ -97,6 +150,8 @@ CLI রেন্ডারে অডিও থেকে শুধু AAC-তে �
 | `tools/build-web.mjs` | স্ট্যাটিক বিল্ড → `dist/` (Vercel-এর জন্য) |
 | `tools/serve.mjs` | লোকাল স্ট্যাটিক সার্ভার (Range সাপোর্টসহ) |
 | `tools/qa-frames.mjs` | ৭৭ সিনের ভিজ্যুয়াল QA sheet |
+| `tools/render-fast.mjs` | সমান্তরাল মাস্টার রেন্ডার (সেগমেন্ট → concat → AAC মাক্স) |
+| `MOTION-DESIGN.md` | মোশন ডিজাইন সিস্টেম v2 — সিদ্ধান্ত, চ্যাপ্টার, ট্রানজিশন, টাইমিং |
 
 ### টাইমিং
 
@@ -106,6 +161,13 @@ CLI রেন্ডারে অডিও থেকে শুধু AAC-তে �
 তাই ক্রমবর্ধমান রাউন্ডিং ড্রিফট নেই। শেষ ফ্রেম সম্পূর্ণ অডিও ঢেকে রাখে।
 
 ---
+
+## ৪.১ মোশন ডিজাইন (v2)
+
+৭৭ সিন এখন ৮টি চ্যাপ্টারে সংগঠিত, উপরে স্টোরি-স্টাইল প্রগ্রেস রেল, চ্যাপ্টার
+ওপেনার কার্ড, শব্দ-ভিত্তিক কাইনেটিক টাইপোগ্রাফি, `push`/`whip`/`zoom`/`wipe`/
+`snap` ট্রানজিশন পরিবার, এবং ভয়েসওভারের RMS এনভেলপে সাড়া দেওয়া অ্যাম্বিয়েন্ট
+লেয়ার। বিস্তারিত: [`MOTION-DESIGN.md`](MOTION-DESIGN.md)।
 
 ## ৫. ব্র্যান্ড ফ্যাক্ট (অপরিবর্তিত)
 

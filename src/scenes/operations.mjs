@@ -25,7 +25,11 @@ function qualifiedNote(ctx, str, t, y = 1420) {
 
 export const operationsScenes = {
   sectionCourier(ctx, t, d) {
-    chapterCard(ctx, t, { index: 4, title: 'কুরিয়ার অটোমেশন', sub: 'পার্সেল পাঠানো, ট্র্যাকিং ও ডেলিভারি আপডেট', accent: C.violet, p: clamp(t / 0.55) });
+    chapterCard(ctx, t, {
+      index: 5, title: 'কুরিয়ার অটোমেশন', sub: 'পার্সেল পাঠানো, ট্র্যাকিং ও ডেলিভারি আপডেট',
+      items: ['কনসাইনমেন্ট ও ট্র্যাকিং নম্বর', 'ডেলিভারি ও রিটার্নের হিস্টরি', 'সিদ্ধান্তে সহায়ক পরিসংখ্যান'],
+      accent: '#4FD1C5', p: clamp(t / 0.55),
+    });
     brandWatermark(ctx, t, 0.25);
   },
 
@@ -191,7 +195,11 @@ export const operationsScenes = {
   },
 
   sectionPayments(ctx, t, d) {
-    chapterCard(ctx, t, { index: 5, title: 'পেমেন্ট ম্যানেজমেন্ট', sub: 'COD • অ্যাডভান্স • গেটওয়ে', accent: C.green, p: clamp(t / 0.5) });
+    chapterCard(ctx, t, {
+      index: 7, title: 'পেমেন্ট ম্যানেজমেন্ট', sub: 'COD • অ্যাডভান্স • পেমেন্ট গেটওয়ে',
+      items: ['ক্যাশ অন ডেলিভারি ও অ্যাডভান্স', 'সমর্থিত গেটওয়ে ইন্টিগ্রেশন', 'পেমেন্ট স্ট্যাটাস ও হিসাব'],
+      accent: C.green, p: clamp(t / 0.5),
+    });
     brandWatermark(ctx, t, 0.25);
   },
 
