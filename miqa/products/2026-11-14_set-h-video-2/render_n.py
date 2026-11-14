@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""Set H video 2 (2026-11-14) — renderer v2 for three WhatsApp clips (480x854) of the Honeycomb watches.
+"""Set H video 2 (2026-11-14) — renderer v3: the client's ORIGINAL phone files (1080x1920, ~20 Mb/s).
 
-v1 of this film was rejected by the client: "ভিডিওর কোয়ালিটি একদম নষ্ট হয়ে গেছে, আমার ভিডিও আর তোমার ভিডিওর
-মধ্যে কোনো মিল নাই". v1 had cropped far into 480-pixel footage, blended neighbouring frames for slow motion,
-sharpened hard, regraded, blurred and darkened everything round the watch and added grain. On footage this
-small every one of those steps costs picture quality. v2 does the opposite (decision D58):
+History. v1 was rejected ("ভিডিওর কোয়ালিটি একদম নষ্ট হয়ে গেছে"): it cropped far into 480-pixel WhatsApp copies, blended
+frames for slow motion, sharpened, regraded, blurred and darkened round the watch. v2 left the picture alone
+(D58) but still had only the 480x854 WhatsApp copies to work from. The client then put the camera originals
+in Google Drive: "আমি আসল ভিডিও ফাইল দিয়েছি … ওগুলো দিয়ে তৈরি করো যেন ছবি ভিডিওর কোয়ালিটি নষ্ট না হয়।"
+v3 is cut from those originals only (D59) — no shot from a WhatsApp copy is mixed in:
 
-  * THE CLIENT'S PICTURE, UNTOUCHED: no colour change, no blur, no darkening, no vignette, no grain;
+  * THE CLIENT'S PICTURE, UNTOUCHED: no colour change, no sharpening, no blur, no darkening, no vignette, no grain;
   * every output frame is exactly ONE real source frame at real speed (no slow motion, no blended frames);
-  * one resampling step only, straight from the source frame to 1080x1920 (Lanczos), nearly the full phone
-    frame (about 15 % crop — only what the stabiliser needs);
+  * source and output are both 1080x1920; the frame is cropped by about 10 % only (what the stabiliser needs)
+    and resampled once (Lanczos);
   * stabiliser: the dominant motion of each shot is measured (LK features + RANSAC similarity), its path is
     smoothed, and only the shake is taken out, never further than the crop margin allows — so there is no
     made-up picture at the edges;
-  * shots change with a 0.3 s cross-dissolve inside a slow push-in (D57); no hard cut, no flash;
+  * shots change with a 0.3 s cross-dissolve (D57); no hard cut, no flash;
+  * colour: the phone files are BT.601 (bt470bg); they are decoded with that matrix and written as BT.709,
+    the HD standard, with the matching matrix — the colours on screen are the same;
   * type: MIQA mark, a small price, one short label per beat, the order card at the end.
 
   python3 render_n.py --sheet 0.5                 # contact sheet → work/sheet.jpg
@@ -27,14 +30,16 @@ import numpy as np
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(f'{BASE}/../../..')
-VIDS = {k: f'{BASE}/input/{k}.mp4' for k in 'ABC'}
+# camera originals (Drive: VID20261110122531.mp4 = A, VID20261110121955.mp4 = C) — see input/orig/README.md
+VIDS = {k: f'{BASE}/input/orig/{k}.mp4' for k in 'AC'}
 FF = f'{ROOT}/node_modules/@ffmpeg-installer/linux-x64/ffmpeg'
 FPS = 30
 W, H = 1080, 1920
-SW, SH = 480, 854                 # source frame
-FIT = W / SW                      # 2.25 screen px per source px when the phone frame fills the screen
+SW, SH = 1080, 1920               # source frame (camera original)
+FIT = W / SW                      # 1 screen px per source px when the phone frame fills the screen
+TR = 0.5                          # the motion is measured on a half-size copy (fast, and steadier against noise)
 X = 0.30                          # length of every shot change (s)
-SHARP = 0.25                      # a very light unsharp after the upscale (0 = none); more than this shows halos
+SHARP = 0.0                       # no sharpening: the phone has already sharpened its own picture
 
 
 class Seg:
@@ -44,7 +49,7 @@ class Seg:
     is moved off the frame centre, drift = (x, y) source px the window travels over the shot,
     stab = smoothing of the camera path in frames."""
 
-    def __init__(self, v, fa, t0, t1, fb=None, z=1.15, push=0.035, bias=(0, 0), drift=(0, 0), stab=8.0):
+    def __init__(self, v, fa, t0, t1, fb=None, z=1.15, push=0.03, bias=(0, 0), drift=(0, 0), stab=8.0):
         self.v, self.fa, self.fb, self.t0, self.t1 = v, fa, fb, t0, t1
         self.lock = fb is not None                     # there-and-back shots are held still, so the turn never shows
         self.z, self.push, self.bias, self.drift, self.stab = z, push, bias, drift, stab
@@ -77,69 +82,66 @@ class Layer:
 
 # ───────────────────────────── timeline ──────────────────────────────────────
 def timeline():
-    """Scene lengths follow the recorded VO (voice-01). Source ranges are stretches where the phone and the
-    hand are reasonably calm and the picture is in focus (measured frame by frame)."""
+    """Scene lengths follow the recorded VO (voice-01). Source ranges are stretches of the two camera originals
+    where the picture is in focus and the hand is reasonably calm (looked at frame by frame). Frame numbers
+    are the same as in the WhatsApp copies of the same two clips."""
     D = 31.0
     vo = [('01_hook', 0.40), ('02_colours', 4.95), ('03_lock', 10.15), ('04_machine', 12.35),
           ('05_water', 14.65), ('06_warranty', 17.50), ('07_price', 21.35), ('08_cta', 25.60)]
     segs = [
         # 01 hook — "প্রথম দেখাতেই চোখ আটকে যাবে। মিকার হানিকম্ব কালেকশন।"
-        Seg('B', 91, 0.00, 1.35, bias=(-8, 0)),                    # white dial, very close
-        Seg('C', 0, 1.35, 2.50),                                   # white dial in the palm
-        Seg('B', 862, 2.50, 3.90, fb=892, bias=(25, -15)),         # three colours lying on the paper
-        # "চারটি অভিজাত রঙ —" one take: the blue one is laid down beside the others, the green one picked up
-        Seg('A', 698, 3.90, 6.60, push=0.03),
-        # 02 one colour per word — সাদা · নীল · সবুজ · কালো
+        Seg('C', 0, 0.00, 2.50, push=0.0),                         # white dial in the palm; the client's own move closer
+        Seg('A', 884, 2.50, 3.90, fb=904, z=1.25, bias=(70, 150)),  # two colours lying on the paper
+        # 02 "চারটি অভিজাত রঙ —" the blue one is laid beside the others → all four in a row
+        Seg('A', 696, 3.90, 4.95, z=1.10),
+        Seg('A', 0, 4.95, 6.60, fb=20, z=1.10, bias=(0, -60)),
+        # one colour per word — সাদা · নীল · সবুজ · কালো
         Seg('C', 538, 6.60, 7.50),
-        Seg('A', 660, 7.50, 8.30),
-        Seg('B', 1281, 8.30, 9.10),
-        Seg('B', 921, 9.10, 10.00, z=1.20),
-        # 03 butterfly lock: open → closed
-        Seg('C', 311, 10.00, 11.25, z=1.20),
-        Seg('C', 372, 11.25, 12.20, z=1.20),
+        Seg('A', 658, 7.50, 8.30),
+        Seg('A', 741, 8.30, 9.20, z=1.10),
+        Seg('A', 951, 9.20, 9.95, z=1.20),
+        # 03 butterfly lock — one take: bracelet → the clasp opens
+        Seg('A', 344, 9.95, 12.45),
         # 04 semi-automatic machine (see-through back)
-        Seg('B', 287, 12.20, 13.90),
-        Seg('A', 246, 13.90, 14.50),
+        Seg('A', 214, 12.45, 14.30),
         # 05 waterproof · colour guarantee
-        Seg('A', 1048, 14.50, 15.95),
-        Seg('A', 313, 15.95, 17.35),
+        Seg('A', 1047, 14.30, 15.80),
+        Seg('A', 288, 15.80, 17.35),
         # 06 1-year warranty · 7-day replacement
-        Seg('B', 1241, 17.35, 18.10),
-        Seg('A', 950, 18.10, 18.85, z=1.20, bias=(0, -30)),
-        Seg('C', 578, 18.85, 20.00, z=1.20, bias=(-10, 0)),
-        Seg('A', 820, 20.00, 21.20),
+        Seg('A', 476, 17.35, 19.25, z=1.10),
+        Seg('C', 576, 19.25, 20.20, z=1.20),
+        Seg('A', 822, 20.20, 21.20, z=1.10),
         # 07 price · cash on delivery
-        Seg('B', 91, 21.20, 22.40, bias=(-8, 0)),
-        Seg('A', 133, 22.40, 23.70),
-        Seg('A', 853, 23.70, 25.40, fb=907, z=1.30, push=0.03, bias=(10, 200)),
+        Seg('A', 130, 21.20, 23.30),
+        Seg('A', 992, 23.30, 25.40, fb=1010, z=1.25, bias=(-70, 160)),
         # 08 order card — the four colours in a row along the top, the card on the empty paper below
-        Seg('A', 0, 25.40, D, fb=20, z=1.10, push=0.03, bias=(0, -200)),
+        Seg('A', 0, 25.40, D, fb=20, z=1.10, bias=(0, -60)),
     ]
     segs[0].first, segs[-1].last = True, True
     L = [
         Layer('head', 0.45, 25.60, tin=0.5, tout=0.35, rise=0),       # the order card carries the mark and the price itself
         Layer('price', 0.60, 25.60, tin=0.5, tout=0.35, rise=0),
-        Layer('lab_name', 2.80, 3.80, dx=170),
-        Layer('lab_colours', 4.98, 6.45),
+        Layer('lab_name', 2.80, 3.80, dy=-760),
+        Layer('lab_colours', 5.08, 6.45),
         Layer('lab_white', 6.70, 7.40, tin=0.22, tout=0.14, rise=8),
         Layer('lab_blue', 7.58, 8.20, tin=0.22, tout=0.14, rise=8),
-        Layer('lab_green', 8.38, 9.00, tin=0.22, tout=0.14, rise=8),
-        Layer('lab_black', 9.18, 9.88, tin=0.22, tout=0.14, rise=8),
-        Layer('lab_lock', 10.18, 12.05),
-        Layer('lab_machine', 12.38, 14.35),
-        Layer('lab_water', 14.68, 15.85),
-        Layer('lab_colour', 16.12, 17.20),
-        Layer('lab_warranty', 17.53, 18.75),
-        Layer('lab_replace', 18.98, 21.05),
-        Layer('lab_price', 21.38, 23.60),
-        Layer('lab_cod', 23.84, 25.25, dy=-560),
+        Layer('lab_green', 8.38, 9.10, tin=0.22, tout=0.14, rise=8),
+        Layer('lab_black', 9.28, 9.85, tin=0.22, tout=0.14, rise=8),
+        Layer('lab_lock', 10.18, 12.30),
+        Layer('lab_machine', 12.58, 14.15, dy=90),
+        Layer('lab_water', 14.68, 15.65),
+        Layer('lab_colour', 15.98, 17.20),
+        Layer('lab_warranty', 17.53, 19.10, dx=-250, dy=60),
+        Layer('lab_replace', 19.38, 21.05),
+        Layer('lab_price', 21.38, 23.15),
+        Layer('lab_cod', 23.60, 25.25, dx=-60, dy=-560),
         Layer('cta', 25.60, D + 1, tin=0.55, rise=26),
     ]
     cuts = [s.t0 for s in segs[1:]]
-    sfx = dict(whoosh=[2.50, 3.90, 10.00, 12.20, 14.50, 17.35, 21.20, 25.40],
-               click=[11.32], tick=[12.55, 13.05, 13.55, 14.05], drop=[14.60],
-               shimmer=[0.05, 21.40, 25.55], tap=[6.60, 7.50, 8.30, 9.10], boom=[0.0, 25.42])
-    scenes = [0, 3.90, 6.60, 10.00, 12.20, 14.50, 17.35, 21.20, 25.40, D]
+    sfx = dict(whoosh=[2.50, 3.90, 9.95, 12.45, 14.30, 17.35, 21.20, 25.40],
+               click=[11.15], tick=[12.80, 13.30, 13.80], drop=[14.60],
+               shimmer=[0.05, 21.40, 25.55], tap=[6.60, 7.50, 8.30, 9.20], boom=[0.0, 25.42])
+    scenes = [0, 3.90, 6.60, 9.95, 12.45, 14.30, 17.35, 21.20, 25.40, D]
     return dict(D=D, segs=segs, layers=L, vo=vo, sfx=sfx, scenes=scenes, cuts=cuts)
 
 
@@ -177,13 +179,14 @@ class Clip:
             raise SystemExit(f'clip {seg.v} from {seg.fa}: needs {n} frames, has {len(self.frames)}')
         n = len(self.frames)
         # dominant motion, frame to frame → path of the picture centre (P), scale (s) and angle (a)
-        P, s, a = np.array([SW / 2, SH / 2]), 1.0, 0.0
+        P, s, a = np.array([SW / 2, SH / 2]) * TR, 1.0, 0.0      # tracked in half-size px, turned into full px below
         self.P, self.s, self.a = [P.copy()], [s], [a]
-        g0 = cv2.cvtColor(self.frames[0], cv2.COLOR_BGR2GRAY)
-        mask = np.zeros((SH, SW), np.uint8)
-        mask[60:SH - 60, 30:SW - 30] = 255
+        small = lambda f: cv2.resize(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY), None, fx=TR, fy=TR, interpolation=cv2.INTER_AREA)
+        g0 = small(self.frames[0])
+        mask = np.zeros(g0.shape, np.uint8)
+        mask[68:-68, 34:-34] = 255
         for i in range(1, n):
-            g1 = cv2.cvtColor(self.frames[i], cv2.COLOR_BGR2GRAY)
+            g1 = small(self.frames[i])
             M = None
             p0 = cv2.goodFeaturesToTrack(g0, 500, 0.01, 6, mask=mask, blockSize=5) if (seg.stab > 0 or seg.lock) else None
             if p0 is not None and len(p0) >= 20:
@@ -199,7 +202,7 @@ class Clip:
                     P, s, a = nP, s * ds, a + da
             self.P.append(P.copy()); self.s.append(s); self.a.append(a)
             g0 = g1
-        self.P = np.array(self.P)
+        self.P = np.array(self.P) / TR
         self.s, self.a = np.array(self.s), np.array(self.a)
         sig = seg.stab
         if seg.lock:                                   # hold the picture where it was on the first frame
@@ -342,6 +345,29 @@ class Renderer:
         return img
 
 
+LIFT = (1, 1, 1, 0)   # OpenCV's YUV→RGB comes out one level low (rounding); measured against ffmpeg, see encoder_cmd
+
+
+def encoder_cmd(out, audio=None, crf=15):
+    """One encode, straight from the rendered frames.
+    Colour: the phone files are BT.601 limited range (bt470bg / smpte170m). OpenCV decodes them with that matrix.
+    The frames go back to YUV with the BT.709 matrix and the file is tagged BT.709 (the HD standard), so a player
+    shows the same colours as it shows for the original. Measured on a 1:1 round trip against ffmpeg's own
+    BT.601 decode of the source frame (numbers in QC-REPORT.md); LIFT makes up OpenCV's rounding.
+    Rate: the originals are ~20 Mb/s; CRF 15 with a 20 Mb/s ceiling keeps the grain of the picture."""
+    cmd = [FF, '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-']
+    if audio:
+        # x264 B-frames delay the first video frame by 2 frames; no MP4 edit list (Meta) → delay the audio instead
+        cmd += ['-i', audio, '-map', '0:v', '-map', '1:a', '-af', 'adelay=45|45',
+                '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-ac', '2']
+    cmd += ['-vf', 'scale=out_color_matrix=bt709:out_range=tv', '-sws_flags', 'accurate_rnd+full_chroma_int',
+            '-c:v', 'libx264', '-preset', 'slow', '-crf', str(crf), '-maxrate', '20M', '-bufsize', '40M',
+            '-profile:v', 'high', '-level', '4.2', '-pix_fmt', 'yuv420p', '-g', '30',
+            '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-color_range', 'tv',
+            '-movflags', '+faststart', '-use_editlist', '0', out]
+    return cmd
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--stills')
@@ -350,7 +376,7 @@ def main():
     ap.add_argument('--audio')
     ap.add_argument('--cover')
     ap.add_argument('--range')
-    ap.add_argument('--crf', type=int, default=16)
+    ap.add_argument('--crf', type=int, default=15)
     a = ap.parse_args()
     R = Renderer(cover=bool(a.cover))
     D = R.tl['D']
@@ -384,23 +410,10 @@ def main():
             ta, tb = map(float, a.range.split(':'))
             n0, n1 = int(round(ta * FPS)), int(round(tb * FPS))
         R = Renderer()
-        # The sources are BT.709, limited range. OpenCV decodes them with that matrix, so the frames go back to YUV
-        # with the same matrix (swscale would use BT.601 by default and shift the hues) and are tagged BT.709.
-        # Measured on a 1:1 round trip: chroma within 0.1 level of the source; luma comes back 1 level low
-        # (rounding in both conversions), which the +1 below puts right.
-        cmd = [FF, '-y', '-v', 'error', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-']
-        if a.audio:
-            # x264 B-frames delay the first video frame by 2 frames; no MP4 edit list (Meta) → delay the audio instead
-            cmd += ['-i', a.audio, '-map', '0:v', '-map', '1:a', '-af', 'adelay=45|45',
-                    '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-ac', '2']
-        cmd += ['-vf', 'scale=out_color_matrix=bt709:out_range=tv', '-sws_flags', 'accurate_rnd+full_chroma_int',
-                '-c:v', 'libx264', '-preset', 'slow', '-crf', str(a.crf), '-maxrate', '12M', '-bufsize', '24M',
-                '-profile:v', 'high', '-level', '4.1', '-pix_fmt', 'yuv420p', '-g', '30',
-                '-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-color_range', 'tv',
-                '-movflags', '+faststart', '-use_editlist', '0', a.out]
+        cmd = encoder_cmd(a.out, a.audio, a.crf)
         p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
         for n in range(n0, n1):
-            p.stdin.write(cv2.add(R.frame(n / FPS, n), (1, 1, 1, 0)).tobytes())
+            p.stdin.write(cv2.add(R.frame(n / FPS, n), LIFT).tobytes())
             if n % 60 == 0:
                 print(f'frame {n}/{n1}', flush=True)
         p.stdin.close()
