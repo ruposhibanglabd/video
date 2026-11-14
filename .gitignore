@@ -14,3 +14,6 @@ output/qa*/
 miqa/products/*/work/
 miqa/**/*.part.mp4
 __pycache__/
+# camera originals are too large for Git (see input/orig/README.md)
+miqa/products/*/input/orig/*.mp4
+google_drive/
