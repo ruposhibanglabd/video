@@ -21,4 +21,8 @@ here, newest first. Commit messages reference entries in this file.
 - Saved production templates: workflow, scene card, master timeline, QC (`production/`).
 - Created voice library with 5 narration profiles (`voice-library/`).
 - Created `projects/` per-project documentation convention and `assets/` library.
+- Added `system/GOOGLE_DRIVE_MAP.md`: Drive connection **verified (read)**; the
+  14-folder delivery library is **defined but pending creation** — the Drive connector
+  dropped parameter payloads this session, so creation/uploads must be retried and
+  verified before Drive delivery is claimed ready.
 - No video, image, thumbnail or voiceover produced — initialization only.
