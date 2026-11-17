@@ -3,13 +3,11 @@
 **Drive connection:** ✅ Verified (2026-11-17) — read access works; the connected account
 is reachable and existing project files are visible.
 
-**Folder structure status:** ⏳ **PENDING CREATION** — on 2026-11-17 the Drive connector
-accepted only empty-argument calls (parameter payloads were dropped by the tool bridge;
-retried across 3 turns, 13+ variations — read-only calls work, all parameterized calls
-arrive empty). Suspected Arena connector-bridge issue, not an account problem; ask the
-user to reconnect Google Drive if it persists. Retry is the first pending task; after
-creation, record every folder's ID below and verify with a listing call. **Do not claim
-Drive delivery is ready until this file contains verified IDs.**
+**Folder structure status:** 🔶 **PARTIAL (2026-11-17)** — connector parameter-drop bug
+is intermittent: search/list calls with parameters work, and one `create_file` succeeded
+(root folder, ID verified below), but subsequent parameterized create calls arrived empty
+(8 failures / 1 success). Remaining folders to be created when the bridge is stable;
+the first success proves the account + permissions are fine.
 
 ## Intended structure (to create)
 
@@ -43,7 +41,7 @@ Abdur Rahman Nayeem - Creative Studio/        ← root
 
 | Folder | Drive ID | Verified |
 |---|---|---|
-| Root: Abdur Rahman Nayeem - Creative Studio | — | ⬜ |
+| Root: Abdur Rahman Nayeem - Creative Studio | `1reCNUTWBI_h9MVvSv5iT7Dqmd4gYSIud` | ✔ |
 | 00 - Master Instructions | — | ⬜ |
 | 01 - Brand Identity | — | ⬜ |
 | 02 - Voice Profiles | — | ⬜ |

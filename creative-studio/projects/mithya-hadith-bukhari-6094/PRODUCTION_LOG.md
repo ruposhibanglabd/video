@@ -1,6 +1,6 @@
 # PRODUCTION LOG — mithya-hadith-bukhari-6094
 
-**Current state:** `awaiting-approval`
+**Current state:** `qc-passed-awaiting-final-approval`
 
 ## 2026-11-17 — Phase 1
 
@@ -14,3 +14,32 @@
 - Presented plan + voice options to user. **Waiting for: voice choice + approval.**
 - Note: Drive uploads still blocked (connector parameter issue) — delivery via Git
   links fallback, Drive retry at delivery time.
+
+## 2026-11-17 — Phase 2 (production)
+
+- **User approval received** — plan approved; voice **V1 documentary male** chosen
+  (`voice-00`).
+- `npm install` (ffmpeg/ffprobe toolchain); Amiri fonts cloned (OFL) into
+  `creative-studio/assets/fonts/amiri/` for Arabic calligraphy.
+- Generated 8 AI backgrounds (`assets/bg-s1..s8.jpg`, 768×1376). bg-s2 regenerated
+  once: first output carried a cross-like ornament (Islamic-content violation) —
+  fixed via negative prompt, verified clean.
+- Generated 8 VO clips with voice-00 (≈84.2s speech total) incl. Arabic recitation
+  test `vo-s4-arabic.mp3` (22.1s) — text matches RESEARCH.md matn verbatim.
+- Wrote project renderer `render/config.mjs` + `render/render.mjs`
+  (Skia canvas → rawvideo → ffmpeg; schedule built from actual VO durations).
+- QA stills → fixes: absolute-vs-local time bug (text missing S2+), double-drawn
+  words, S2 text moved off bright book, S3 header 44px, S5 landing word dark plate,
+  S7 label alignment, S8 text moved below horizon, S3 card text = VO wording.
+- Audio chain fixes for 2018 ffmpeg build: `aevalsrc exprs`, amix without
+  `normalize` (+compensating gain), `aformat` layout pinning, mono downmix.
+- **Full render:** `output/Mithya-Hadith-Bukhari-6094-Final.mp4` — 92.84s,
+  1080×1920@30, H.264 CRF19, AAC 192k, 38.5 MB, faststart. Render time 151s.
+- QC: 13 checkpoint frames from the encoded file verified (all 8 scenes,
+  transitions, signature). Audio post-master −2.5 dB → integrated −12.0 LUFS,
+  TP −0.9 dBTP, no clipping. No audio under Arabic recitation except VO (pad
+  split around S4). SRT sidecar: 26 cues.
+- Thumbnail rendered: `assets/thumbnail.png` (1080×1920, split-frame design).
+- Drive: connector bridge parameter-drop bug recurred — root folder
+  «Abdur Rahman Nayeem - Creative Studio» created (ID `1reCNUTWBI_h9MVvSv5iT7Dqmd4gYSIud`);
+  subfolder creation blocked. Uploads deferred until final approval + stable bridge.
