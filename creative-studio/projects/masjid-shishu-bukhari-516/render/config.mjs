@@ -12,13 +12,17 @@ export const PAL = {
   gold: '#E9C87E',
   goldBright: '#F6DC9E',
   goldDeep: '#B08A3E',
+  goldInk: '#8A6A1F',       // readable gold on light backgrounds
   ivory: '#F5EFE2',
   ivoryDim: 'rgba(245,239,226,0.72)',
   emeraldDeep: '#071510',
   emeraldPanel: 'rgba(6,20,15,0.55)',
-  ember: '#E08A4A',
+  ink: '#16382A',           // deep emerald ink — base text on light backgrounds
+  inkSoft: 'rgba(22,56,42,0.78)',
+  ember: '#D9762B',         // deepened ember for light-bg readability
   emberDeep: '#A34A28',
   cool: '#8FA5C8',
+  paper: '#FBF6EA',
   captionBg: 'rgba(4,12,9,0.45)',
 };
 

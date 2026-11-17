@@ -1,6 +1,20 @@
 # PRODUCTION LOG — masjid-shishu-bukhari-516
 
-**Current state:** `qc-passed — awaiting user review`
+**Current state:** `qc-passed — awaiting user review (v2, light theme)`
+
+## 2026-11-17 — v2 (LIGHT THEME, user-requested)
+
+- User feedback on v1: scenes too dark → **all 9 backgrounds regenerated in a
+  bright light palette**; S1 prayer image fixed — **compact shoulder-to-shoulder
+  rows (no gaps)**, white mosque interior, children at the back.
+- Renderer switched to light theme: base text deep-emerald ink `#16382A`,
+  highlights gold-ink `#8A6A1F`, white-gold glow, paper veils/plates behind text
+  (S7 top band + node plates + footer pills + S9 veil), footer pills, boundary
+  fades now ivory (final fade stays black), watermark ink + white shadow.
+- Re-render: 2441 frames → 81.367s, 38.8MB; post-master re-applied →
+  **−12.1 LUFS / −0.9 dBTP** ✔; encoded 3×3 tile QC ✔ (watermark all scenes);
+  thumbnail re-rendered (light theme, text clear of subject).
+- State: `qc-passed — awaiting user review (v2)`.
 
 ## 2026-11-17 — Phase 2 (production) — v1 delivered
 

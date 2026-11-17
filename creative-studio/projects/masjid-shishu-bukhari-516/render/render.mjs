@@ -197,8 +197,6 @@ const sceneAt = (sched, t) =>
 /* ------------------------------------------------------------------ */
 /* Drawing helpers                                                     */
 /* ------------------------------------------------------------------ */
-const DARK_SCENES = new Set(['s1', 's2', 's3', 's4', 's5']);
-const DARK_AMT = { s2: 0.30, s3: 0.26 };
 const COOL_SCENES = new Set(['s3']);
 
 function drawBG(ctx, scene, t, mode = 'push') {
@@ -212,15 +210,14 @@ function drawBG(ctx, scene, t, mode = 'push') {
   const panX = (W - dw) / 2 + Math.sin(p * Math.PI) * 14;
   const panY = (H - dh) / 2 + (p - 0.5) * -22;
   ctx.drawImage(img, panX, panY, dw, dh);
-  const dark = DARK_SCENES.has(scene.id);
-  const darkAmt = DARK_AMT[scene.id] ?? 0.18;
-  ctx.fillStyle = dark ? `rgba(5,16,12,${darkAmt})` : 'rgba(233,200,126,0.05)';
+  // light theme: gentle warm veil + soft vignette (keeps images bright)
+  ctx.fillStyle = 'rgba(255,251,240,0.07)';
   ctx.fillRect(0, 0, W, H);
   if (COOL_SCENES.has(scene.id)) {
-    ctx.fillStyle = 'rgba(70,95,140,0.13)';
+    ctx.fillStyle = 'rgba(120,145,190,0.10)';
     ctx.fillRect(0, 0, W, H);
   }
-  vignette(ctx, dark ? 0.42 : 0.30);
+  vignette(ctx, 0.16);
 }
 
 function vignette(ctx, a) {
@@ -236,7 +233,7 @@ function glowText(ctx, text, x, y, font, color, glow = 0, align = 'center') {
   ctx.font = font;
   ctx.textAlign = align;
   ctx.textBaseline = 'middle';
-  if (glow > 0) { ctx.shadowColor = `rgba(246,220,158,${0.75 * glow})`; ctx.shadowBlur = 34 * glow; }
+  if (glow > 0) { ctx.shadowColor = `rgba(255,250,235,${0.8 * glow})`; ctx.shadowBlur = 30 * glow; }
   ctx.fillStyle = color;
   ctx.fillText(text, x, y);
   ctx.restore();
@@ -263,8 +260,8 @@ function layoutWords(ctx, text, font, maxW, goldSet) {
 function drawPhrase(ctx, ph, t, { cx = W / 2, top = 0, font = `700 56px BNU, sans-serif`,
   maxW = 900, lineH = 82, alpha = 1, baseColor = null, hiColor = null } = {}) {
   const goldSet = new Set(ph.hi || []);
-  const base = baseColor || (ph.ember ? PAL.ember : PAL.ivory);
-  const hiC = hiColor || (ph.ember ? PAL.emberDeep : PAL.gold);
+  const base = baseColor || (ph.ember ? PAL.ember : PAL.ink);
+  const hiC = hiColor || (ph.ember ? PAL.emberDeep : PAL.goldInk);
   const { lines, spaceW } = layoutWords(ctx, ph.t, font, maxW, goldSet);
   let wi = 0;
   lines.forEach((L, li) => {
@@ -301,15 +298,21 @@ function drawRolling(ctx, scene, t, opts) {
 function drawFooter(ctx, text) {
   ctx.save();
   ctx.font = `600 40px Inter, BNU, sans-serif`;
+  const tw = ctx.measureText(text).width;
+  ctx.globalAlpha = 0.42;
+  panel(ctx, 90 + tw / 2, 1784, tw + 44, 62, 16);
+  ctx.fillStyle = 'rgba(251,246,234,1)';
+  ctx.fill();
+  ctx.globalAlpha = 1;
   ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 6;
-  ctx.fillStyle = 'rgba(233,200,126,0.66)';
+  ctx.shadowColor = 'rgba(255,255,255,0.6)'; ctx.shadowBlur = 6;
+  ctx.fillStyle = 'rgba(138,106,31,0.95)';
   ctx.fillText(text, 90, 1784);
   ctx.restore();
 }
 
 /** Gentle floating dust (warm scenes). */
-function drawDust(ctx, t, seed, n = 22, color = PAL.gold) {
+function drawDust(ctx, t, seed, n = 22, color = PAL.goldInk) {
   const rnd = mulberry32(seed);
   for (let i = 0; i < n; i++) {
     const bx = rnd() * W; const sp = 16 + rnd() * 26; const ph0 = rnd() * 9;
@@ -360,7 +363,7 @@ const painters = {
   s3(ctx, scene, t) {
     drawBG(ctx, scene, t, 'pull');
     const [p0, p1] = scene.phrases;
-    if (p0) drawPhrase(ctx, p0, t, { top: 620, font: `700 58px BNU, sans-serif`, baseColor: PAL.ivory });
+    if (p0) drawPhrase(ctx, p0, t, { top: 620, font: `700 58px BNU, sans-serif` });
     if (p1) {
       drawPhrase(ctx, p1, t, { top: 830, font: `800 88px BNU, sans-serif`, maxW: 940, lineH: 116 });
       // faint cold glow behind the title line
@@ -391,7 +394,7 @@ const painters = {
         ctx.beginPath(); ctx.moveTo(540 - 220 * rp, 800); ctx.lineTo(540 + 220 * rp, 800); ctx.stroke();
         ctx.restore();
       }
-      drawPhrase(ctx, p1, t, { top: 920, font: `800 78px BNU, sans-serif`, baseColor: PAL.gold });
+      drawPhrase(ctx, p1, t, { top: 920, font: `800 78px BNU, sans-serif`, baseColor: PAL.goldInk });
     }
   },
 
@@ -411,8 +414,8 @@ const painters = {
       ctx.beginPath();
       ctx.rect(540 + wLine / 2 + 30 - (wLine + 60) * easeInOut(lp), y - lineH / 2, (wLine + 60) * easeInOut(lp), lineH);
       ctx.clip();
-      ctx.shadowColor = 'rgba(246,220,158,0.65)'; ctx.shadowBlur = 26;
-      ctx.fillStyle = PAL.goldBright;
+      ctx.shadowColor = 'rgba(255,252,240,0.9)'; ctx.shadowBlur = 26;
+      ctx.fillStyle = PAL.goldInk;
       ctx.fillText(sl.line, 540, y);
       ctx.restore();
     });
@@ -421,11 +424,11 @@ const painters = {
     if (last && t > last.end - 0.2) {
       const fp = smooth((t - last.end + 0.2) / 0.8);
       ctx.globalAlpha = fp;
-      ctx.strokeStyle = PAL.gold; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
+      ctx.strokeStyle = PAL.goldInk; ctx.lineWidth = 2.4; ctx.lineCap = 'round';
       const fy = y0 + (scene.arabicSlices.length - 1) * lineH + 66;
       ctx.beginPath(); ctx.moveTo(540 - 150 * fp, fy); ctx.lineTo(540 + 150 * fp, fy); ctx.stroke();
       ctx.beginPath(); ctx.arc(540, fy, 5.5, 0, 7);
-      ctx.fillStyle = PAL.goldBright; ctx.fill();
+      ctx.fillStyle = PAL.goldInk; ctx.fill();
       ctx.globalAlpha = 1;
     }
     ctx.restore();
@@ -443,10 +446,10 @@ const painters = {
   // S7 THE PROMISE — two of the seven under Allah's shade
   s7(ctx, scene, t) {
     drawBG(ctx, scene, t, 'push');
-    // dark band so the ivory text survives the bright sky
+    // soft light veil so the ink text survives the bright sky
     const band = ctx.createLinearGradient(0, 300, 0, 860);
-    band.addColorStop(0, 'rgba(4,12,9,0.55)');
-    band.addColorStop(1, 'rgba(4,12,9,0)');
+    band.addColorStop(0, 'rgba(251,246,234,0.62)');
+    band.addColorStop(1, 'rgba(251,246,234,0)');
     ctx.fillStyle = band; ctx.fillRect(0, 300, W, 560);
     const [p1, p2] = scene.phrases;
     if (p1) drawPhrase(ctx, p1, t, { top: 460, font: `800 72px BNU, sans-serif` });
@@ -456,7 +459,7 @@ const painters = {
       p2 ? p2.start + 2.1 : scene.start + 5,
     ];
     drawPathGraph(ctx, NODES_PROMISE, nodeT, t, {
-      stroke: PAL.gold, glowC: 'rgba(246,220,158,', labelFont: `700 52px BNU, sans-serif`, labelC: PAL.ivory, dir: 1,
+      stroke: PAL.goldDeep, glowC: 'rgba(176,138,62,', labelFont: `700 52px BNU, sans-serif`, labelC: PAL.ink, dir: 1,
     });
     drawFooter(ctx, FOOTERS.s7);
   },
@@ -479,6 +482,12 @@ const painters = {
   s9(ctx, scene, t) {
     drawBG(ctx, scene, t, 'push');
     drawDust(ctx, t, 31, 18);
+    // soft paper veil behind the text zone (bright sky behind)
+    const veil = ctx.createLinearGradient(0, 460, 0, 1020);
+    veil.addColorStop(0, 'rgba(251,246,234,0)');
+    veil.addColorStop(0.5, 'rgba(251,246,234,0.42)');
+    veil.addColorStop(1, 'rgba(251,246,234,0)');
+    ctx.fillStyle = veil; ctx.fillRect(0, 460, W, 560);
     const [p0, p1] = scene.phrases;
     if (p0) drawPhrase(ctx, p0, t, { top: 620, font: `700 58px BNU, sans-serif` });
     if (p1) {
@@ -542,14 +551,14 @@ function drawPathGraph(ctx, nodes, nodeT, t, { stroke, glowC, labelFont, labelC,
     ctx.strokeStyle = stroke; ctx.lineWidth = 2.6; ctx.globalAlpha = a * 0.8;
     ctx.beginPath(); ctx.arc(nd.x, nd.y, 30 * pulse, 0, 7); ctx.stroke();
     ctx.restore();
-    // dark plate behind the label so it survives bright backgrounds
+    // soft paper plate behind the label so it survives bright backgrounds
     const lx = nd.x + (dir > 0 ? 40 : -40); const ly = nd.y + 74;
     ctx.save();
-    ctx.globalAlpha = a * 0.55;
+    ctx.globalAlpha = a * 0.62;
     ctx.font = labelFont;
     const lw = ctx.measureText(nd.label).width;
     panel(ctx, lx, ly, lw + 56, 76, 20);
-    ctx.fillStyle = 'rgba(4,12,9,1)';
+    ctx.fillStyle = 'rgba(251,246,234,1)';
     ctx.fill();
     ctx.restore();
     ctx.save();
@@ -571,8 +580,8 @@ function drawWatermark(ctx, t, sched) {
   ctx.drawImage(AVATAR, cx - size / 2, cy - size / 2, size, size);
   ctx.font = `italic 500 34px Cormorant, serif`;
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 6;
-  ctx.fillStyle = 'rgba(245,239,226,0.95)';
+  ctx.shadowColor = 'rgba(255,255,255,0.65)'; ctx.shadowBlur = 6;
+  ctx.fillStyle = 'rgba(22,56,42,0.92)';
   ctx.fillText(SIGNATURE, cx - size / 2 - 16, cy + 1);
   ctx.restore();
 }
@@ -593,11 +602,11 @@ function paintFrame(ctx, sched, t) {
   const fd = 0.4;
   if (next && !CUT_AFTER.has(scene.id)) {
     const out = (t - (scene.end + scene.gapAfter - fd)) / fd;
-    if (out > 0) { ctx.fillStyle = `rgba(0,0,0,${smooth(out)})`; ctx.fillRect(0, 0, W, H); }
+    if (out > 0) { ctx.fillStyle = `rgba(251,246,234,${smooth(out)})`; ctx.fillRect(0, 0, W, H); }
   }
   const into = (t - (scene.start - scene.leadIn)) / fd;
   if (idx > 0 && !CUT_AFTER.has(sched.scenes[idx - 1].id) && into < 1) {
-    ctx.fillStyle = `rgba(0,0,0,${1 - smooth(into)})`; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = `rgba(251,246,234,${1 - smooth(into)})`; ctx.fillRect(0, 0, W, H);
   }
   if (t > sched.total - 0.7) { // final fade
     ctx.fillStyle = `rgba(0,0,0,${smooth((t - (sched.total - 0.7)) / 0.7)})`;
@@ -747,24 +756,24 @@ async function main() {
     const s9 = sched.scenes.find((s) => s.id === 's9');
     drawBG(ctx, s9, s9.start + 2.0, 'push');
     const band = ctx.createLinearGradient(0, 0, 0, 900);
-    band.addColorStop(0, 'rgba(4,12,9,0.55)');
-    band.addColorStop(1, 'rgba(4,12,9,0)');
+    band.addColorStop(0, 'rgba(251,246,234,0.60)');
+    band.addColorStop(1, 'rgba(251,246,234,0)');
     ctx.fillStyle = band; ctx.fillRect(0, 0, W, 900);
     const tp = { t: TITLE, hi: ['মসজিদে'], start: -9 };
     drawPhrase(ctx, tp, 0, { top: 460, font: `800 88px BNU, sans-serif`, maxW: 940, lineH: 118 });
     // soft plate behind subtitle + reference for contrast on the field
-    const plate = ctx.createLinearGradient(0, 980, 0, 1230);
-    plate.addColorStop(0, 'rgba(4,12,9,0)');
-    plate.addColorStop(0.5, 'rgba(4,12,9,0.42)');
-    plate.addColorStop(1, 'rgba(4,12,9,0)');
-    ctx.fillStyle = plate; ctx.fillRect(0, 980, W, 250);
-    glowText(ctx, 'মসজিদে শিশুদের ধমক নয় — ভালোবাসা', 540, 1060, `600 46px BNU, sans-serif`, PAL.ivory, 0.3);
-    glowText(ctx, THUMB_REF, 540, 1160, `600 44px Inter, BNU, sans-serif`, PAL.gold, 0.5);
+    const plate = ctx.createLinearGradient(0, 860, 0, 1110);
+    plate.addColorStop(0, 'rgba(251,246,234,0)');
+    plate.addColorStop(0.5, 'rgba(251,246,234,0.55)');
+    plate.addColorStop(1, 'rgba(251,246,234,0)');
+    ctx.fillStyle = plate; ctx.fillRect(0, 860, W, 250);
+    glowText(ctx, 'মসজিদে শিশুদের ধমক নয় — ভালোবাসা', 540, 940, `600 46px BNU, sans-serif`, PAL.ink, 0.3);
+    glowText(ctx, THUMB_REF, 540, 1040, `600 44px Inter, BNU, sans-serif`, PAL.goldInk, 0.5);
     ctx.save();
     ctx.drawImage(AVATAR, 1004 - 40, 1760 - 40, 80, 80);
     ctx.font = `italic 500 42px Cormorant, serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba(245,239,226,0.92)';
-    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 6;
+    ctx.fillStyle = 'rgba(22,56,42,0.92)';
+    ctx.shadowColor = 'rgba(255,255,255,0.6)'; ctx.shadowBlur = 6;
     ctx.fillText(SIGNATURE, 1004 - 56, 1762);
     ctx.restore();
     fs.mkdirSync(path.dirname(args.thumb), { recursive: true });
