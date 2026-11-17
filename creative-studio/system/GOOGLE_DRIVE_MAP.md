@@ -4,11 +4,12 @@
 is reachable and existing project files are visible.
 
 **Folder structure status:** ⏳ **PENDING CREATION** — on 2026-11-17 the Drive connector
-accepted only empty-argument calls in this session (parameter payloads were dropped by
-the tool bridge), so folder creation and uploads could not be completed. Retry is the
-first pending task; after creation, record every folder's ID below and verify with a
-listing call. **Do not claim Drive delivery is ready until this file contains verified
-IDs.**
+accepted only empty-argument calls (parameter payloads were dropped by the tool bridge;
+retried across 3 turns, 13+ variations — read-only calls work, all parameterized calls
+arrive empty). Suspected Arena connector-bridge issue, not an account problem; ask the
+user to reconnect Google Drive if it persists. Retry is the first pending task; after
+creation, record every folder's ID below and verify with a listing call. **Do not claim
+Drive delivery is ready until this file contains verified IDs.**
 
 ## Intended structure (to create)
 
