@@ -32,6 +32,27 @@
 - **Frames:** 13 checkpoint frames pulled from the *encoded* file across all 8
   scenes + transitions + signature — all verified visually.
 
+## Publish copy (caption)
+
+**Facebook / YouTube:**
+
+> তুমি যতবার কথা বলো — আল্লাহর কাছে তোমার একটি পরিচয় লেখা হতে থাকে। 📖
+>
+> সত্য বলতে বলতে মানুষ হয়ে যায় 'সিদ্দীক' — মহাসত্যবাদী।
+> আর মিথ্যা বলতে বলতে লিপিবদ্ধ হয় 'কায্যাব' — মহামিথ্যুক।
+>
+> ভাবো তো — আজ তোমার খাতায় কোন নামটা বড় হচ্ছে?
+>
+> 📚 সহীহ বুখারী: ৬০৯৪ · সহীহ মুসলিম: ২৬০৭ (মুত্তাফাক আলাইহি)
+>
+> ভিডিওটি শেয়ার করুন — আপনার একটি শেয়ার হয়তো কারো মিথ্যা ছেড়ে দেওয়ার কারণ হতে পারে। 🌿
+>
+> #হাদিস #মিথ্যা #সত্য #ইসলামিক_ভিডিও #Hadith #SahihBukhari #AbdurRahmanNayeem
+
+**Short (Reels/TikTok):**
+
+> তোমার নামের পাশে কী লেখা হচ্ছে — সিদ্দীক, না কায্যাব? 📖 সহীহ বুখারী: ৬০৯৪ #হাদিস #মিথ্যা #সত্য
+
 ## Drive delivery (pending final approval)
 
 - Root folder created: **«Abdur Rahman Nayeem - Creative Studio»** — ID
