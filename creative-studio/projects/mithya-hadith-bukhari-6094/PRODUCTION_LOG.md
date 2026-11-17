@@ -43,3 +43,21 @@
 - Drive: connector bridge parameter-drop bug recurred — root folder
   «Abdur Rahman Nayeem - Creative Studio» created (ID `1reCNUTWBI_h9MVvSv5iT7Dqmd4gYSIud`);
   subfolder creation blocked. Uploads deferred until final approval + stable bridge.
+
+## 2026-11-17 — v2 revision (brand watermark)
+
+- User change request: replace final-only signature with a **persistent, small
+  logo-style watermark** (creator photo + name) in one fixed place, bottom-right.
+- Brand assets: `creative-studio/assets/brand/creator-photo.jpg` (user-provided) →
+  circular gold-ring avatar `avatar-ring.png` (256px, generated in renderer).
+- Renderer: `drawWatermark()` — avatar 72px + italic name, 62% opacity, fade-in at
+  start, fades with final fade-out; drawn on every frame after scene transitions.
+  Old final `drawSignature` removed (single consistent brand element).
+- Bug found & fixed: napi-rs Image decodes async — drawing immediately after
+  setting `src` produced blank output (affected avatar build; fixed with a
+  post-load settle wait).
+- S4 footer moved from bottom-center to bottom-left to avoid touching the
+  watermark; thumbnail now carries the avatar+name logo (bottom-right).
+- **v2 render:** same spec (92.84s, 1080×1920@30, H.264 + AAC), audio post-master
+  re-applied (−12.0 LUFS, TP −0.9 dBTP). QC: watermark verified in 4 encoded
+  frames across scenes; thumbnail re-checked (corner-clean).

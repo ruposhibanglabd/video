@@ -34,6 +34,7 @@ const ffprobePath = () => require('@ffprobe-installer/ffprobe').path;
 /* ------------------------------------------------------------------ */
 let napi = null;
 const IMGS = {};
+let AVATAR = null; // circular creator avatar with gold ring (brand watermark)
 
 async function setupPlatform() {
   napi = await import('@napi-rs/canvas');
@@ -59,6 +60,21 @@ async function setupPlatform() {
     img.src = fs.readFileSync(path.join(ASSETS, sc.bg));
     IMGS[sc.id] = img;
   }
+  // brand avatar: circular face crop + gold ring
+  const photo = new napi.Image();
+  photo.src = fs.readFileSync(path.join(ROOT, 'creative-studio/assets/brand/creator-photo.jpg'));
+  // napi-rs Image decodes asynchronously — let it settle before drawing
+  await new Promise((r) => setTimeout(r, 150));
+  const S = 256, av = napi.createCanvas(S, S), ax = av.getContext('2d');
+  const FACE = { cx: 367, cy: 452, side: 250 };
+  ax.save();
+  ax.beginPath(); ax.arc(S / 2, S / 2, S / 2 - 6, 0, 7); ax.clip();
+  ax.drawImage(photo, FACE.cx - FACE.side / 2, FACE.cy - FACE.side / 2, FACE.side, FACE.side, 0, 0, S, S);
+  ax.restore();
+  ax.strokeStyle = '#E9C87E'; ax.lineWidth = 7; ax.globalAlpha = 0.9;
+  ax.beginPath(); ax.arc(S / 2, S / 2, S / 2 - 8, 0, 7); ax.stroke();
+  AVATAR = av;
+  fs.writeFileSync(path.join(ROOT, 'creative-studio/assets/brand/avatar-ring.png'), av.toBuffer('image/png'));
 }
 
 /* ------------------------------------------------------------------ */
@@ -408,8 +424,13 @@ const painters = {
       ctx.fillStyle = PAL.goldBright; ctx.fill();
     }
     ctx.restore();
-    glowText(ctx, 'সহীহ বুখারী · ৬০৯৪', 540, 1790, `600 40px Inter, BNU, sans-serif`,
-      'rgba(233,200,126,0.66)', 0);
+    ctx.save();
+    ctx.font = `600 40px Inter, BNU, sans-serif`;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 6;
+    ctx.fillStyle = 'rgba(233,200,126,0.66)';
+    ctx.fillText('সহীহ বুখারী · ৬০৯৪', 90, 1784);
+    ctx.restore();
   },
 
   s5(ctx, scene, t) {
@@ -501,7 +522,6 @@ const painters = {
       g.addColorStop(1, 'rgba(246,220,158,0)');
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     }
-    drawSignature(ctx, t, sched);
   },
 };
 
@@ -549,19 +569,21 @@ function drawPathGraph(ctx, nodes, nodeT, t, { stroke, glowC, labelFont, labelC,
   });
 }
 
-function drawSignature(ctx, t, sched) {
-  const start = sched.total - TAIL + 0.6;
-  const a = smooth((t - start) / 1.0) * 0.85;
-  if (a <= 0) return;
-  ctx.save(); ctx.globalAlpha = a;
-  ctx.font = `italic 500 46px Cormorant, serif`;
+/** Persistent brand watermark: avatar + name, bottom-right, one fixed place. */
+function drawWatermark(ctx, t, sched) {
+  const fadeIn = smooth(t / 0.8);
+  const finalFade = smooth((t - (sched.total - 0.7)) / 0.7);
+  const a = 0.62 * fadeIn * (1 - finalFade);
+  if (a <= 0.01) return;
+  const size = 72, cx = 1004, cy = 1784;
+  ctx.save();
+  ctx.globalAlpha = a;
+  ctx.drawImage(AVATAR, cx - size / 2, cy - size / 2, size, size);
+  ctx.font = `italic 500 34px Cormorant, serif`;
   ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = 'rgba(245,239,226,0.92)';
-  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 8;
-  ctx.fillText(SIGNATURE, 1000, 1668);
-  const wS = ctx.measureText(SIGNATURE).width;
-  ctx.strokeStyle = 'rgba(233,200,126,0.8)'; ctx.lineWidth = 1.6;
-  ctx.beginPath(); ctx.moveTo(1000 - wS, 1696); ctx.lineTo(1000, 1696); ctx.stroke();
+  ctx.shadowColor = 'rgba(0,0,0,0.55)'; ctx.shadowBlur = 6;
+  ctx.fillStyle = 'rgba(245,239,226,0.95)';
+  ctx.fillText(SIGNATURE, cx - size / 2 - 16, cy + 1);
   ctx.restore();
 }
 
@@ -591,6 +613,7 @@ function paintFrame(ctx, sched, t) {
     ctx.fillStyle = `rgba(0,0,0,${smooth((t - (sched.total - 0.7)) / 0.7)})`;
     ctx.fillRect(0, 0, W, H);
   }
+  drawWatermark(ctx, t, sched);
 }
 
 /* ------------------------------------------------------------------ */
@@ -767,9 +790,11 @@ async function main() {
     glowText(ctx, 'كَذَّابًا', 790, 1000, `120px AmiriQuran, Amiri, serif`, PAL.ember, 0.8);
     glowText(ctx, 'সহীহ বুখারী · ৬০৯৪', 540, 1220, `600 44px Inter, BNU, sans-serif`, PAL.gold, 0.5);
     ctx.save();
-    ctx.font = `italic 500 46px Cormorant, serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.drawImage(AVATAR, 1004 - 40, 1760 - 40, 80, 80);
+    ctx.font = `italic 500 42px Cormorant, serif`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
     ctx.fillStyle = 'rgba(245,239,226,0.92)';
-    ctx.fillText(SIGNATURE, 1000, 1760);
+    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 6;
+    ctx.fillText(SIGNATURE, 1004 - 56, 1762);
     ctx.restore();
     fs.mkdirSync(path.dirname(args.thumb), { recursive: true });
     fs.writeFileSync(args.thumb, canvas.toBuffer('image/png'));

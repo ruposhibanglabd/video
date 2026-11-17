@@ -1,6 +1,6 @@
 # FINAL DELIVERY — mithya-hadith-bukhari-6094
 
-**Status:** ✅ QC PASSED (2026-11-17) — awaiting user's final-production approval before Drive upload.
+**Status:** ✅ QC PASSED — **v2** (2026-11-17): persistent avatar+name brand watermark (bottom-right, one fixed place) per user request. Awaiting user's final-production approval before Drive upload.
 
 ## Primary deliverables (in this repo)
 
