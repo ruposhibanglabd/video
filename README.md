@@ -1,4 +1,4 @@
-> **এই রিপোজিটরিতে দুটি প্রজেক্ট আছে:** (১) **MIQA** ঘড়ির সিনেমাটিক Reels বিজ্ঞাপন সিস্টেম, ডিজাইন গাইড আর মেমোরি → [`miqa/`](miqa/README.md) · (২) CodePixel Web প্রোমো (নিচে)।
+> **এই রিপোজিটরিতে তিনটি প্রজেক্ট আছে:** (১) **MIQA** ঘড়ির সিনেমাটিক Reels বিজ্ঞাপন সিস্টেম, ডিজাইন গাইড আর মেমোরি → [`miqa/`](miqa/README.md) · (২) CodePixel Web প্রোমো (নিচে) · (৩) **Abdur Rahman Nayeem — Personal AI Creative Studio**: প্রিমিয়াম অ্যানিমেশন/ডকুমেন্টারি প্রোডাকশন ফ্রেমওয়ার্ক, মাস্টার নির্দেশনা ও স্থায়ী মেমোরি → [`creative-studio/`](creative-studio/README.md)।
 
 # CodePixel Web — প্রোমো ভিডিও জেনারেটর
 
