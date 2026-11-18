@@ -2,7 +2,15 @@
 
 **Topic (user, 2026-11-17):** মসজিদে শিশুদের নামাজ/দৌড়াদৌড়ি — ধমক না দেওয়া; মুরুব্বিদের ভুল উপস্থাপন; শিশুর নামাজ/মসজিদ-বিমুখতা; আল্লাহ ও রাসূল ﷺ কী বলেছেন — বিস্তারিত উপস্থাপন।
 
-**Date researched:** 2026-11-17 · **Status:** ✅ All sources verified
+**Date researched:** 2026-11-17 · **Status:** v3 source corrections appended below (pending script approval)
+
+## v3 research addendum — 2026-11-17
+
+- **Qur'an 3:159** (https://quran.com/3/159): “Had you been cruel or hard-hearted, they would have certainly abandoned you.” Addressed to the Prophet ﷺ about gentleness towards his people; **not a verse specifically ruling on children running in mosques**. v3 uses it as a general ethical principle and says so.
+- **Bukhari 516** (https://sunnah.com/bukhari:516): use the verbatim extract `فَإِذَا سَجَدَ وَضَعَهَا، وَإِذَا قَامَ حَمَلَهَا` — previous v1 Arabic VO text beginning `كَانَ يَؤُمُّنَا` was **not** the source wording; **must not be reused**.
+- **Nasa'i 1141** (https://sunnah.com/nasai:1141): the boy was **Hasan OR Husayn, one child**, not “two children.” The text does not say the child was running noisily in the mosque; do not use it to suggest unrestricted disruption during salah. Cite as an example of tenderness, paired with gentle parental guidance and respect for worshippers.
+- **Bukhari 660** (https://sunnah.com/bukhari:660): the wording says **Allah's shade** (`فِي ظِلِّهِ`), so v3 narration uses “আল্লাহর ছায়া,” not the older “আরশের ছায়া” simplification. The pious youth and the person attached to the mosques are **two listed categories**, not necessarily the same person.
+- Older v1 storyboard/script (including the phrase “two children,” its Arabic excerpt and “আরশের ছায়া”) are superseded by `SCRIPT_V3_PROPOSAL.md` and `SHOT_PLAN_V3_PROPOSAL.md` for v3. The v2 delivered media remains unchanged until a new approved production is complete.
 
 ---
 
